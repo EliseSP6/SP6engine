@@ -11,13 +11,13 @@ public class Physique {
 
 	static long timestamp = System.nanoTime();
 
-	private double distanceSquared(double x1, double y1, double x2, double y2) {
+	public static double distanceSquared(double x1, double y1, double x2, double y2) {
 		double dX = x2 - x1;
 		double dY = y2 - y1;
 		return dX * dX + dY * dY;
 	}
 
-	private boolean collides(EntityTranslatable first, EntityTranslatable second) {
+	public static boolean collides(EntityTranslatable first, EntityTranslatable second) {
 
 		// Closest point on collision box
 		Point2D.Double closestPoint = new Point2D.Double(0, 0);
