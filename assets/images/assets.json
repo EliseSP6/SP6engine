@@ -1,0 +1,15 @@
+{
+	"sprites":[
+		{
+			"key":"mushi",
+			"file":"mushi.png",
+			"width":"16",
+			"height":"16"
+		},
+		{
+			"key":"heart",
+			"file":"heart.png"
+		}
+	],
+	"textures":[]
+}
