@@ -1,7 +1,6 @@
 package Bleach;
 
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 
 public class Entity implements EntityTranslatable {
 	Sprite sprite;
@@ -53,10 +52,11 @@ public class Entity implements EntityTranslatable {
 	public double getVelocity() {
 		return velocity;
 	}
-	
-	public BufferedImage getImage(){
-		return sprite.getFrame();
+
+	public Sprite getSprite() {
+		return sprite;
 	}
-	
-	public void tick(LevelInteractable activeLevel){}	// For overriding in subclasses.
+
+	public void tick(LevelInteractable activeLevel) {
+	} // For overriding in subclasses.
 }

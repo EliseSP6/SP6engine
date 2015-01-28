@@ -60,6 +60,7 @@ public class Physique {
 		entities.addAll(currentLevelSetting.getLoots());
 		entities.addAll(currentLevelSetting.getMobiles());
 		entities.addAll(currentLevelSetting.getPlayers());
+		entities.addAll(currentLevelSetting.getProjectiles());
 
 		// Current time in nanoseconds
 		long currentTime = System.nanoTime();
