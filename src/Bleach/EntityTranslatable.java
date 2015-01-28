@@ -1,3 +1,4 @@
+package Bleach;
 import java.awt.geom.Point2D;
 
 public interface EntityTranslatable {
