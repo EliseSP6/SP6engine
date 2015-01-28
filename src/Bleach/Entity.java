@@ -57,4 +57,6 @@ public class Entity implements EntityTranslatable {
 	public BufferedImage getImage(){
 		return sprite.getFrame();
 	}
+	
+	public void tick(LevelInteractable activeLevel){}	// For overriding in subclasses.
 }
