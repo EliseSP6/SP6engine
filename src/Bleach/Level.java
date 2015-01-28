@@ -102,4 +102,24 @@ public class Level implements LevelInteractable{
 		return key;
 	}
 
+	@Override
+	public void removeMobile(EntityTranslatable mobile) {
+		mobiles.remove(mobile);
+	}
+
+	@Override
+	public void removeLoot(EntityTranslatable loot) {
+		loots.remove(loot);
+	}
+
+	@Override
+	public void removeProjectile(EntityTranslatable projectile) {
+		projectiles.remove(projectile);
+	}
+
+	@Override
+	public void removePlayer(EntityTranslatable player) {
+		players.remove(player);
+	}
+
 }
