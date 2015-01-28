@@ -8,10 +8,16 @@ public class Sprite {
 	protected int width;
 	protected int height;
 
-	Sprite(BufferedImage image) {
+	public Sprite(BufferedImage image, int width, int height) {
+		this.width = width;
+		this.height = height;
+		this.image = new BufferedImage(width, height, image.getType());
+	}
+	
+	public Sprite(BufferedImage image) {
 		width = image.getWidth();
 		height = image.getHeight();
-		this.image = new BufferedImage(width, height, image.getType());
+		this.image = image;
 	}
 
 	public BufferedImage getFrame() {
