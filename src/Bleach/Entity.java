@@ -2,5 +2,5 @@ package Bleach;
 
 public class Entity {
 	Sprite sprite;
-	int x, y, r;
+	double x, y, r;
 }
