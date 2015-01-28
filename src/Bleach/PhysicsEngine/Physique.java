@@ -40,9 +40,8 @@ public class Physique {
 			closestPoint.y = first.getPosition().y;
 		}
 
-		// If the closest point is inside the circle
+		// If the closest point is inside the circle, the circles have collided
 		if (distanceSquared(first.getPosition().x, first.getPosition().y, closestPoint.x, closestPoint.y) < first.getRadius() * 2) {
-			// This box and the circle have collided
 			return true;
 		}
 		return false;
