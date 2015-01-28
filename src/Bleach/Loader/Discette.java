@@ -2,16 +2,27 @@ package Bleach.Loader;
 
 import java.util.Map;
 
+import javax.sound.sampled.AudioInputStream;
+
 import Bleach.Sprite;
 
 public class Discette {
-	static Map<String, Sprite> images;
+	private static Map<String, Sprite> images;
+	private static Map<String, AudioInputStream> sounds;
 
-	static void loadImages(String pathToJSON) {
+	public static void loadImage(String pathToJSON) {
 		// TODO
 	}
 
-	static Sprite getImage(String code) {
-		return images.get(code);
+	public static Sprite getImage(String imageID) {
+		return images.get(imageID);
+	}
+
+	public static void loadSound(String pathToJSON) {
+		// TODO
+	}
+
+	public static AudioInputStream getSound(String soundID) {
+		return sounds.get(soundID);
 	}
 }
