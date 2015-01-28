@@ -9,6 +9,8 @@ import Bleach.LevelInteractable;
 
 public class Physique {
 
+	static long timestamp = System.nanoTime();
+
 	private double distanceSquared(double x1, double y1, double x2, double y2) {
 		double dX = x2 - x1;
 		double dY = y2 - y1;
@@ -47,6 +49,12 @@ public class Physique {
 	}
 
 	public boolean step(LevelInteractable currentLevelSetting) {
+
+		// Flag that represents whether if a collision has occured during the
+		// physics calculation step
+		boolean collisionPresent = false;
+
+		// List that will contain all the entities present on the level
 		List<EntityTranslatable> entities = new ArrayList<EntityTranslatable>();
 
 		// Accumulate objects on scene
@@ -54,9 +62,53 @@ public class Physique {
 		entities.addAll(currentLevelSetting.getMobiles());
 		entities.addAll(currentLevelSetting.getPlayers());
 
+		// Current time in nanoseconds
+		long currentTime = System.nanoTime();
+
 		// Iterate over objects and calculate physics
 		for (EntityTranslatable entity : entities) {
+			// Gets current values
+			double vectorAngle = entity.getVectorAngle();
+			double velocity = entity.getVelocity();
+			Point2D.Double currentPosition = entity.getPosition();
+
+			// Calculates the next position
+			Point2D.Double nextPosition = new Point2D.Double();
+			nextPosition.x = Math.cos(vectorAngle) * (velocity * (timestamp - currentTime));
+			nextPosition.y = Math.sin(vectorAngle) * (velocity * (timestamp - currentTime));
+
+			// Sets the position to the newly calculated one
+			entity.setPosition(nextPosition);
+
+			// Checks whether if the new position collides with any object in
+			// its way
+			for (EntityTranslatable otherEntity : entities)
+
+				// As long as it doesn't check for a collision with itself...
+				if (entity != otherEntity)
+					if (collides(entity, otherEntity)) {
+
+						// Flag sets true
+						collisionPresent = true;
+
+						// Distance between the object's previous position and
+						// the position of the object it has collided with
+						double distanceBeforeCollision = distanceSquared(currentPosition.x, currentPosition.y, otherEntity.getPosition().x, otherEntity.getPosition().y);
+
+						// Repositions the object to the position just before it
+						// collides
+						nextPosition.x = Math.cos(vectorAngle) * distanceBeforeCollision;
+						nextPosition.y = Math.sin(vectorAngle) * distanceBeforeCollision;
+
+						// Breaks out of the loop that checks for collisions
+						break;
+					}
 
 		}
+
+		// Update timestamp
+		timestamp = System.nanoTime();
+
+		return collisionPresent;
 	}
 }
