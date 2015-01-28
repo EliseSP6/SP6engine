@@ -8,4 +8,6 @@ public interface LevelInteractable {
 	public List<EntityTranslatable> getLoots();
 
 	public List<EntityTranslatable> getPlayers();
+	
+	public List<EntityTranslatable> getProjectiles();
 }
