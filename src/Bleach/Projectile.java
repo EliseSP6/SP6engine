@@ -9,5 +9,5 @@ public abstract class Projectile extends Entity{
 		this.owner = owner;
 	}
 	
-	abstract double damage();
+	abstract double dealDamage();
 }
