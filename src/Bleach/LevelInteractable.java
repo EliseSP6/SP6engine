@@ -1,5 +1,6 @@
 package Bleach;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -15,6 +16,8 @@ public interface LevelInteractable {
 	public List<BufferedImage> getBackgrounds();
 	
 	public int getBackgroundParallaxDistance();
+	
+	public Point2D.Double getViewport();
 	
 	public void removeMobile(EntityTranslatable mobile);
 	
