@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 
 import Bleach.InputManager.Receptionist;
 import Bleach.Loader.Discette;
+import Bleach.Renderer.Picasso;
 
 public class Bleach extends JPanel{
 
@@ -32,6 +33,7 @@ public class Bleach extends JPanel{
 	private Map<PauseType, Boolean> pause = new HashMap<>();	// A (set of) bool to see if the game is paused by any subsystem.
 	private Map<String, Level> levels = new HashMap<>();		// All the levels.
 	private Level activeLevel;							// Pointer to the active level.
+	private Picasso renderer;
 	
 	public Bleach(){
 		
@@ -85,6 +87,8 @@ public class Bleach extends JPanel{
 		setFocusable(true);
 		setBackground(Color.black);
 		
+		renderer = new Picasso(this.getGraphics(), winWidth, winHeight);
+		
 		gameLoop();
 	}
 	
@@ -131,11 +135,11 @@ public class Bleach extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		double actualFPS = (1000000000.0 / Math.max(1, (System.nanoTime() - timePreviousRender)));
+
+		renderer.clearDebugLines();
+		renderer.addDebugLine(new Double(actualFPS).toString());
 		
-		
-		// TODO: render
-		
-		
+		renderer.render(activeLevel);
 		
 		timePreviousRender = System.nanoTime();
 	}

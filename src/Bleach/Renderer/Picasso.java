@@ -11,19 +11,35 @@ import Bleach.LevelInteractable;
 
 public class Picasso {
 	private Graphics graphics;
-	int width, height;								// Screen width and height.
+	private int width, height;								// Screen width and height.
+	private List<String> debug;								// Debug data to be printed on the screen.
+	private boolean doDebug;								// Whether to display the debug data or not.
 
-	Picasso(Graphics graphics, int width, int height) {
+	public Picasso(Graphics graphics, int width, int height) {
 		this.graphics = graphics;
 		this.width = width;
 		this.height = height;
+		debug = new ArrayList<String>();
+		doDebug = true;
 	}
 	
 	public void setSize(int width, int height){
 		this.width = width;
 		this.height = height;
 	}
-
+	
+	public void setDebug(boolean doDebug){
+		this.doDebug = doDebug;
+	}
+	
+	public void addDebugLine(String line){
+		debug.add(line);
+	}
+	
+	public void clearDebugLines(){
+		debug.clear();
+	}
+	
 	public void render(LevelInteractable currentLevelSetting) {
 		// Render level backgrounds using the parallax effect.
 		int currentBackgroundNumber = 1;
@@ -64,6 +80,15 @@ public class Picasso {
 		for (EntityTranslatable entityTranslatable : entities) {
 			Entity entity = (Entity) entityTranslatable;
 			graphics.drawImage(entity.getSprite().getFrame(), (int) entity.getPosition().x, (int) entity.getPosition().y, entity.getSprite().getWidth(), entity.getSprite().getHeight(), null);
+		}
+		
+		// Handle debug data
+		if(doDebug){
+			int lineNumber = 0;
+			for (String line : debug) {
+				graphics.drawString(line, 10, 10 + 10 * lineNumber);
+				lineNumber++;
+			}
 		}
 	}
 }
