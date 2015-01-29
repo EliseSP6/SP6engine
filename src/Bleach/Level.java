@@ -10,17 +10,26 @@ public class Level implements LevelInteractable{
 	private List<EntityTranslatable> loots;
 	private List<EntityTranslatable> players;
 	private List<EntityTranslatable> projectiles;
-	private List<BufferedImage> backgrounds;		// A list of textures that are to be parallaxed in the background.
-	private Point2D.Double viewport;				// Offset for scrolling. This points at the middle of the viewport.
+	private List<BufferedImage> backgrounds;				// A list of textures that are to be parallaxed in the background.
+	private Point2D.Double viewport;						// Offset for scrolling. This points at the middle of the viewport.
 	private int width, height;
-	private int parallaxDistance;					// How far away the background layers are. Used for the parallaxing of backgrounds.
-	private String key;								// Identifier for this level.
+	private int parallaxDistance;							// How far away the background layers are. Used for the parallaxing of backgrounds.
+	private String key;										// Identifier for this level.
+	
+	private boolean isScrolling;							// Does the level auto-scroll.
+	private double scrollVelocity;							// Auto-scroll speed, pixels per second.
+	private double scrollAngle;								// Auto-scroll: scroll towards this angle.
+	private long timePreviousScroll;						// Time since last scroll happened. Used to calculate delta-time.
 	
 	public Level(int width, int height, String key){
 		this.width = width;
 		this.height = height;
 		this.key = key;
 		parallaxDistance = 10;
+		isScrolling = false;
+		scrollVelocity = 0;
+		scrollAngle = 0;
+		timePreviousScroll = System.nanoTime();
 	}
 	
 	@Override
@@ -64,6 +73,13 @@ public class Level implements LevelInteractable{
 	}
 	
 	public Point2D.Double getViewport(){
+		if(isScrolling){
+			/* Viewport is set to auto-scroll. Let's calculate the new position based on the delta-time. */
+			viewport.x += Math.cos(scrollAngle) * (scrollVelocity * (System.nanoTime() - timePreviousScroll));
+			viewport.y += Math.sin(scrollAngle) * (scrollVelocity * (System.nanoTime() - timePreviousScroll));
+			timePreviousScroll = System.nanoTime();
+		}
+		
 		return viewport;
 	}
 	
@@ -81,12 +97,16 @@ public class Level implements LevelInteractable{
 		return backgrounds;
 	}
 	
-	public int setParallaxDistance(int dist){
-		/* Sets the parallax distance. Returns the old distance. */
+	public int setBackgroundParallaxDistance(int dist){
+		/* Sets the parallax distance for backgrounds. Returns the old distance. */
 		int retval = parallaxDistance;
 		parallaxDistance = dist;
 		
 		return retval;
+	}
+	
+	public int getBackgroundParallaxDistance(){
+		return parallaxDistance;
 	}
 	
 	public int getWidth(){
@@ -120,6 +140,19 @@ public class Level implements LevelInteractable{
 	@Override
 	public void removePlayer(EntityTranslatable player) {
 		players.remove(player);
+	}
+	
+	public void doAutoScroll(boolean doScroll){
+		isScrolling = doScroll;
+		timePreviousScroll = System.nanoTime();
+	}
+	
+	public void setScrollSpeed(double speedPPS){
+		scrollVelocity = speedPPS;
+	}
+	
+	public void setScrollAngle(double angleRad){
+		scrollAngle = angleRad;
 	}
 
 }

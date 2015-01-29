@@ -1,5 +1,6 @@
 package Bleach;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 public interface LevelInteractable {
@@ -10,6 +11,10 @@ public interface LevelInteractable {
 	public List<EntityTranslatable> getPlayers();
 	
 	public List<EntityTranslatable> getProjectiles();
+	
+	public List<BufferedImage> getBackgrounds();
+	
+	public int getBackgroundParallaxDistance();
 	
 	public void removeMobile(EntityTranslatable mobile);
 	
