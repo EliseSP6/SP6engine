@@ -1,15 +1,21 @@
 {
-	"sprites":[
+	[
 		{
 			"key":"mushi",
-			"file":"mushi.png",
-			"width":"16",
-			"height":"16"
+			"filename":"mushi.png",
+			"width":16,
+			"height":16
 		},
 		{
 			"key":"heart",
-			"file":"heart.png"
+			"filename":"heart.png"
+		},
+		{
+			"key":"blob",
+			"filename":"blob_anim.png",
+			"width":22,
+			"height":22,
+			"frametime":200
 		}
-	],
-	"textures":[]
+	]
 }

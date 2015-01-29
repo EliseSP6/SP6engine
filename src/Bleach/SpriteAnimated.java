@@ -8,19 +8,16 @@ public class SpriteAnimated extends Sprite{
 	private long timeAnim, timeStart;
 	private int frameCount;
 	
-	SpriteAnimated(BufferedImage image, int frameWidth, int frameHeight, long timeAnim){
-		super(image);
-		width = frameWidth;
-		height = frameHeight;
+	public SpriteAnimated(BufferedImage image, Integer frameWidth, Integer frameHeight, long timeAnim){
+		super(image, frameWidth, frameHeight);
 		this.timeAnim = timeAnim;
 		timeStart = System.nanoTime();
-		frameCount = image.getWidth() / frameWidth;
-		frameCount = frameCount == 0 ? 1 : frameCount;	// Minimum frame count should be one.
+		frameCount = Math.max(1, image.getWidth() / frameWidth);
 	}
 	
 	@Override
 	public BufferedImage getFrame(){
-		/* Calculate the index based on the current time */
+		/* Calculate the index based on the current time and use it for getFrame(index) */
 		return getFrame((int)((System.nanoTime() - timeStart) / timeAnim) % frameCount);
 	}
 	

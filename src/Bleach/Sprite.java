@@ -1,5 +1,6 @@
 package Bleach;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 public class Sprite {
@@ -8,10 +9,15 @@ public class Sprite {
 	protected int width;
 	protected int height;
 
-	public Sprite(BufferedImage image, int width, int height) {
-		this.width = width;
-		this.height = height;
-		this.image = new BufferedImage(width, height, image.getType());
+	public Sprite(BufferedImage image, Integer width, Integer height) {
+		/* Make a new image with the specified width and height. width and height could be null as we can get data from a JSON parser. */
+		this.width = width == null ? image.getWidth() : width;
+		this.height = height == null ? image.getHeight() : height;
+		
+		this.image = new BufferedImage(this.width, this.height, image.getType());
+		Graphics g = this.image.getGraphics();
+		g.drawImage(image, 0, 0, null);
+		g.dispose();
 	}
 	
 	public Sprite(BufferedImage image) {

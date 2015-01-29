@@ -5,73 +5,97 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.CharBuffer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import Bleach.Sprite;
+import Bleach.SpriteAnimated;
 
 public class Discette {
 	private static Map<String, Sprite> images;
 	private static Map<String, AudioInputStream> sounds;
 
-	public static void loadImage(String pathToJSON) {
+	private static class JsonObject{
+		private String key;
+		private String filename;
+		private Integer width;
+		private Integer height;
+		private Integer frametime;
+	}
+	
+	private static JsonObject[] parseJsonFile(String pathToJSON){
+		/* Parses a JSON file and returns a list of entries */
+		Gson json = new Gson();
+		JsonObject[] entries = null;
 		
-		final class JsonImages{	// A class to match the json file structure.
-			private String key;
-			private String file;
-			private int width;
-			private int height;
-		}
-		
-		JsonImages x;
-		
-		File file = new File(pathToJSON);
-		FileReader reader = null;
 		try {
-			reader = new FileReader(file);
-		} catch (FileNotFoundException e1) {
+			entries = json.fromJson(readFile(pathToJSON), JsonObject[].class);
+		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		CharBuffer b = null;
-		try {
-			
-			reader.read(b);
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		String txt = b.toString();
+		return entries;
+	}
+	
+	public static void loadImages(String assetJsonpath) {
+		/* Loop through the results of the parsed JSON data and load in graphics files. */
+		JsonObject[] sprites = parseJsonFile(assetJsonpath);
 		
-		Gson json = new Gson();
-		
-		x = json.fromJson(txt, JsonImages.class);
-		
-		
-		Sprite s = new Sprite(imgLoader(x.file), x.width, x.height);
-		images.put(x.key, s);
+		for (JsonObject sprite : sprites) {
+			if(sprite.key != null && sprite.filename != null){
+				if(sprite.frametime != null && sprite.frametime > 0){
+					images.put(sprite.key, new SpriteAnimated(imgLoader(sprite.filename), sprite.width, sprite.height, sprite.frametime));
+				}else{
+					images.put(sprite.key, new Sprite(imgLoader(sprite.filename), sprite.width, sprite.height));
+				}
+			}
+		}
 	}
 
 	public static Sprite getImage(String imageID) {
 		return images.get(imageID);
 	}
 
-	public static void loadSound(String pathToJSON) {
-		// TODO
+	public static void loadSound(String assetJsonpath) {
+		JsonObject[] audios = parseJsonFile(assetJsonpath);
+		
+		for (JsonObject audio : audios) {
+			if(audio.key != null && audio.filename != null){
+				sounds.put(audio.key, sndLoader(audio.filename));
+			}
+		}
 	}
 
 	public static AudioInputStream getSound(String soundID) {
 		return sounds.get(soundID);
+	}
+	
+	private static AudioInputStream sndLoader(String filename){
+		try {
+			return AudioSystem.getAudioInputStream(new File(filename));
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	private static BufferedImage imgLoader(String filename){
@@ -124,5 +148,10 @@ public class Discette {
 
 		// return the new optimized image
 		return new_image; 
+	}
+	
+	private static String readFile(String path) throws IOException {
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return new String(encoded, "UTF-8");
 	}
 }
