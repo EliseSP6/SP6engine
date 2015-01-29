@@ -2,6 +2,7 @@ package Bleach;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -11,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Bleach.InputManager.Receptionist;
+import Bleach.Loader.Discette;
 
 public class Bleach extends JPanel{
 
@@ -21,27 +23,42 @@ public class Bleach extends JPanel{
 	}
 	
 	private JFrame jWindow;								// A handle to the window.
+	private int winWidth;
+	private int winHeight;
+	private String winTitle;
 	private double FPS = 60;							// FPS limiter, limits how often the game is rendered.
 	private double timePreviousLoop;					// Used for delta-time in the game loop (e.g. FPS limiting)
 	private double timePreviousRender;					// Used for delta-time in the rendering (e.g. calculating actual rendering FPS)
 	private Map<PauseType, Boolean> pause = new HashMap<>();	// A (set of) bool to see if the game is paused by any subsystem.
+	private Map<String, Level> levels = new HashMap<>();		// All the levels.
+	private Level activeLevel;							// Pointer to the active level.
 	
 	public Bleach(){
 		
 		System.setProperty("sun.java2d.opengl","True");	// Let's try to HW-accelerate stuff.
 		
 		timePreviousLoop = timePreviousRender = System.nanoTime();
+		winWidth = 800;									// Default width
+		winHeight = 600;								// Default height
+		winTitle = "Game window";						// Default title;
 		
 		// TODO: attach events
 		
 	}
 	
 	public void init(int windowWidth, int windowHeight, String windowTitle){
+		winWidth = windowWidth;
+		winHeight = windowHeight;
+		winTitle = windowTitle;
+		init();
+	}
+	
+	public void init(){
 		/* This sets up the window and starts the game. */
 		
-		setSize(windowWidth, windowHeight);				// Set the size of this JPanel before inserting it into the window.
+		setSize(winWidth, winHeight);				// Set the size of this JPanel before inserting it into the window.
 		final Bleach EDTpointerToPanel = this;			// This is a pointer to this JPanel used in the Event Dispatch Thread (EDT).
-		final String EDTwindowTitle = windowTitle;		// This is the window title variable used in the Event Dispatch Thread (EDT).
+		final String EDTwindowTitle = winTitle;		// This is the window title variable used in the Event Dispatch Thread (EDT).
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			/* Event Dispatch Thread - prevents potential race conditions that could lead to deadlock. */
@@ -71,11 +88,44 @@ public class Bleach extends JPanel{
 		gameLoop();
 	}
 	
+	public void loadImages(String assetJsonPath){
+		Discette.loadImages(assetJsonPath);
+	}
+	
+	public void loadSounds(String assetJsonPath){
+		Discette.loadSound(assetJsonPath);
+	}
+	
 	public double setFPS(double newFPS){
 		/* Sets the FPS, returns the old FPS. */
 		double retval = FPS;
 		FPS = newFPS;
 		return retval;
+	}
+	
+	public void setTitle(String title){
+		winTitle = title;
+	}
+	
+	public void addLevel(Level level){
+		levels.put(level.getKey(), level);
+	}
+	
+	public BufferedImage getTexture(String key){
+		return Discette.getImage(key).getFrame();
+	}
+	
+	public Sprite getSprite(String key){
+		return Discette.getImage(key);
+	}
+	
+	private boolean setActiveLevel(String key){
+		Level newLevel = null;
+		newLevel = levels.get(key);
+		if(newLevel != null)
+			activeLevel = newLevel;
+		
+		return newLevel != null;
 	}
 	
 	@Override

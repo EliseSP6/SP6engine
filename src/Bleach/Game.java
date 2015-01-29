@@ -21,7 +21,7 @@ public class Game {
 		myGame.setSize(800, 600);
 		myGame.setTitle("My super game!");
 		
-		Level firstLevel = new Level(1800, 1600, "Town");
+		Level firstLevel = new Level(2800, 1200, "Town");
 		
 		firstLevel.addBackground(myGame.getTexture("clouds"));
 		firstLevel.addBackground(myGame.getTexture("sky"));
