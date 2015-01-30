@@ -54,16 +54,16 @@ public class Picasso {
 			double parallaxModifier = currentBackgroundNumber * (parallaxDistance / 10);		// Do some math to get a modifier that seems to be Ok. This modifier alters the position of the current background in order to create the parallax effect.
 			double scrollX = currentLevelSetting.getViewport().getX() / width;
 			double scrollY = currentLevelSetting.getViewport().getY() / height;
-			int tileCountX = (int) Math.ceil(width / background.getWidth());
-			int tileCountY = (int) Math.ceil(height / background.getHeight());
+			int tileCountX = (int) Math.ceil((double)width / background.getWidth());
+			int tileCountY = (int) Math.ceil((double)height / background.getHeight());
 			
-			int startX = (int) (background.getWidth() - (background.getWidth() * scrollX * parallaxModifier));
-			int startY = (int) (background.getHeight() - (background.getHeight() * scrollY * parallaxModifier));
+			int startX = (int) ((background.getWidth() * scrollX * parallaxModifier) - background.getWidth());
+			int startY = (int) ((background.getHeight() * scrollY * parallaxModifier) - background.getHeight());
 			
 			for(int i = 0; i < tileCountX; i++){
 				for(int j = 0; j < tileCountY; j++){
 					int x = startX + i * background.getWidth();
-					int y = startY + i * background.getWidth();
+					int y = startY + j * background.getHeight();
 					
 					graphics.drawImage(background, x, y, background.getWidth(), background.getHeight(), null);
 				}

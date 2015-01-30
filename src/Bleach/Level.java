@@ -37,6 +37,8 @@ public class Level implements LevelInteractable{
 		players = new ArrayList<>();
 		projectiles = new ArrayList<>();
 		backgrounds = new ArrayList<>();
+				
+		viewport = new Point2D.Double(0, 0);
 	}
 	
 	@Override

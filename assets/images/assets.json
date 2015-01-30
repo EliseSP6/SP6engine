@@ -15,5 +15,9 @@
 		"width":21,
 		"height":22,
 		"frametime":200
+	},
+	{
+		"key":"clouds",
+		"filename":"clouds.png"
 	}
 ]
