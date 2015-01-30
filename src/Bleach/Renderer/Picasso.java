@@ -8,15 +8,14 @@ import java.util.List;
 import Bleach.Entity;
 import Bleach.EntityTranslatable;
 import Bleach.LevelInteractable;
+import Bleach.SpriteAnimated;
 
 public class Picasso {
-	private Graphics graphics;
 	private int width, height;								// Screen width and height.
 	private List<String> debug;								// Debug data to be printed on the screen.
 	private boolean doDebug;								// Whether to display the debug data or not.
 
-	public Picasso(Graphics graphics, int width, int height) {
-		this.graphics = graphics;
+	public Picasso(int width, int height) {
 		this.width = width;
 		this.height = height;
 		debug = new ArrayList<String>();
@@ -40,9 +39,11 @@ public class Picasso {
 		debug.clear();
 	}
 	
-	public void render(LevelInteractable currentLevelSetting) {
+	public void render(Graphics graphics, LevelInteractable currentLevelSetting) {
 		
 		if(currentLevelSetting == null) return;
+		
+		graphics.clearRect(0, 0, width, height);
 		
 		// Render level backgrounds using the parallax effect.
 		int currentBackgroundNumber = 1;

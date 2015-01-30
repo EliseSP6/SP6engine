@@ -35,6 +35,7 @@ public class Bleach extends JPanel{
 	private Map<String, Level> levels = new HashMap<>();		// All the levels.
 	private Level activeLevel;							// Pointer to the active level.
 	private Picasso renderer;
+	private long timeDebug;
 	
 	public Bleach(){
 		
@@ -89,7 +90,7 @@ public class Bleach extends JPanel{
 		setFocusable(true);
 		setBackground(Color.black);
 		
-		renderer = new Picasso(this.getGraphics(), winWidth, winHeight);
+		renderer = new Picasso(winWidth, winHeight);
 		
 		gameLoop();
 	}
@@ -143,11 +144,14 @@ public class Bleach extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		double actualFPS = (1000000000.0 / Math.max(1, (System.nanoTime() - timePreviousRender)));
-
-		renderer.clearDebugLines();
-		renderer.addDebugLine(new Double(actualFPS).toString());
+		timeDebug += System.nanoTime() - timePreviousRender;
+		if(timeDebug >= 500 * 1000000){		// 500ms
+			timeDebug = 0;
+			renderer.clearDebugLines();
+			renderer.addDebugLine("FPS: " + new Double(actualFPS).toString().substring(0, 5));
+		}
 		
-		renderer.render(activeLevel);
+		renderer.render(g, activeLevel);
 		
 		timePreviousRender = System.nanoTime();
 	}
@@ -184,7 +188,7 @@ public class Bleach extends JPanel{
 			
 			
 			if(FPS > 0){	// We're limiting the FPS. Check if it's time to render.
-				if(System.nanoTime() - timePreviousLoop > (1000000.0 / (FPS / 1000))){
+				if(System.nanoTime() - timePreviousRender > (1000000.0 / (FPS / 1000))){
 					repaint();
 				}
 			}else{			// We're not limiting the FPS, render as often as possible.

@@ -9,8 +9,10 @@ public class SpriteAnimated extends Sprite{
 	private int frameCount;
 	
 	public SpriteAnimated(BufferedImage image, Integer frameWidth, Integer frameHeight, long timeAnim){
-		super(image, frameWidth, frameHeight);
-		this.timeAnim = timeAnim;
+		super(image);
+		this.width = frameWidth;
+		this.height = frameHeight;
+		this.timeAnim = timeAnim * 1000000;	// millis to nanos
 		timeStart = System.nanoTime();
 		frameCount = Math.max(1, image.getWidth() / frameWidth);
 	}
