@@ -25,9 +25,9 @@ public class Game {
 		
 		firstLevel.addBackground(myGame.getTexture("clouds"));
 		firstLevel.addBackground(myGame.getTexture("sky"));
-		firstLevel.addMobile(new EntityFly(myGame.getSprite("brown_fly"), 200, 264));
+		//firstLevel.addMobile(new EntityFly(myGame.getSprite("brown_fly"), 200, 264));
 		
-		firstLevel.setMusicTrack("melody7");
+		//firstLevel.setMusicTrack("melody7");
 		
 		myGame.addLevel(firstLevel);
 		

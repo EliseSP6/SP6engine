@@ -41,6 +41,9 @@ public class Picasso {
 	}
 	
 	public void render(LevelInteractable currentLevelSetting) {
+		
+		if(currentLevelSetting == null) return;
+		
 		// Render level backgrounds using the parallax effect.
 		int currentBackgroundNumber = 1;
 		List<BufferedImage> backgrounds = currentLevelSetting.getBackgrounds();

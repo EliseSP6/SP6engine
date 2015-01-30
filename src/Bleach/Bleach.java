@@ -1,6 +1,7 @@
 package Bleach;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -59,7 +60,8 @@ public class Bleach extends JPanel{
 		/* This sets up the window and starts the game. */
 		
 		setSize(winWidth, winHeight);				// Set the size of this JPanel before inserting it into the window.
-		final Bleach EDTpointerToPanel = this;			// This is a pointer to this JPanel used in the Event Dispatch Thread (EDT).
+		setPreferredSize(new Dimension(winWidth, winHeight));	// Sometimes setSize() just fails. Go figure.
+		final Bleach EDTpointerToPanel = this;		// This is a pointer to this JPanel used in the Event Dispatch Thread (EDT).
 		final String EDTwindowTitle = winTitle;		// This is the window title variable used in the Event Dispatch Thread (EDT).
 		
 		SwingUtilities.invokeLater(new Runnable() {
@@ -112,11 +114,17 @@ public class Bleach extends JPanel{
 	}
 	
 	public void addLevel(Level level){
-		levels.put(level.getKey(), level);
+		if(level != null){
+			levels.put(level.getKey(), level);
+			if(activeLevel == null)
+				activeLevel = level;	// No active level has been set, let's set it to this one.
+		}
 	}
 	
 	public BufferedImage getTexture(String key){
-		return Discette.getImage(key).getFrame();
+		Sprite sprite = Discette.getImage(key);
+		
+		return sprite == null ? null : sprite.getFrame();
 	}
 	
 	public Sprite getSprite(String key){

@@ -1,0 +1,18 @@
+[
+	{
+		"key":"drop",
+		"filename":"drop.wav"
+	},
+	{
+		"key":"explosion",
+		"filename":"explosion.wav"
+	},
+	{
+		"key":"metalsound",
+		"filename":"metal_clink.wav"
+	},
+	{
+		"key":"pling",
+		"filename":"pi-ling.wav"
+	}
+]

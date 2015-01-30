@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -22,8 +23,8 @@ import Bleach.Sprite;
 import Bleach.SpriteAnimated;
 
 public class Discette {
-	private static Map<String, Sprite> images;
-	private static Map<String, AudioInputStream> sounds;
+	private static Map<String, Sprite> images = new HashMap<String, Sprite>();
+	private static Map<String, AudioInputStream> sounds = new HashMap<String, AudioInputStream>();
 
 	private static class JsonObject{
 		private String key;
@@ -54,13 +55,14 @@ public class Discette {
 	public static void loadImages(String assetJsonpath) {
 		/* Loop through the results of the parsed JSON data and load in graphics files. */
 		JsonObject[] sprites = parseJsonFile(assetJsonpath);
+		String path = new File(assetJsonpath).getParent() + File.separator;
 		
 		for (JsonObject sprite : sprites) {
 			if(sprite.key != null && sprite.filename != null){
 				if(sprite.frametime != null && sprite.frametime > 0){
-					images.put(sprite.key, new SpriteAnimated(imgLoader(sprite.filename), sprite.width, sprite.height, sprite.frametime));
+					images.put(sprite.key, new SpriteAnimated(imgLoader(path + sprite.filename), sprite.width, sprite.height, sprite.frametime));
 				}else{
-					images.put(sprite.key, new Sprite(imgLoader(sprite.filename), sprite.width, sprite.height));
+					images.put(sprite.key, new Sprite(imgLoader(path + sprite.filename), sprite.width, sprite.height));
 				}
 			}
 		}
@@ -72,10 +74,11 @@ public class Discette {
 
 	public static void loadSound(String assetJsonpath) {
 		JsonObject[] audios = parseJsonFile(assetJsonpath);
+		String path = new File(assetJsonpath).getParent() + File.separator;
 		
 		for (JsonObject audio : audios) {
 			if(audio.key != null && audio.filename != null){
-				sounds.put(audio.key, sndLoader(audio.filename));
+				sounds.put(audio.key, sndLoader(path + audio.filename));
 			}
 		}
 	}

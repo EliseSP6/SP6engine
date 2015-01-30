@@ -2,6 +2,7 @@ package Bleach;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Level implements LevelInteractable{
@@ -30,6 +31,12 @@ public class Level implements LevelInteractable{
 		scrollVelocity = 0;
 		scrollAngle = 0;
 		timePreviousScroll = System.nanoTime();
+		
+		mobiles = new ArrayList<>();
+		loots = new ArrayList<>();
+		players = new ArrayList<>();
+		projectiles = new ArrayList<>();
+		backgrounds = new ArrayList<>();
 	}
 	
 	@Override
@@ -85,7 +92,8 @@ public class Level implements LevelInteractable{
 	
 	public void addBackground(BufferedImage img){
 		/* Add a background image to scroll (parallax), add it behind others if some exists already. */
-		backgrounds.add(img);
+		if(img != null)
+			backgrounds.add(img);
 	}
 	
 	public void clearBackgrounds(){
