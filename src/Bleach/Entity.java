@@ -9,12 +9,15 @@ public class Entity implements EntityTranslatable {
 
 	double vectorAngle = 0;
 	double velocity = 0;
+	
+	long timePreviousTick;
 
 	Entity(Sprite sprite, double x, double y, double r) {
 		this.sprite = sprite;
 		this.x = x;
 		this.y = y;
 		this.r = r;
+		timePreviousTick = System.nanoTime();
 	}
 
 	@Override
