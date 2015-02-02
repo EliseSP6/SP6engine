@@ -185,6 +185,11 @@ public class Bleach extends JPanel{
 				
 				// TODO: game logic etc
 				
+				/* Mobiles heartbeat */
+				for (EntityTranslatable mob : activeLevel.getMobiles()) {
+					((Entity)mob).tick(activeLevel);
+				}
+				
 				
 			}
 			
