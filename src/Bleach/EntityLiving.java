@@ -34,7 +34,7 @@ public abstract class EntityLiving extends Entity{
 		
 		if(isMoving()){
 			long deltaTime = System.nanoTime() - timePreviousTick;
-			double magnitude = (deltaTime / 1000000.0) * speed;
+			double magnitude = (deltaTime / 1000000000.0) * speed;
 			Point2D.Double position = getPosition();
 			
 			position.x += Math.cos(vectorAngle) * magnitude;
