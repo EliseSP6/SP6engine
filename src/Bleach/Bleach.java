@@ -3,6 +3,11 @@ package Bleach;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +41,7 @@ public class Bleach extends JPanel{
 	private Level activeLevel;							// Pointer to the active level.
 	private Picasso renderer;
 	private long timeDebug;
+	private Receptionist receptionist = null;
 	
 	public Bleach(){
 		
@@ -47,7 +53,6 @@ public class Bleach extends JPanel{
 		winTitle = "Game window";						// Default title;
 		
 		// TODO: attach events
-		
 	}
 	
 	public void init(int windowWidth, int windowHeight, String windowTitle){
@@ -91,8 +96,6 @@ public class Bleach extends JPanel{
 		setBackground(Color.black);
 		
 		renderer = new Picasso(winWidth, winHeight);
-		
-		gameLoop();
 	}
 	
 	public void loadImages(String assetJsonPath){
@@ -167,6 +170,10 @@ public class Bleach extends JPanel{
 		return false;
 	}
 	
+	public void run() {
+		gameLoop();
+	}
+	
 	private void gameLoop(){
 		
 		boolean quit = false;
@@ -205,5 +212,42 @@ public class Bleach extends JPanel{
 			}
 			timePreviousLoop = System.nanoTime();
 		}
+	}
+	
+	public void addReceptionist(Receptionist receptionist) {
+		this.receptionist = receptionist;
+		
+//		this.addKeyListener(new KeyListener() {
+//			
+//			@Override
+//			public void keyTyped(KeyEvent event) {
+//				Bleach.this.receptionist.handleEvent(event);
+//			}
+//			
+//			@Override
+//			public void keyReleased(KeyEvent e) {
+//				// Ignore
+//			}
+//			
+//			@Override
+//			public void keyPressed(KeyEvent event) {
+//				// Ignore
+//				Bleach.this.receptionist.handleEvent(event);
+//			}
+//		});
+		
+		this.addMouseMotionListener(new MouseMotionListener() {
+			
+			@Override
+			public void mouseMoved(MouseEvent event) {
+				Bleach.this.receptionist.handleEvent(event);
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// Ignore
+			}
+		});
+		
 	}
 }
