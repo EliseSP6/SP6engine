@@ -156,6 +156,17 @@ public class Bleach extends JPanel{
 		timePreviousRender = System.nanoTime();
 	}
 	
+	private boolean isPaused(){
+		/* Check if any subsystem is pausing the game */
+		for (Entry<PauseType, Boolean> entry : pause.entrySet()) {
+			if(entry.getValue()){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	private void gameLoop(){
 		
 		boolean quit = false;
@@ -167,16 +178,9 @@ public class Bleach extends JPanel{
 			
 			
 			
-			/* Check if anything is pausing the game */
-			paused = false;
-			for (Entry<PauseType, Boolean> entry : pause.entrySet()) {
-				if(entry.getValue()){
-					paused = true;
-					break;
-				}
-			}
-			if(!paused){
-				/* The game is not paused, game objects may live. */
+			
+
+			if(!isPaused()){
 				
 				
 				// TODO: game logic etc
