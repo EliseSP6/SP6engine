@@ -9,7 +9,8 @@ import Bleach.LevelInteractable;
 
 public class Physique {
 
-	static long timestamp = System.nanoTime();
+	private static long timestamp = System.nanoTime();
+	private static double gravity = 1000;
 
 	public static double distanceSquared(double x1, double y1, double x2, double y2) {
 		double dX = x2 - x1;
@@ -72,11 +73,15 @@ public class Physique {
 			double velocity = entity.getVelocity();
 			Point2D.Double currentPosition = entity.getPosition();
 
-			// Calculates the next position
+			// Calculates the next position based on velocity
 			Point2D.Double nextPosition = new Point2D.Double();
-			nextPosition.x = Math.cos(vectorAngle) * (velocity * (timestamp - currentTime));
-			nextPosition.y = Math.sin(vectorAngle) * (velocity * (timestamp - currentTime));
+			double deltaTime = timestamp - currentTime;
+			nextPosition.x = Math.cos(vectorAngle) * (velocity * deltaTime);
+//			nextPosition.y = Math.sin(vectorAngle) * (velocity * deltaTime);
 
+			// Re-calculates the next Y-position based on velocity + gravity
+			nextPosition.y = ( (deltaTime * (Math.sin(vectorAngle) * velocity) + 0.5 * gravity *(deltaTime*deltaTime)) );
+			System.out.println((deltaTime * (Math.sin(vectorAngle) * velocity) + 0.5 * gravity *(deltaTime*deltaTime)));
 			// Sets the position to the newly calculated one
 			entity.setPosition(nextPosition);
 
@@ -110,5 +115,13 @@ public class Physique {
 		timestamp = System.nanoTime();
 
 		return collisionPresent;
+	}
+
+	public static double getGravity() {
+		return gravity;
+	}
+
+	public static void setGravity(double gravity) {
+		Physique.gravity = gravity;
 	}
 }
