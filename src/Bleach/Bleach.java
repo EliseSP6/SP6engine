@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Bleach.InputManager.Receptionist;
+import Bleach.InputManager.Receptionist.KeyBinding;
 import Bleach.Loader.Discette;
 import Bleach.Renderer.Picasso;
 
@@ -213,28 +214,14 @@ public class Bleach extends JPanel{
 			timePreviousLoop = System.nanoTime();
 		}
 	}
-	
 	public void addReceptionist(Receptionist receptionist) {
 		this.receptionist = receptionist;
 		
-//		this.addKeyListener(new KeyListener() {
-//			
-//			@Override
-//			public void keyTyped(KeyEvent event) {
-//				Bleach.this.receptionist.handleEvent(event);
-//			}
-//			
-//			@Override
-//			public void keyReleased(KeyEvent e) {
-//				// Ignore
-//			}
-//			
-//			@Override
-//			public void keyPressed(KeyEvent event) {
-//				// Ignore
-//				Bleach.this.receptionist.handleEvent(event);
-//			}
-//		});
+		
+		for (KeyBinding keyBinding : receptionist.getKeyBindings()) {
+			this.getInputMap().put(keyBinding.getKey(), keyBinding.getActionMapKey());
+			this.getActionMap().put(keyBinding.getActionMapKey(), keyBinding.getAction());
+		}
 		
 		this.addMouseMotionListener(new MouseMotionListener() {
 			
