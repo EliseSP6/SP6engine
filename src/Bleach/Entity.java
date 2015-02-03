@@ -9,6 +9,7 @@ public class Entity implements EntityTranslatable {
 
 	protected double vectorAngle = 0;
 	protected double velocity = 0;
+	protected double mass = 0;
 	
 	protected long timePreviousTick;
 	protected boolean bMoving;							// Is the entity currently moving?
@@ -56,7 +57,17 @@ public class Entity implements EntityTranslatable {
 	public double getVelocity() {
 		return velocity;
 	}
-
+	
+	@Override
+	public void setMass(double mass) {
+		this.mass = mass;
+	}
+	
+	@Override
+	public double getMass() {
+		return mass;
+	}
+	
 	public Sprite getSprite() {
 		return sprite;
 	}
