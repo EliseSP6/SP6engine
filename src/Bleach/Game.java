@@ -40,7 +40,9 @@ public class Game {
 		firstLevel.addBackground(myGame.getTexture("clouds"));
 		firstLevel.addBackground(myGame.getTexture("sky"));
 		EntityBlob blobby = new EntityBlob(myGame.getSprite("blob"), 200, 264);
+		Player player = new Player(myGame.getSprite("mushi"), 100, 100);
 		firstLevel.addMobile(blobby);
+		firstLevel.addPlayer(player);
 
 		// firstLevel.setMusicTrack("melody7");
 

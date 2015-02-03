@@ -62,19 +62,23 @@ public class Level implements LevelInteractable{
 	}
 	
 	public void addMobile(EntityTranslatable mob){
-		mobiles.add(mob);
+		if(mob != null)
+			mobiles.add(mob);
 	}
 	
 	public void addLoot(EntityTranslatable loot){
-		loots.add(loot);
+		if(loot != null)
+			loots.add(loot);
 	}
 	
 	public void addPlayer(EntityTranslatable player){
-		players.add(player);
+		if(player != null)
+			players.add(player);
 	}
 	
 	public void addProjectile(EntityTranslatable proj){
-		projectiles.add(proj);
+		if(proj != null)
+			projectiles.add(proj);
 	}
 	
 	public void setViewport(Point2D.Double offset){

@@ -84,6 +84,7 @@ public class Picasso {
 		// Iterate over objects and render them
 		for (EntityTranslatable entityTranslatable : entities) {
 			Entity entity = (Entity) entityTranslatable;
+			if(entity == null || entity.getSprite() == null) break;			// If the entity or sprite is null then it's pointless to try to draw anything.
 			Point spriteOrigin = entity.getSprite().getOrigin();
 			
 			graphics.drawImage(	entity.getSprite().getFrame(),

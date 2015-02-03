@@ -52,8 +52,6 @@ public class Bleach extends JPanel{
 		winWidth = 800;									// Default width
 		winHeight = 600;								// Default height
 		winTitle = "Game window";						// Default title;
-		
-		// TODO: attach events
 	}
 	
 	public void init(int windowWidth, int windowHeight, String windowTitle){
@@ -198,6 +196,10 @@ public class Bleach extends JPanel{
 					((Entity)mob).tick(activeLevel);
 				}
 				
+				/* Player Heartbeat */
+				for (EntityTranslatable player : activeLevel.getPlayers()) {
+					((Entity)player).tick(activeLevel);
+				}
 				
 			}
 			
