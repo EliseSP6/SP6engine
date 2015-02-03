@@ -1,6 +1,7 @@
 package Bleach.Renderer;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,14 @@ public class Picasso {
 		// Iterate over objects and render them
 		for (EntityTranslatable entityTranslatable : entities) {
 			Entity entity = (Entity) entityTranslatable;
-			graphics.drawImage(entity.getSprite().getFrame(), (int) entity.getPosition().x, (int) entity.getPosition().y, entity.getSprite().getWidth(), entity.getSprite().getHeight(), null);
+			Point spriteOrigin = entity.getSprite().getOrigin();
+			
+			graphics.drawImage(	entity.getSprite().getFrame(),
+								(int) entity.getPosition().x - spriteOrigin.x,
+								(int) entity.getPosition().y - spriteOrigin.y,
+								entity.getSprite().getWidth(),
+								entity.getSprite().getHeight(),
+								null);
 		}
 		
 		// Handle debug data
