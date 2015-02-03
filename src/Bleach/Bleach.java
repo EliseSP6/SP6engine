@@ -146,7 +146,12 @@ public class Bleach extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		double actualFPS = (1000000000.0 / Math.max(1, (System.nanoTime() - timePreviousRender)));
+		double actualFPS = (1000000.0 / Math.max(1, (System.nanoTime() - timePreviousRender)));
+		
+		// DEBUG
+		if(actualFPS > 1000)
+			System.out.println("HALLOJ");
+			
 		timeDebug += System.nanoTime() - timePreviousRender;
 		if(timeDebug >= 500 * 1000000){		// 500ms
 			timeDebug = 0;

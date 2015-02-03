@@ -4,13 +4,14 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import Bleach.Entity;
 import Bleach.EntityTranslatable;
 import Bleach.LevelInteractable;
 
 public class Physique {
 
 	private static long timestamp = System.nanoTime();
-	private static double gravity = 0.1;
+	private static double gravity = 2;
 
 	public static double distanceSquared(double x1, double y1, double x2, double y2) {
 		double dX = x2 - x1;
@@ -69,19 +70,20 @@ public class Physique {
 		// Iterate over objects and calculate physics
 		for (EntityTranslatable entity : entities) {
 			// Gets current values
+			double deltaTime = currentTime - timestamp;
 			double vectorAngle = entity.getVectorAngle();
 			double velocity = entity.getVelocity();
-			Point2D.Double currentPosition = entity.getPosition();
+			double magnitude = (deltaTime / 1000000.0) * velocity;
 
 			// Calculates the next position based on velocity
-			Point2D.Double nextPosition = new Point2D.Double();
-			double deltaTime = timestamp - currentTime;
-			nextPosition.x = Math.cos(vectorAngle) * (velocity * deltaTime);
-//			nextPosition.y = Math.sin(vectorAngle) * (velocity * deltaTime);
-
+			Point2D.Double nextPosition = entity.getPosition();
+			if (((Entity) entity).isMoving()) {
+				nextPosition.x += Math.cos(vectorAngle) * magnitude;
+				nextPosition.y += Math.sin(vectorAngle) * magnitude;
+			}
 			// Re-calculates the next Y-position based on velocity + gravity
-			nextPosition.y = ( (deltaTime * (Math.sin(vectorAngle) * velocity) + 0.5 * gravity *(deltaTime*deltaTime)) );
-			System.out.println((deltaTime * (Math.sin(vectorAngle) * velocity) + 0.5 * gravity *(deltaTime*deltaTime)));
+			nextPosition.y += gravity * Math.pow((deltaTime / 1000000.0), 2);
+
 			// Sets the position to the newly calculated one
 			entity.setPosition(nextPosition);
 
@@ -98,7 +100,7 @@ public class Physique {
 
 						// Distance between the object's previous position and
 						// the position of the object it has collided with
-						double distanceBeforeCollision = distanceSquared(currentPosition.x, currentPosition.y, otherEntity.getPosition().x, otherEntity.getPosition().y);
+						double distanceBeforeCollision = distanceSquared(nextPosition.x, nextPosition.y, otherEntity.getPosition().x, otherEntity.getPosition().y);
 
 						// Repositions the object to the position just before it
 						// collides

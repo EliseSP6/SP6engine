@@ -65,7 +65,7 @@ public class Game {
 		};
 		
 		// Telling to receptionist to listen for whenever the LEFT-arrow button is pushed. When it is, blobby's vector-angle is set to 180 degrees.
-		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("LEFT"), "LEFT", new AbstractAction() {
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("RIGHT"), "RIGHT", new AbstractAction() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
