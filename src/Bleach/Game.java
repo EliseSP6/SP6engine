@@ -59,14 +59,14 @@ public class Game {
 				System.out.println("X: " + event.getX() + " Y: " + event.getY());
 			}
 		};
-		receptionist.addKeyBinding(KeyStroke.getKeyStroke("LEFT"), "LEFT_ARROW", new ActionListener() {
+		/*receptionist.addKeyBinding(KeyStroke.getKeyStroke("LEFT"), "LEFT_ARROW", new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			System.out.println("LEFT!!!!");
 			}
 		});
-		myGame.addReceptionist(receptionist);
+		myGame.addReceptionist(receptionist);*/
 		
 		
 		

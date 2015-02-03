@@ -3,16 +3,17 @@ package Bleach;
 import java.awt.geom.Point2D;
 
 public class Entity implements EntityTranslatable {
-	Sprite sprite;
-	double x, y;
-	final double r;
+	protected Sprite sprite;
+	protected double x, y;
+	protected final double r;
 
-	double vectorAngle = 0;
-	double velocity = 0;
+	protected double vectorAngle = 0;
+	protected double velocity = 0;
 	
-	long timePreviousTick;
+	protected long timePreviousTick;
+	protected boolean bMoving;							// Is the entity currently moving?
 
-	Entity(Sprite sprite, double x, double y, double r) {
+	protected Entity(Sprite sprite, double x, double y, double r) {
 		this.sprite = sprite;
 		this.x = x;
 		this.y = y;
@@ -59,7 +60,21 @@ public class Entity implements EntityTranslatable {
 	public Sprite getSprite() {
 		return sprite;
 	}
+	
+	public boolean isMoving(){
+		return bMoving;
+	}
 
 	public void tick(LevelInteractable activeLevel) {
-	} // For overriding in subclasses.
+		if(isMoving()){
+			long deltaTime = System.nanoTime() - timePreviousTick;
+			double magnitude = (deltaTime / 1000000000.0) * velocity;
+			Point2D.Double position = getPosition();
+			
+			position.x += Math.cos(vectorAngle) * magnitude;
+			position.y += Math.sin(vectorAngle) * magnitude;
+			
+			setPosition(position);
+		}
+	}
 }
