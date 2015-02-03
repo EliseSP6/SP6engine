@@ -10,7 +10,7 @@ import Bleach.LevelInteractable;
 public class Physique {
 
 	private static long timestamp = System.nanoTime();
-	private static double gravity = 1000;
+	private static double gravity = 0.1;
 
 	public static double distanceSquared(double x1, double y1, double x2, double y2) {
 		double dX = x2 - x1;
@@ -48,7 +48,7 @@ public class Physique {
 		return false;
 	}
 
-	public boolean step(LevelInteractable currentLevelSetting) {
+	public static boolean step(LevelInteractable currentLevelSetting) {
 
 		// Flag that represents whether if a collision has occured during the
 		// physics calculation step

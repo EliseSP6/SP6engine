@@ -77,15 +77,15 @@ public class Entity implements EntityTranslatable {
 	}
 
 	public void tick(LevelInteractable activeLevel) {
-		if(isMoving()){
-			long deltaTime = System.nanoTime() - timePreviousTick;
-			double magnitude = (deltaTime / 1000000000.0) * velocity;
-			Point2D.Double position = getPosition();
-			
-			position.x += Math.cos(vectorAngle) * magnitude;
-			position.y += Math.sin(vectorAngle) * magnitude;
-			
-			setPosition(position);
-		}
+//		if(isMoving()){
+//			long deltaTime = System.nanoTime() - timePreviousTick;
+//			double magnitude = (deltaTime / 1000000000.0) * velocity;
+//			Point2D.Double position = getPosition();
+//			
+//			position.x += Math.cos(vectorAngle) * magnitude;
+//			position.y += Math.sin(vectorAngle) * magnitude;
+//			
+//			setPosition(position);
+//		}
 	}
 }

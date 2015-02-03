@@ -20,6 +20,7 @@ import javax.swing.SwingUtilities;
 import Bleach.InputManager.Receptionist;
 import Bleach.InputManager.Receptionist.KeyBinding;
 import Bleach.Loader.Discette;
+import Bleach.PhysicsEngine.Physique;
 import Bleach.Renderer.Picasso;
 
 public class Bleach extends JPanel{
@@ -190,7 +191,7 @@ public class Bleach extends JPanel{
 				
 				
 				// TODO: game logic etc
-				
+				Physique.step(activeLevel);
 				/* Mobiles heartbeat */
 				for (EntityTranslatable mob : activeLevel.getMobiles()) {
 					((Entity)mob).tick(activeLevel);
