@@ -121,7 +121,7 @@ public class Discette {
 		return compatImg;
 	}
 	
-	private static BufferedImage toCompatibleImage(BufferedImage image){
+	public static BufferedImage toCompatibleImage(BufferedImage image){
 		/*
 		 * Optimizes (set image color model) image so that it's compatible with the current system.
 		 * This is an absolute must to get java 2D graphics to run smoothly.

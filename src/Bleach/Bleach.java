@@ -78,7 +78,7 @@ public class Bleach extends JPanel{
             	jWindow.setResizable(false);
             	jWindow.add(EDTpointerToPanel);
             	jWindow.pack();
-            	//jWindow.pack();						// Fixes a bug that sometimes adds 10 pixels to width and height. Weird stuff.
+            	jWindow.pack();						// Fixes a bug that sometimes adds 10 pixels to width and height. Weird stuff.
             	jWindow.setLocationRelativeTo(null);	// Center the window on the primary monitor.
             	jWindow.setVisible(true);
             }
@@ -93,7 +93,7 @@ public class Bleach extends JPanel{
 		
 		setDoubleBuffered(true);
 		setFocusable(true);
-		setBackground(Color.black);
+		setBackground(Color.cyan);
 		
 		renderer = new Picasso(winWidth, winHeight);
 	}
@@ -146,14 +146,13 @@ public class Bleach extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		double actualFPS = (1000000.0 / Math.max(1, (System.nanoTime() - timePreviousRender)));
+		double deltaTime = System.nanoTime() - timePreviousRender;
+		if(FPS > 0 && deltaTime < 1000000.0 / FPS) return;
 		
-		// DEBUG
-		if(actualFPS > 1000)
-			System.out.println("HALLOJ");
+		double actualFPS = (1000000.0 / Math.max(1, (deltaTime)));
 			
-		timeDebug += System.nanoTime() - timePreviousRender;
-		if(timeDebug >= 500 * 1000000){		// 500ms
+		timeDebug += deltaTime;
+		if(timeDebug >= 1000000){
 			timeDebug = 0;
 			renderer.clearDebugLines();
 			renderer.addDebugLine("FPS: " + new Double(actualFPS).toString().substring(0, 5));
@@ -183,9 +182,10 @@ public class Bleach extends JPanel{
 		
 		boolean quit = false;
 		boolean paused = false;
+		double deltaTime;
 		
 		while(!quit){
-			
+			deltaTime = System.nanoTime() - timePreviousLoop;
 			
 			
 			
@@ -193,10 +193,9 @@ public class Bleach extends JPanel{
 			
 
 			if(!isPaused()){
-				
-				
-				// TODO: game logic etc
+				/* Physics engine */
 				Physique.step(activeLevel);
+				
 				/* Mobiles heartbeat */
 				for (EntityTranslatable mob : activeLevel.getMobiles()) {
 					((Entity)mob).tick(activeLevel);
@@ -212,13 +211,15 @@ public class Bleach extends JPanel{
 			
 			
 			
-			if(FPS > 0){	// We're limiting the FPS. Check if it's time to render.
-				if(System.nanoTime() - timePreviousRender > (1000000.0 / (FPS / 1000))){
-					repaint();
-				}
-			}else{			// We're not limiting the FPS, render as often as possible.
-				repaint();
-			}
+//			if(FPS > 0){	// We're limiting the FPS. Check if it's time to render.
+//				if(System.nanoTime() - timePreviousRender > (1000000.0 / (FPS / 1000))){
+//					repaint();
+//				}
+//			}else{			// We're not limiting the FPS, render as often as possible.
+//				repaint();
+//			}
+			//repaint();
+			paintComponent(this.getGraphics());
 			timePreviousLoop = System.nanoTime();
 		}
 	}

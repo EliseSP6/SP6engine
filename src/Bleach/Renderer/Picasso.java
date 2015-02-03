@@ -1,5 +1,6 @@
 package Bleach.Renderer;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -10,17 +11,20 @@ import Bleach.Entity;
 import Bleach.EntityTranslatable;
 import Bleach.LevelInteractable;
 import Bleach.SpriteAnimated;
+import Bleach.Loader.Discette;
 
 public class Picasso {
 	private int width, height;								// Screen width and height.
 	private List<String> debug;								// Debug data to be printed on the screen.
 	private boolean doDebug;								// Whether to display the debug data or not.
+	BufferedImage canvas;
 
 	public Picasso(int width, int height) {
 		this.width = width;
 		this.height = height;
 		debug = new ArrayList<String>();
 		doDebug = true;
+		canvas = Discette.toCompatibleImage(new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB));
 	}
 	
 	public void setSize(int width, int height){
@@ -40,11 +44,14 @@ public class Picasso {
 		debug.clear();
 	}
 	
-	public void render(Graphics graphics, LevelInteractable currentLevelSetting) {
+	public void render(Graphics panelGraphics, LevelInteractable currentLevelSetting) {
 		
 		if(currentLevelSetting == null) return;
 		
-		graphics.clearRect(0, 0, width, height);
+		Graphics graphics = canvas.getGraphics();
+		
+		graphics.setColor(Color.white);
+		graphics.fillRect(0, 0, width, height);
 		
 		// Render level backgrounds using the parallax effect.
 		int currentBackgroundNumber = 1;
@@ -97,11 +104,15 @@ public class Picasso {
 		
 		// Handle debug data
 		if(doDebug){
+			graphics.setColor(Color.black);
 			int lineNumber = 0;
 			for (String line : debug) {
 				graphics.drawString(line, 10, 10 + 10 * lineNumber);
 				lineNumber++;
 			}
 		}
+		
+		graphics.dispose();
+		panelGraphics.drawImage(canvas, 0, 0, null);
 	}
 }

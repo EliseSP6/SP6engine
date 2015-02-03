@@ -11,7 +11,8 @@ import Bleach.LevelInteractable;
 public class Physique {
 
 	private static long timestamp = System.nanoTime();
-	private static double gravity = 2;
+	private static long timeMS = System.currentTimeMillis();
+	private static double gravity = 0.01;
 
 	public static double distanceSquared(double x1, double y1, double x2, double y2) {
 		double dX = x2 - x1;
@@ -66,11 +67,19 @@ public class Physique {
 
 		// Current time in nanoseconds
 		long currentTime = System.nanoTime();
-
+		double deltaTime = currentTime - timestamp;
+		
+	
+	// Print delta time using System.nanoTime()
+	System.out.print("Tick time(render): " + ((System.nanoTime() - timestamp)/1000000.0) + " seconds (" + (System.nanoTime() - timestamp) + " ns)");
+	// Print delta time using System.currentTimeMillis()
+	System.out.println(" which equals to: " + ((System.currentTimeMillis() - timeMS)/1000.0) + " seconds (" + (System.currentTimeMillis() - timeMS) + " ms)");
+	
+	
 		// Iterate over objects and calculate physics
 		for (EntityTranslatable entity : entities) {
 			// Gets current values
-			double deltaTime = currentTime - timestamp;
+			
 			double vectorAngle = entity.getVectorAngle();
 			double velocity = entity.getVelocity();
 			double magnitude = (deltaTime / 1000000.0) * velocity;
@@ -115,6 +124,7 @@ public class Physique {
 
 		// Update timestamp
 		timestamp = System.nanoTime();
+		timeMS = System.currentTimeMillis();
 
 		return collisionPresent;
 	}

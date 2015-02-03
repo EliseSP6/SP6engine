@@ -60,7 +60,7 @@ public class Game {
 
 			@Override
 			public void handleEvent(MouseEvent event) {
-				System.out.println("X: " + event.getX() + " Y: " + event.getY());
+				//System.out.println("X: " + event.getX() + " Y: " + event.getY());
 			}
 		};
 		
