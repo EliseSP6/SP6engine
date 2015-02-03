@@ -1,7 +1,5 @@
 package Bleach;
 
-import java.awt.geom.Point2D;
-
 public abstract class EntityLiving extends Entity{
 
 	protected double health;							// Current HP
