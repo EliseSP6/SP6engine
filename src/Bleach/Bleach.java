@@ -13,15 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import Bleach.InputManager.Receptionist;
-import Bleach.InputManager.Receptionist.KeyBinding;
 import Bleach.Loader.Discette;
 import Bleach.Renderer.Picasso;
 
@@ -221,11 +217,24 @@ public class Bleach extends JPanel{
 	public void addReceptionist(Receptionist receptionist) {
 		this.receptionist = receptionist;
 		
-		
-		for (KeyBinding keyBinding : receptionist.getKeyBindings()) {
-			this.getInputMap().put(keyBinding.getKey(), keyBinding.getActionMapKey());
-			this.getActionMap().put(keyBinding.getActionMapKey(), keyBinding.getAction());
-		}
+//		this.addKeyListener(new KeyListener() {
+//			
+//			@Override
+//			public void keyTyped(KeyEvent event) {
+//				Bleach.this.receptionist.handleEvent(event);
+//			}
+//			
+//			@Override
+//			public void keyReleased(KeyEvent e) {
+//				// Ignore
+//			}
+//			
+//			@Override
+//			public void keyPressed(KeyEvent event) {
+//				// Ignore
+//				Bleach.this.receptionist.handleEvent(event);
+//			}
+//		});
 		
 		this.addMouseMotionListener(new MouseMotionListener() {
 			
