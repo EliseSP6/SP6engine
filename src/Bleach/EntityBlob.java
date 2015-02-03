@@ -18,12 +18,6 @@ public class EntityBlob extends EntityLiving{
 		// modifiers?
 		return attackPower;
 	}
-	
-	@Override
-	public void tick(LevelInteractable activeLevel){
-		super.tick(activeLevel);
-		timePreviousTick = System.nanoTime();
-	}
 
 	@Override
 	void AI(LevelInteractable activeLevel) {
