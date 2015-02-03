@@ -14,7 +14,9 @@
 		"filename":"blob_anim.png",
 		"width":21,
 		"height":22,
-		"frametime":200
+		"frametime":200,
+		"originx":10,
+		"originy":10
 	},
 	{
 		"key":"clouds",

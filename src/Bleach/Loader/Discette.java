@@ -32,6 +32,8 @@ public class Discette {
 		private Integer width;
 		private Integer height;
 		private Integer frametime;
+		private Integer originx;
+		private Integer originy;
 	}
 	
 	private static JsonObject[] parseJsonFile(String pathToJSON){
@@ -60,9 +62,9 @@ public class Discette {
 		for (JsonObject sprite : sprites) {
 			if(sprite.key != null && sprite.filename != null){
 				if(sprite.frametime != null && sprite.frametime > 0){
-					images.put(sprite.key, new SpriteAnimated(imgLoader(path + sprite.filename), sprite.width, sprite.height, sprite.frametime));
+					images.put(sprite.key, new SpriteAnimated(imgLoader(path + sprite.filename), sprite.width, sprite.height, sprite.originx, sprite.originy, sprite.frametime));
 				}else{
-					images.put(sprite.key, new Sprite(imgLoader(path + sprite.filename), sprite.width, sprite.height));
+					images.put(sprite.key, new Sprite(imgLoader(path + sprite.filename), sprite.width, sprite.height, sprite.originx, sprite.originy));
 				}
 			}
 		}
