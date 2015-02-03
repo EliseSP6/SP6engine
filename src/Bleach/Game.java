@@ -6,11 +6,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 
 import Bleach.InputManager.Receptionist;
+import Bleach.InputManager.Receptionist.KeyBinding;
 
 /*
  * This is for testing the game engine.
@@ -59,13 +61,16 @@ public class Game {
 				System.out.println("X: " + event.getX() + " Y: " + event.getY());
 			}
 		};
-		receptionist.addKeyBinding(KeyStroke.getKeyStroke("LEFT"), "LEFT_ARROW", new ActionListener() {
+		
+		// Telling to receptionist to listen for whenever the LEFT-arrow button is pushed. When it is, blobby's vector-angle is set to 180 degrees.
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("LEFT"), "LEFT", new AbstractAction() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			System.out.println("LEFT!!!!");
+				blobby.setVectorAngle(Math.toRadians(180));
 			}
-		});
+		}));
+
 		myGame.addReceptionist(receptionist);
 		
 		
