@@ -49,7 +49,7 @@ public class Bleach extends JPanel{
 		
 		System.setProperty("sun.java2d.opengl","True");	// Let's try to HW-accelerate stuff.
 		
-		timePreviousLoop = timePreviousRender = System.nanoTime();
+		timePreviousLoop = timePreviousRender = System.currentTimeMillis();
 		winWidth = 800;									// Default width
 		winHeight = 600;								// Default height
 		winTitle = "Game window";						// Default title;
@@ -146,21 +146,22 @@ public class Bleach extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		double deltaTime = System.nanoTime() - timePreviousRender;
-		if(FPS > 0 && deltaTime < 1000000.0 / FPS) return;
+		double deltaTime = System.currentTimeMillis() - timePreviousRender;
+		if(FPS > 0 && deltaTime < 1000.0 / FPS) return;
 		
-		double actualFPS = (1000000.0 / Math.max(1, (deltaTime)));
+		double actualFPS = (1000.0 / Math.max(1, (deltaTime)));
 			
 		timeDebug += deltaTime;
-		if(timeDebug >= 1000000){
+		if(timeDebug >= 1000){
 			timeDebug = 0;
 			renderer.clearDebugLines();
-			renderer.addDebugLine("FPS: " + new Double(actualFPS).toString().substring(0, 5));
+//			renderer.addDebugLine("FPS: " + new Double(actualFPS).toString().substring(0, 5));
+			renderer.addDebugLine("FPS: " + (int) actualFPS);
 		}
 		
 		renderer.render(g, activeLevel);
 		
-		timePreviousRender = System.nanoTime();
+		timePreviousRender = System.currentTimeMillis();
 	}
 	
 	private boolean isPaused(){
@@ -185,7 +186,7 @@ public class Bleach extends JPanel{
 		double deltaTime;
 		
 		while(!quit){
-			deltaTime = System.nanoTime() - timePreviousLoop;
+			deltaTime = System.currentTimeMillis() - timePreviousLoop;
 			
 			
 			
@@ -220,7 +221,7 @@ public class Bleach extends JPanel{
 //			}
 			//repaint();
 			paintComponent(this.getGraphics());
-			timePreviousLoop = System.nanoTime();
+			timePreviousLoop = System.currentTimeMillis();
 		}
 	}
 	public void addReceptionist(Receptionist receptionist) {

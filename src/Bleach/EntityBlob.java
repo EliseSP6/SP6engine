@@ -23,7 +23,7 @@ public class EntityBlob extends EntityLiving{
 	void AI(LevelInteractable activeLevel) {
 		
 		// BS AI
-		if (System.nanoTime() % 1000 == 0){
+		if (System.currentTimeMillis() % 1000 == 0){
 			System.out.println("Blob AI!");
 			bMoving = !bMoving;
 			if (bMoving) setVectorAngle((Math.random()) * (2 * Math.PI));

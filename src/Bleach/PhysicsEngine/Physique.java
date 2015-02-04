@@ -10,8 +10,10 @@ import Bleach.LevelInteractable;
 
 public class Physique {
 
-	private static long timestamp = System.nanoTime();
-	private static long timeMS = System.currentTimeMillis();
+	@Deprecated
+	private static long timestamp_OLD = System.nanoTime();
+	
+	private static long timestamp = System.currentTimeMillis();
 	private static double gravity = 0.01;
 
 	public static double distanceSquared(double x1, double y1, double x2, double y2) {
@@ -66,14 +68,14 @@ public class Physique {
 		entities.addAll(currentLevelSetting.getProjectiles());
 
 		// Current time in nanoseconds
-		long currentTime = System.nanoTime();
+		long currentTime = System.currentTimeMillis();
 		double deltaTime = currentTime - timestamp;
 		
 	
 	// Print delta time using System.nanoTime()
-	System.out.print("Tick time(render): " + ((System.nanoTime() - timestamp)/1000000.0) + " seconds (" + (System.nanoTime() - timestamp) + " ns)");
+	System.out.print("Tick time(render): " + ((System.nanoTime() - timestamp_OLD)/1000000.0) + " seconds (" + (System.nanoTime() - timestamp_OLD) + " ns)");
 	// Print delta time using System.currentTimeMillis()
-	System.out.println(" which equals to: " + ((System.currentTimeMillis() - timeMS)/1000.0) + " seconds (" + (System.currentTimeMillis() - timeMS) + " ms)");
+	System.out.println(" which equals to: " + ((System.currentTimeMillis() - timestamp)/1000.0) + " seconds (" + (System.currentTimeMillis() - timestamp) + " ms)");
 	
 	
 		// Iterate over objects and calculate physics
@@ -82,7 +84,7 @@ public class Physique {
 			
 			double vectorAngle = entity.getVectorAngle();
 			double velocity = entity.getVelocity();
-			double magnitude = (deltaTime / 1000000.0) * velocity;
+			double magnitude = (deltaTime / 1000.0) * velocity;
 
 			// Calculates the next position based on velocity
 			Point2D.Double nextPosition = entity.getPosition();
@@ -91,7 +93,7 @@ public class Physique {
 				nextPosition.y += Math.sin(vectorAngle) * magnitude;
 			}
 			// Re-calculates the next Y-position based on velocity + gravity
-			nextPosition.y += gravity * Math.pow((deltaTime / 1000000.0), 2);
+			nextPosition.y += gravity * Math.pow((deltaTime / 1000.0), 2);
 
 			// Sets the position to the newly calculated one
 			entity.setPosition(nextPosition);
@@ -123,8 +125,8 @@ public class Physique {
 		}
 
 		// Update timestamp
-		timestamp = System.nanoTime();
-		timeMS = System.currentTimeMillis();
+		timestamp_OLD = System.nanoTime();
+		timestamp = System.currentTimeMillis();
 
 		return collisionPresent;
 	}
