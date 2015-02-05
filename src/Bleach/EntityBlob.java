@@ -3,7 +3,7 @@ package Bleach;
 public class EntityBlob extends EntityLiving {
 
 	public EntityBlob(Sprite sprite, double x, double y) {
-		super(sprite, x, y, 11, 5, 2, 50); // radius: 11, hp: 5, attackdamage:
+		super(sprite, x, y, 8, 5, 2, 50); // radius: 11, hp: 5, attackdamage:
 											// 2, speed: 50
 	}
 

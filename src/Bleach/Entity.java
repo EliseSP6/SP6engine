@@ -47,7 +47,7 @@ public class Entity implements EntityTranslatable {
 
 	@Override
 	public Rectangle2D.Double getBoundary(){
-		return new Rectangle2D.Double(x, y, r*2, r*2);
+		return new Rectangle2D.Double(x-r, y-r, r*2, r*2);
 	}
 	
 	@Override
