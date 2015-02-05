@@ -12,7 +12,7 @@ public class Physique {
 
 	@Deprecated
 	private static long timestamp_OLD = System.nanoTime();
-	
+
 	private static long timestamp = System.currentTimeMillis();
 	private static double gravity = 0.01;
 
@@ -69,22 +69,22 @@ public class Physique {
 
 		// Current time in nanoseconds
 		long currentTime = System.currentTimeMillis();
-		double deltaTime = currentTime - timestamp;
-		
-	
-	// Print delta time using System.nanoTime()
-	System.out.print("Tick time(render): " + ((System.nanoTime() - timestamp_OLD)/1000000.0) + " seconds (" + (System.nanoTime() - timestamp_OLD) + " ns)");
-	// Print delta time using System.currentTimeMillis()
-	System.out.println(" which equals to: " + ((System.currentTimeMillis() - timestamp)/1000.0) + " seconds (" + (System.currentTimeMillis() - timestamp) + " ms)");
-	
-	
+		double deltaTimeMilli = currentTime - timestamp;
+		double deltaTimeSec = deltaTimeMilli / 1000.0;
+
+		// TODO FPS-bottleneck starts here!
+		// Print delta time using System.nanoTime()
+		System.out.print("Tick time(render): " + ((System.nanoTime() - timestamp_OLD) / 1000000.0) + " seconds (" + (System.nanoTime() - timestamp_OLD) + " ns)");
+		// Print delta time using System.currentTimeMillis()
+		System.out.println(" which equals to: " + ((System.currentTimeMillis() - timestamp) / 1000.0) + " seconds (" + (System.currentTimeMillis() - timestamp) + " ms)");
+		// TODO FPS-bottleneck ends here!
+
 		// Iterate over objects and calculate physics
 		for (EntityTranslatable entity : entities) {
 			// Gets current values
-			
 			double vectorAngle = entity.getVectorAngle();
 			double velocity = entity.getVelocity();
-			double magnitude = (deltaTime / 1000.0) * velocity;
+			double magnitude = deltaTimeSec * velocity;
 
 			// Calculates the next position based on velocity
 			Point2D.Double nextPosition = entity.getPosition();
@@ -92,8 +92,9 @@ public class Physique {
 				nextPosition.x += Math.cos(vectorAngle) * magnitude;
 				nextPosition.y += Math.sin(vectorAngle) * magnitude;
 			}
+
 			// Re-calculates the next Y-position based on velocity + gravity
-			nextPosition.y += gravity * Math.pow((deltaTime / 1000.0), 2);
+			nextPosition.y += gravity * Math.pow(deltaTimeSec, 2);
 
 			// Sets the position to the newly calculated one
 			entity.setPosition(nextPosition);
