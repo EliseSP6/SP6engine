@@ -1,6 +1,7 @@
 package Bleach;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public class TerrainBlock extends Entity implements EntityTranslatable {
 
@@ -26,6 +27,7 @@ public class TerrainBlock extends Entity implements EntityTranslatable {
 		gridWidth = cellWidth;
 		gridHeight = cellHeight;
 		mass = 0;
+		hasRectangularCollisionModel = true;
 	}
 
 	public void setAbsolutePosition(Point2D.Double position) {
@@ -83,5 +85,10 @@ public class TerrainBlock extends Entity implements EntityTranslatable {
 		y = position.y - gridY * gridHeight;
 		absPosX = x;
 		absPosY = y;
+	}
+	
+	@Override
+	public Rectangle2D.Double getBoundary(){
+		return new Rectangle2D.Double(absPosX + gridX * gridWidth, absPosY + gridY * gridHeight, gridWidth, gridHeight);
 	}
 }
