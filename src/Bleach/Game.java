@@ -85,17 +85,17 @@ public class Game {
 			}
 		}));
 		
-		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("pressed A"), "pressed", new AbstractAction() {
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("pressed A"), "pressed A", new AbstractAction() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				player.setVectorAngle(Math.PI);
 				player.isMoving(true);
-				System.out.println("Player moving to the right.");
+				System.out.println("Player moving to the left.");
 			}
 		}));
 		
-		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("released A"), "released", new AbstractAction() {
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("released A"), "released A", new AbstractAction() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -103,17 +103,17 @@ public class Game {
 			}
 		}));
 		
-		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("pressed D"), "pressed", new AbstractAction() {
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("pressed D"), "pressed D", new AbstractAction() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				player.setVectorAngle(0);
 				player.isMoving(true);
-				System.out.println("Player moving to the left.");
+				System.out.println("Player moving to the right.");
 			}
 		}));
 		
-		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("released D"), "released", new AbstractAction() {
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("released D"), "released D", new AbstractAction() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
