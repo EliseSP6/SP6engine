@@ -113,8 +113,8 @@ public class Picasso {
 			TerrainBlock tb = ((TerrainBlock) block);
 			Sprite sprite = tb.getSprite();
 
-			double x = tb.getAbsolutePosition().x + tb.getGridWidth() * tb.getGridPosition().x;
-			double y = tb.getAbsolutePosition().y + tb.getGridHeight() * tb.getGridPosition().y;
+			double x = tb.getPosition().x;
+			double y = tb.getPosition().y;
 
 			graphics.drawImage(sprite.getFrame(), (int) x, (int) y, sprite.getWidth(), sprite.getHeight(), null);
 		}
