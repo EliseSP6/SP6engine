@@ -37,11 +37,11 @@ public class Game {
 		firstLevel.addMobile(blobby);
 		firstLevel.addPlayer(player);
 
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 1, 4));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 2, 4));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 3, 4));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 4));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 3));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 1, 14));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 2, 14));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 3, 14));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 14));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 13));
 
 		// firstLevel.setMusicTrack("melody7");
 
@@ -82,6 +82,42 @@ public class Game {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("RIGHT = released");
+			}
+		}));
+		
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("pressed A"), "pressed", new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				player.setVectorAngle(Math.PI);
+				player.isMoving(true);
+				System.out.println("Player moving to the right.");
+			}
+		}));
+		
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("released A"), "released", new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				player.isMoving(false);
+			}
+		}));
+		
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("pressed D"), "pressed", new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				player.setVectorAngle(0);
+				player.isMoving(true);
+				System.out.println("Player moving to the left.");
+			}
+		}));
+		
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("released D"), "released", new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				player.isMoving(false);
 			}
 		}));
 

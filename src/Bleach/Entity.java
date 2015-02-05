@@ -76,6 +76,10 @@ public class Entity implements EntityTranslatable {
 	public boolean isMoving() {
 		return bMoving;
 	}
+	
+	public void isMoving(boolean setMoving){
+		bMoving = setMoving;
+	}
 
 	public void tick(LevelInteractable activeLevel) {
 		// if(isMoving()){
