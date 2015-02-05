@@ -1,11 +1,14 @@
 package Bleach;
 
+import java.awt.Dimension;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public class Entity implements EntityTranslatable {
 	protected Sprite sprite;
 	protected double x, y;
 	protected final double r;
+	private boolean hasRectangularCollisionModel = false;
 
 	protected double vectorAngle = 0;
 	protected double velocity = 0;
@@ -39,6 +42,11 @@ public class Entity implements EntityTranslatable {
 		return r;
 	}
 
+	@Override
+	public Rectangle2D.Double getBoundary(){
+		return new Rectangle2D.Double(x, y, r*2, r*2);
+	}
+	
 	@Override
 	public void setVectorAngle(double vectorAngle) {
 		this.vectorAngle = vectorAngle;
@@ -92,5 +100,13 @@ public class Entity implements EntityTranslatable {
 		//
 		// setPosition(position);
 		// }
+	}
+
+	public boolean hasRectangularCollisionModel() {
+		return hasRectangularCollisionModel;
+	}
+
+	public void setHasRectangularCollisionModel(boolean hasRectangularCollisionModel) {
+		this.hasRectangularCollisionModel = hasRectangularCollisionModel;
 	}
 }

@@ -1,6 +1,8 @@
 package Bleach;
 
+import java.awt.Dimension;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public interface EntityTranslatable {
 
@@ -9,6 +11,8 @@ public interface EntityTranslatable {
 	public void setPosition(Point2D.Double position);
 
 	public double getRadius();
+	
+	public Rectangle2D.Double getBoundary();
 
 	public void setVectorAngle(double vectorAngle);
 
