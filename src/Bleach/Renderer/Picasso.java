@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import sun.java2d.loops.DrawRect;
 import Bleach.Entity;
 import Bleach.EntityTranslatable;
 import Bleach.LevelInteractable;
@@ -137,6 +138,11 @@ public class Picasso {
 			Point spriteOrigin = entity.getSprite().getOrigin();
 
 			graphics.drawImage(entity.getSprite().getFrame(), (int) entity.getPosition().x - spriteOrigin.x, (int) entity.getPosition().y - spriteOrigin.y, entity.getSprite().getWidth(), entity.getSprite().getHeight(), null);
+			if(doDebug){
+				graphics.setColor(Color.red);
+				graphics.drawRect((int) entity.getPosition().x, (int) entity.getPosition().y, 1, 1);
+				graphics.drawRect((int) entity.getBoundary().x, (int) entity.getBoundary().y, (int) entity.getBoundary().width, (int) entity.getBoundary().height);
+			}
 		}
 
 		// Handle debug data
