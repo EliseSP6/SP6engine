@@ -1,16 +1,13 @@
 package Bleach;
 
-public class Player extends EntityLiving{
+public class Player extends EntityLiving {
 
-	public Player(Sprite sprite, double x, double y){
-		super(	sprite,
-				x,
-				y,
-				16,					// radius
-				80,					// health
-				1,					// attack power
-				120					// speed
-			);
+	public Player(Sprite sprite, double x, double y) {
+		super(sprite, x, y, 16, // radius
+		80, // health
+		1, // attack power
+		120 // speed
+		);
 	}
 
 	@Override

@@ -10,24 +10,24 @@ public interface LevelInteractable {
 	public List<EntityTranslatable> getLoots();
 
 	public List<EntityTranslatable> getPlayers();
-	
+
 	public List<EntityTranslatable> getProjectiles();
-	
+
 	public List<BufferedImage> getBackgrounds();
-	
+
 	public List<TerrainBlock> getTerrains();
-	
+
 	public int getBackgroundParallaxDistance();
-	
+
 	public Point2D.Double getViewport();
-	
+
 	public void removeMobile(EntityTranslatable mobile);
-	
+
 	public void removeLoot(EntityTranslatable loot);
-	
+
 	public void removeProjectile(EntityTranslatable projectile);
-	
+
 	public void removePlayer(EntityTranslatable player);
-	
+
 	public void removeTerrain(TerrainBlock terrain);
 }

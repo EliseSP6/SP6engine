@@ -17,7 +17,8 @@ public interface EntityTranslatable {
 	public void setVelocity(double velocity);
 
 	public double getVelocity();
-	
+
 	public void setMass(double mass);
+
 	public double getMass();
 }

@@ -10,9 +10,9 @@ public class Entity implements EntityTranslatable {
 	protected double vectorAngle = 0;
 	protected double velocity = 0;
 	protected double mass = 0;
-	
+
 	protected long timePreviousTick;
-	protected boolean bMoving;							// Is the entity currently moving?
+	protected boolean bMoving; // Is the entity currently moving?
 
 	protected Entity(Sprite sprite, double x, double y, double r) {
 		this.sprite = sprite;
@@ -58,35 +58,35 @@ public class Entity implements EntityTranslatable {
 	public double getVelocity() {
 		return velocity;
 	}
-	
+
 	@Override
 	public void setMass(double mass) {
 		this.mass = mass;
 	}
-	
+
 	@Override
 	public double getMass() {
 		return mass;
 	}
-	
+
 	public Sprite getSprite() {
 		return sprite;
 	}
-	
-	public boolean isMoving(){
+
+	public boolean isMoving() {
 		return bMoving;
 	}
 
 	public void tick(LevelInteractable activeLevel) {
-//		if(isMoving()){
-//			long deltaTime = System.nanoTime() - timePreviousTick;
-//			double magnitude = (deltaTime / 1000000000.0) * velocity;
-//			Point2D.Double position = getPosition();
-//			
-//			position.x += Math.cos(vectorAngle) * magnitude;
-//			position.y += Math.sin(vectorAngle) * magnitude;
-//			
-//			setPosition(position);
-//		}
+		// if(isMoving()){
+		// long deltaTime = System.nanoTime() - timePreviousTick;
+		// double magnitude = (deltaTime / 1000000000.0) * velocity;
+		// Point2D.Double position = getPosition();
+		//
+		// position.x += Math.cos(vectorAngle) * magnitude;
+		// position.y += Math.sin(vectorAngle) * magnitude;
+		//
+		// setPosition(position);
+		// }
 	}
 }

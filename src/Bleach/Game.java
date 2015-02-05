@@ -1,14 +1,8 @@
 package Bleach;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeListener;
-
 import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 
 import Bleach.InputManager.Receptionist;
@@ -26,7 +20,6 @@ public class Game {
 
 		Bleach myGame = new Bleach();
 
-
 		myGame.loadImages("assets/images/assets.json");
 		myGame.loadSounds("assets/sounds/assets.json");
 
@@ -43,8 +36,7 @@ public class Game {
 		Player player = new Player(myGame.getSprite("mushi"), 100, 100);
 		firstLevel.addMobile(blobby);
 		firstLevel.addPlayer(player);
-		
-		
+
 		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 1, 4));
 		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 2, 4));
 		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 3, 4));
@@ -67,13 +59,15 @@ public class Game {
 
 			@Override
 			public void handleEvent(MouseEvent event) {
-				//System.out.println("X: " + event.getX() + " Y: " + event.getY());
+				// System.out.println("X: " + event.getX() + " Y: " +
+				// event.getY());
 			}
 		};
-		
-		// Telling to receptionist to listen for whenever the LEFT-arrow button is pushed. When it is, blobby's vector-angle is set to 180 degrees.
+
+		// Telling to receptionist to listen for whenever the LEFT-arrow button
+		// is pushed. When it is, blobby's vector-angle is set to 180 degrees.
 		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("RIGHT"), "RIGHT", new AbstractAction() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				blobby.setVectorAngle(Math.toRadians(180));
@@ -81,9 +75,7 @@ public class Game {
 		}));
 
 		myGame.addReceptionist(receptionist);
-		
-		
-		
+
 		myGame.run();
 	}
 

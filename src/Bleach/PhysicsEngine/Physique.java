@@ -24,7 +24,7 @@ public class Physique {
 	}
 
 	public static boolean collides(EntityTranslatable first, EntityTranslatable second) {
-		
+
 		// Closest point on collision box
 		Point2D.Double closestPoint = new Point2D.Double(0, 0);
 
@@ -69,9 +69,13 @@ public class Physique {
 
 		// TODO FPS-bottleneck starts here!
 		// Print delta time using System.nanoTime()
-		//System.out.print("Tick time(render): " + ((System.nanoTime() - timestamp_OLD) / 1000000.0) + " seconds (" + (System.nanoTime() - timestamp_OLD) + " ns)");
+		// System.out.print("Tick time(render): " + ((System.nanoTime() -
+		// timestamp_OLD) / 1000000.0) + " seconds (" + (System.nanoTime() -
+		// timestamp_OLD) + " ns)");
 		// Print delta time using System.currentTimeMillis()
-		//System.out.println(" which equals to: " + ((System.currentTimeMillis() - timestamp) / 1000.0) + " seconds (" + (System.currentTimeMillis() - timestamp) + " ms)");
+		// System.out.println(" which equals to: " +
+		// ((System.currentTimeMillis() - timestamp) / 1000.0) + " seconds (" +
+		// (System.currentTimeMillis() - timestamp) + " ms)");
 		// TODO FPS-bottleneck ends here!
 
 		// Iterate over entities and calculate physics
@@ -83,30 +87,35 @@ public class Physique {
 
 			// Checks whether if the new position collides with any object in
 			// its way
-			if(!(entity instanceof TerrainBlock && entity.getMass() == 0)){
-				for (EntityTranslatable otherEntity : entities){
-	
-					// As long as it doesn't check for a collision with itself...
+			if (!(entity instanceof TerrainBlock && entity.getMass() == 0)) {
+				for (EntityTranslatable otherEntity : entities) {
+
+					// As long as it doesn't check for a collision with
+					// itself...
 					if (entity != otherEntity)
 						if (collides(entity, otherEntity)) {
-	
+
 							// Flag sets true
 							collisionPresent = true;
-	
-							// Distance between the object's previous position and
+
+							// Distance between the object's previous position
+							// and
 							// the position of the object it has collided with
 							double distanceBeforeCollision = distanceSquared(oldPosition.x, oldPosition.y, otherEntity.getPosition().x, otherEntity.getPosition().y);
-	
-							// Repositions the object to the position just before it
+
+							// Repositions the object to the position just
+							// before it
 							// collides
-							//newPosition.x = Math.cos(entity.getVectorAngle()) * distanceBeforeCollision;
-							//newPosition.y = Math.sin(entity.getVectorAngle()) * distanceBeforeCollision;
-							
+							// newPosition.x = Math.cos(entity.getVectorAngle())
+							// * distanceBeforeCollision;
+							// newPosition.y = Math.sin(entity.getVectorAngle())
+							// * distanceBeforeCollision;
+
 							double reverseAngle = Math.atan2(otherEntity.getPosition().y - oldPosition.y, otherEntity.getPosition().x - oldPosition.x) + Math.PI;
 							newPosition.x += Math.cos(reverseAngle) * distanceBeforeCollision;
 							newPosition.y += Math.sin(reverseAngle) * distanceBeforeCollision;
-	
-							//entity.setPosition(newPosition);
+
+							// entity.setPosition(newPosition);
 							entity.setPosition(oldPosition);
 							// Breaks out of the loop that checks for collisions
 							break;
@@ -136,7 +145,7 @@ public class Physique {
 		}
 
 		// Re-calculates the next Y-position based on velocity + gravity
-		if(entity.getMass() > 0)
+		if (entity.getMass() > 0)
 			nextPosition.y += gravity * Math.pow(deltaTime, 2);
 
 		// Sets the position to the newly calculated one
@@ -144,7 +153,7 @@ public class Physique {
 
 		return nextPosition;
 	}
-	
+
 	private static List<EntityTranslatable> accumulateLevelEntityTranslatables(LevelInteractable level) {
 		List<EntityTranslatable> entities = new ArrayList<>();
 
