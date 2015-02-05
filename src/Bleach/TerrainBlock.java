@@ -18,8 +18,7 @@ public class TerrainBlock extends Entity implements EntityTranslatable {
 	}
 
 	public TerrainBlock(Sprite sprite, int gridPositionX, int gridPositionY, double cellWidth, double cellHeight, double absPosX, double absPosY) {
-		super(sprite, 0, 0, 16); // 16 temporarily, we need to be able to check
-									// collision for blocks (rectangles).
+		super(sprite, 0, 0, 0);
 		this.absPosX = absPosX;
 		this.absPosY = absPosY;
 		gridX = gridPositionX;
