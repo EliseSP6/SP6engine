@@ -71,7 +71,7 @@ public class Game {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				blobby.setVectorAngle(Math.toRadians(180));
-				System.out.println("Pressed");
+				System.out.println("CTRL + RIGHT = pushed");
 			}
 		}));
 
@@ -81,7 +81,7 @@ public class Game {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("released");
+				System.out.println("RIGHT = released");
 			}
 		}));
 
