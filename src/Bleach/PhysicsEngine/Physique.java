@@ -29,10 +29,10 @@ public class Physique {
 		if (((Entity) first).hasRectangularCollisionModel() || ((Entity) second).hasRectangularCollisionModel())
 			return rectangularCollisionDetection(first, second);
 		else
-			return circularCollisinDetection(first, second);
+			return circularCollisionDetection(first, second);
 	}
 	
-	private static boolean circularCollisinDetection(EntityTranslatable first, EntityTranslatable second) {
+	private static boolean circularCollisionDetection(EntityTranslatable first, EntityTranslatable second) {
 		// Closest point on collision box
 				Point2D.Double closestPoint = new Point2D.Double(0, 0);
 
