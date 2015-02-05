@@ -92,7 +92,6 @@ public class Physique {
 	
 							// Flag sets true
 							collisionPresent = true;
-					System.out.println("collision!");
 	
 							// Distance between the object's previous position and
 							// the position of the object it has collided with

@@ -147,6 +147,7 @@ public class Bleach extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		double deltaTime = System.currentTimeMillis() - timePreviousRender;
+
 		if(FPS > 0 && deltaTime < 1000.0 / FPS) return;
 		
 		double actualFPS = (1000.0 / Math.max(1, (deltaTime)));
@@ -190,8 +191,9 @@ public class Bleach extends JPanel{
 			
 			
 			// Simulate work
-			for(int i = 0; i < 800000; i++)
+			while(System.currentTimeMillis() - timePreviousLoop < 34){
 				Thread.yield();
+			}
 			
 			
 
