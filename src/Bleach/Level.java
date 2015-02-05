@@ -11,6 +11,7 @@ public class Level implements LevelInteractable{
 	private List<EntityTranslatable> loots;
 	private List<EntityTranslatable> players;
 	private List<EntityTranslatable> projectiles;
+	private List<TerrainBlock> terrains;
 	private List<BufferedImage> backgrounds;				// A list of textures that are to be parallaxed in the background.
 	private Point2D.Double viewport;						// Offset for scrolling. This points at the middle of the viewport.
 	private int width, height;
@@ -37,6 +38,7 @@ public class Level implements LevelInteractable{
 		players = new ArrayList<>();
 		projectiles = new ArrayList<>();
 		backgrounds = new ArrayList<>();
+		terrains = new ArrayList<TerrainBlock>();
 				
 		viewport = new Point2D.Double(0, 0);
 	}
@@ -61,6 +63,11 @@ public class Level implements LevelInteractable{
 		return projectiles;
 	}
 	
+	@Override
+	public List<TerrainBlock> getTerrains(){
+		return terrains;
+	}
+	
 	public void addMobile(EntityTranslatable mob){
 		if(mob != null)
 			mobiles.add(mob);
@@ -79,6 +86,10 @@ public class Level implements LevelInteractable{
 	public void addProjectile(EntityTranslatable proj){
 		if(proj != null)
 			projectiles.add(proj);
+	}
+	
+	public void addTerrainBlock(TerrainBlock terrain){
+		terrains.add(terrain);
 	}
 	
 	public void setViewport(Point2D.Double offset){
@@ -154,6 +165,11 @@ public class Level implements LevelInteractable{
 	@Override
 	public void removePlayer(EntityTranslatable player) {
 		players.remove(player);
+	}
+	
+	@Override
+	public void removeTerrain(TerrainBlock terrain){
+		terrains.remove(terrain);
 	}
 	
 	public void doAutoScroll(boolean doScroll){

@@ -14,7 +14,7 @@ public class Physique {
 	private static long timestamp_OLD = System.nanoTime();
 
 	private static long timestamp = System.currentTimeMillis();
-	private static double gravity = 0.01;
+	private static double gravity = 1000;
 
 	public static double distanceSquared(double x1, double y1, double x2, double y2) {
 		double dX = x2 - x1;
@@ -68,9 +68,9 @@ public class Physique {
 
 		// TODO FPS-bottleneck starts here!
 		// Print delta time using System.nanoTime()
-		System.out.print("Tick time(render): " + ((System.nanoTime() - timestamp_OLD) / 1000000.0) + " seconds (" + (System.nanoTime() - timestamp_OLD) + " ns)");
+		//System.out.print("Tick time(render): " + ((System.nanoTime() - timestamp_OLD) / 1000000.0) + " seconds (" + (System.nanoTime() - timestamp_OLD) + " ns)");
 		// Print delta time using System.currentTimeMillis()
-		System.out.println(" which equals to: " + ((System.currentTimeMillis() - timestamp) / 1000.0) + " seconds (" + (System.currentTimeMillis() - timestamp) + " ms)");
+		//System.out.println(" which equals to: " + ((System.currentTimeMillis() - timestamp) / 1000.0) + " seconds (" + (System.currentTimeMillis() - timestamp) + " ms)");
 		// TODO FPS-bottleneck ends here!
 
 		// Iterate over entities and calculate physics
@@ -81,7 +81,7 @@ public class Physique {
 
 			// Checks whether if the new position collides with any object in
 			// its way
-			for (EntityTranslatable otherEntity : entities)
+			for (EntityTranslatable otherEntity : entities){
 
 				// As long as it doesn't check for a collision with itself...
 				if (entity != otherEntity)
@@ -102,7 +102,7 @@ public class Physique {
 						// Breaks out of the loop that checks for collisions
 						break;
 					}
-
+			}
 		}
 
 		// Update timestamp

@@ -15,6 +15,8 @@ public interface LevelInteractable {
 	
 	public List<BufferedImage> getBackgrounds();
 	
+	public List<TerrainBlock> getTerrains();
+	
 	public int getBackgroundParallaxDistance();
 	
 	public Point2D.Double getViewport();
@@ -26,4 +28,6 @@ public interface LevelInteractable {
 	public void removeProjectile(EntityTranslatable projectile);
 	
 	public void removePlayer(EntityTranslatable player);
+	
+	public void removeTerrain(TerrainBlock terrain);
 }

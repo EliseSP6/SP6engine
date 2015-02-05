@@ -13,6 +13,7 @@ public abstract class EntityLiving extends Entity{
 		this.attackPower = attackPower;
 		this.velocity = speed;
 		inventory = new Inventory();
+		mass = 1;
 	}
 	
 	abstract double takeDamage(double amount);			// Returns health after damage.

@@ -10,7 +10,9 @@ import java.util.List;
 import Bleach.Entity;
 import Bleach.EntityTranslatable;
 import Bleach.LevelInteractable;
+import Bleach.Sprite;
 import Bleach.SpriteAnimated;
+import Bleach.TerrainBlock;
 import Bleach.Loader.Discette;
 
 public class Picasso {
@@ -77,6 +79,22 @@ public class Picasso {
 				}
 			}
 			currentBackgroundNumber++;
+		}
+		
+		// Render TerrainBlocks
+		for (EntityTranslatable block : currentLevelSetting.getTerrains()) {
+			TerrainBlock tb = ((TerrainBlock)block);
+			Sprite sprite = tb.getSprite();
+			
+			double x = tb.getAbsolutePosition().x + tb.getGridWidth() * tb.getGridPosition().x;
+			double y = tb.getAbsolutePosition().y + tb.getGridHeight() * tb.getGridPosition().y;
+			
+			graphics.drawImage(	sprite.getFrame(),
+								(int) x,
+								(int) y,
+								sprite.getWidth(),
+								sprite.getHeight(),
+								null);
 		}
 		
 		// List that will contain all the entities present on the level

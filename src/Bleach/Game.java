@@ -43,6 +43,13 @@ public class Game {
 		Player player = new Player(myGame.getSprite("mushi"), 100, 100);
 		firstLevel.addMobile(blobby);
 		firstLevel.addPlayer(player);
+		
+		
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 1, 12));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 2, 12));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 3, 12));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 12));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 13));
 
 		// firstLevel.setMusicTrack("melody7");
 

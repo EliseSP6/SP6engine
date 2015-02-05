@@ -189,7 +189,9 @@ public class Bleach extends JPanel{
 			deltaTime = System.currentTimeMillis() - timePreviousLoop;
 			
 			
-			
+			// Simulate work
+			for(int i = 0; i < 800000; i++)
+				Thread.yield();
 			
 			
 
