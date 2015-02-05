@@ -1,14 +1,17 @@
 package Bleach;
 
-import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
+
+import Bleach.PhysicsEngine.Physique.CollisionListener;
 
 public class Entity implements EntityTranslatable {
 	protected Sprite sprite;
 	protected double x, y;
 	protected final double r;
-	private boolean hasRectangularCollisionModel = false;
+	protected boolean hasRectangularCollisionModel = false;
+	protected CollisionListener onCollision = null;
 
 	protected double vectorAngle = 0;
 	protected double velocity = 0;
@@ -108,5 +111,13 @@ public class Entity implements EntityTranslatable {
 
 	public void setHasRectangularCollisionModel(boolean hasRectangularCollisionModel) {
 		this.hasRectangularCollisionModel = hasRectangularCollisionModel;
+	}
+
+	public CollisionListener getCollisionListener() {
+		return onCollision;
+	}
+
+	public void setOnCollision(CollisionListener onCollision) {
+		this.onCollision = onCollision;
 	}
 }

@@ -1,5 +1,6 @@
 package Bleach.PhysicsEngine;
 
+import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -142,6 +143,15 @@ public class Physique {
 					if (entity != otherEntity)
 						if (collides(entity, otherEntity)) {
 
+							// Trigger entities' onCollision-actions, if present
+							if (((Entity) entity).getCollisionListener() != null)
+								((Entity) entity).getCollisionListener().onCollision((Entity) otherEntity);
+							if (((Entity) otherEntity).getCollisionListener() != null)
+								((Entity) otherEntity).getCollisionListener().onCollision((Entity) entity);
+							
+							
+							
+							
 							// Flag sets true
 							collisionPresent = true;
 
@@ -220,5 +230,9 @@ public class Physique {
 
 	public static void setGravity(double gravity) {
 		Physique.gravity = gravity;
+	}
+	
+	public static interface CollisionListener{
+		public void onCollision(Entity collidedWith);
 	}
 }

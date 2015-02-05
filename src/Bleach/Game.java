@@ -2,11 +2,15 @@ package Bleach;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import Bleach.InputManager.Receptionist;
 import Bleach.InputManager.Receptionist.KeyBinding;
+import Bleach.PhysicsEngine.Physique;
+import Bleach.PhysicsEngine.Physique.CollisionListener;
 
 /*
  * This is for testing the game engine.
@@ -121,6 +125,15 @@ public class Game {
 			}
 		}));
 
+
+		((Entity) player).setOnCollision(new CollisionListener() {
+
+			@Override
+			public void onCollision(Entity collidedWith) {
+				System.out.println("Krockade med " + collidedWith.toString());
+			}
+		
+		});
 		
 		myGame.addReceptionist(receptionist);
 
