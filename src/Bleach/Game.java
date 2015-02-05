@@ -66,14 +66,26 @@ public class Game {
 
 		// Telling to receptionist to listen for whenever the LEFT-arrow button
 		// is pushed. When it is, blobby's vector-angle is set to 180 degrees.
-		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("RIGHT"), "RIGHT", new AbstractAction() {
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("control RIGHT"), "RIGHT", new AbstractAction() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				blobby.setVectorAngle(Math.toRadians(180));
+				System.out.println("Pressed");
 			}
 		}));
 
+		// Telling to receptionist to listen for whenever the LEFT-arrow button
+		// is pushed. When it is, blobby's vector-angle is set to 180 degrees.
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("released RIGHT"), "released", new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("released");
+			}
+		}));
+
+		
 		myGame.addReceptionist(receptionist);
 
 		myGame.run();
