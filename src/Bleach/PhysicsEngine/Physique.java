@@ -70,15 +70,15 @@ public class Physique {
 
 		//Calculate the sides of rect A
 		leftA = first.getBoundary().x;
-		rightA = first.getBoundary().x + first.getBoundary().width;
+		rightA = first.getBoundary().x + first.getBoundary().width/2;
 		topA = first.getBoundary().y;
-		bottomA = first.getBoundary().y + first.getBoundary().height;
+		bottomA = first.getBoundary().y + first.getBoundary().height/2;
 
 		//Calculate the sides of rect B
 		leftB = second.getBoundary().x;
-		rightB = second.getBoundary().x + second.getBoundary().width;
+		rightB = second.getBoundary().x + second.getBoundary().width/2;
 		topB = second.getBoundary().y;
-		bottomB = second.getBoundary().y + second.getBoundary().height;
+		bottomB = second.getBoundary().y + second.getBoundary().height/2;
 
 		//If any of the sides from A are outside of B
 		if ( bottomA <= topB ) {
