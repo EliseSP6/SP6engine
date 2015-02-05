@@ -45,11 +45,11 @@ public class Game {
 		firstLevel.addPlayer(player);
 		
 		
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 1, 12));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 2, 12));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 3, 12));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 12));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 13));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 1, 4));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 2, 4));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 3, 4));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 4));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 3));
 
 		// firstLevel.setMusicTrack("melody7");
 

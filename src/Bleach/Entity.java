@@ -20,6 +20,7 @@ public class Entity implements EntityTranslatable {
 		this.y = y;
 		this.r = r;
 		timePreviousTick = System.nanoTime();
+		bMoving = false;
 	}
 
 	@Override

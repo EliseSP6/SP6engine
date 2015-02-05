@@ -17,7 +17,7 @@ public class TerrainBlock extends Entity implements EntityTranslatable{
 	}
 	
 	public TerrainBlock(Sprite sprite, int gridPositionX, int gridPositionY, double cellWidth, double cellHeight, double absPosX, double absPosY){
-		super(sprite, 0, 0, 0);
+		super(sprite, 0, 0, 16);	// 16 temporarily, we need to be able to check collision for blocks (rectangles).
 		this.absPosX = absPosX;
 		this.absPosY = absPosY;
 		gridX = gridPositionX;
@@ -68,5 +68,18 @@ public class TerrainBlock extends Entity implements EntityTranslatable{
 	
 	public double getGridHeight(){
 		return gridHeight;
+	}
+	
+	@Override
+	public Point2D.Double getPosition(){
+		return new Point2D.Double(absPosX + gridX * gridWidth, absPosY + gridY * gridHeight);
+	}
+	
+	@Override
+	public void setPosition(Point2D.Double position){
+		x = position.x - gridX * gridWidth;
+		y = position.y - gridY * gridHeight;
+		absPosX = x;
+		absPosY = y;
 	}
 }
