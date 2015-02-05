@@ -59,13 +59,7 @@ public class Physique {
 		boolean collisionPresent = false;
 
 		// List that will contain all the entities present on the level
-		List<EntityTranslatable> entities = new ArrayList<EntityTranslatable>();
-
-		// Accumulate objects on scene
-		entities.addAll(currentLevelSetting.getLoots());
-		entities.addAll(currentLevelSetting.getMobiles());
-		entities.addAll(currentLevelSetting.getPlayers());
-		entities.addAll(currentLevelSetting.getProjectiles());
+		List<EntityTranslatable> entities = accumulateLevelEntityTranslatables(currentLevelSetting);
 
 		// Current time in nanoseconds
 		long currentTime = System.currentTimeMillis();
@@ -79,25 +73,11 @@ public class Physique {
 		System.out.println(" which equals to: " + ((System.currentTimeMillis() - timestamp) / 1000.0) + " seconds (" + (System.currentTimeMillis() - timestamp) + " ms)");
 		// TODO FPS-bottleneck ends here!
 
-		// Iterate over objects and calculate physics
+		// Iterate over entities and calculate physics
 		for (EntityTranslatable entity : entities) {
-			// Gets current values
-			double vectorAngle = entity.getVectorAngle();
-			double velocity = entity.getVelocity();
-			double magnitude = deltaTimeSec * velocity;
 
-			// Calculates the next position based on velocity
-			Point2D.Double nextPosition = entity.getPosition();
-			if (((Entity) entity).isMoving()) {
-				nextPosition.x += Math.cos(vectorAngle) * magnitude;
-				nextPosition.y += Math.sin(vectorAngle) * magnitude;
-			}
-
-			// Re-calculates the next Y-position based on velocity + gravity
-			nextPosition.y += gravity * Math.pow(deltaTimeSec, 2);
-
-			// Sets the position to the newly calculated one
-			entity.setPosition(nextPosition);
+			// Translate entity
+			Point2D.Double newPosition = translate(entity, deltaTimeSec);
 
 			// Checks whether if the new position collides with any object in
 			// its way
@@ -112,12 +92,12 @@ public class Physique {
 
 						// Distance between the object's previous position and
 						// the position of the object it has collided with
-						double distanceBeforeCollision = distanceSquared(nextPosition.x, nextPosition.y, otherEntity.getPosition().x, otherEntity.getPosition().y);
+						double distanceBeforeCollision = distanceSquared(newPosition.x, newPosition.y, otherEntity.getPosition().x, otherEntity.getPosition().y);
 
 						// Repositions the object to the position just before it
 						// collides
-						nextPosition.x = Math.cos(vectorAngle) * distanceBeforeCollision;
-						nextPosition.y = Math.sin(vectorAngle) * distanceBeforeCollision;
+						newPosition.x = Math.cos(entity.getVectorAngle()) * distanceBeforeCollision;
+						newPosition.y = Math.sin(entity.getVectorAngle()) * distanceBeforeCollision;
 
 						// Breaks out of the loop that checks for collisions
 						break;
@@ -130,6 +110,40 @@ public class Physique {
 		timestamp = System.currentTimeMillis();
 
 		return collisionPresent;
+	}
+
+	private static Point2D.Double translate(EntityTranslatable entity, double deltaTime) {
+		// Gets current values
+		double vectorAngle = entity.getVectorAngle();
+		double velocity = entity.getVelocity();
+		double magnitude = deltaTime * velocity;
+
+		// Calculates the next position based on velocity
+		Point2D.Double nextPosition = entity.getPosition();
+		if (((Entity) entity).isMoving()) {
+			nextPosition.x += Math.cos(vectorAngle) * magnitude;
+			nextPosition.y += Math.sin(vectorAngle) * magnitude;
+		}
+
+		// Re-calculates the next Y-position based on velocity + gravity
+		nextPosition.y += gravity * Math.pow(deltaTime, 2);
+
+		// Sets the position to the newly calculated one
+		entity.setPosition(nextPosition);
+
+		return nextPosition;
+	}
+	
+	private static List<EntityTranslatable> accumulateLevelEntityTranslatables(LevelInteractable level) {
+		List<EntityTranslatable> entities = new ArrayList<>();
+
+		// Accumulate objects on scene
+		entities.addAll(level.getLoots());
+		entities.addAll(level.getMobiles());
+		entities.addAll(level.getPlayers());
+		entities.addAll(level.getProjectiles());
+
+		return entities;
 	}
 
 	public static double getGravity() {
