@@ -50,6 +50,9 @@ public class Picasso {
 		if (currentLevelSetting == null)
 			return;
 
+		double offsetX = currentLevelSetting.getViewport().x - width / 2.0; 
+		double offsetY = currentLevelSetting.getViewport().y - height / 2.0;
+		
 		Graphics graphics = canvas.getGraphics();
 
 		graphics.setColor(Color.white);
@@ -90,8 +93,8 @@ public class Picasso {
 																							// the
 																							// parallax
 																							// effect.
-			double scrollX = currentLevelSetting.getViewport().getX() / width;
-			double scrollY = currentLevelSetting.getViewport().getY() / height;
+			double scrollX = currentLevelSetting.getViewport().getX() / width * -1;
+			double scrollY = currentLevelSetting.getViewport().getY() / height * -1;
 			int tileCountX = (int) Math.ceil((double) width / background.getWidth()) + 1;
 			int tileCountY = (int) Math.ceil((double) height / background.getHeight()) + 1;
 
@@ -114,14 +117,14 @@ public class Picasso {
 			TerrainBlock tb = ((TerrainBlock) block);
 			Sprite sprite = tb.getSprite();
 
-			double x = tb.getPosition().x;
-			double y = tb.getPosition().y;
+			double x = tb.getPosition().x - offsetX;
+			double y = tb.getPosition().y - offsetY;
 
 			graphics.drawImage(sprite.getFrame(), (int) x, (int) y, sprite.getWidth(), sprite.getHeight(), null);
 			if(doDebug){
 				graphics.setColor(Color.red);
-				graphics.drawRect((int) tb.getPosition().x, (int) tb.getPosition().y, 1, 1);
-				graphics.drawRect((int) tb.getBoundary().x, (int) tb.getBoundary().y, (int) tb.getBoundary().width, (int) tb.getBoundary().height);
+				graphics.drawRect((int) (tb.getPosition().x - offsetX), (int) (tb.getPosition().y - offsetY), 1, 1);
+				graphics.drawRect((int) (tb.getBoundary().x - offsetX), (int) (tb.getBoundary().y - offsetY), (int) tb.getBoundary().width, (int) tb.getBoundary().height);
 			}
 		}
 
@@ -142,20 +145,23 @@ public class Picasso {
 						// try to draw anything.
 			Point spriteOrigin = entity.getSprite().getOrigin();
 
-			graphics.drawImage(entity.getSprite().getFrame(), (int) entity.getPosition().x - spriteOrigin.x, (int) entity.getPosition().y - spriteOrigin.y, entity.getSprite().getWidth(), entity.getSprite().getHeight(), null);
+			graphics.drawImage(entity.getSprite().getFrame(), (int) (entity.getPosition().x - spriteOrigin.x - offsetX), (int) (entity.getPosition().y - spriteOrigin.y - offsetY), entity.getSprite().getWidth(), entity.getSprite().getHeight(), null);
 			if(doDebug){
 				graphics.setColor(Color.red);
-				graphics.drawRect((int) entity.getPosition().x, (int) entity.getPosition().y, 1, 1);
-				graphics.drawRect((int) entity.getBoundary().x, (int) entity.getBoundary().y, (int) entity.getBoundary().width, (int) entity.getBoundary().height);
+				graphics.drawRect((int) (entity.getPosition().x - offsetX), (int) (entity.getPosition().y - offsetY), 1, 1);
+				graphics.drawRect((int) (entity.getBoundary().x - offsetX), (int) (entity.getBoundary().y - offsetY), (int) entity.getBoundary().width, (int) entity.getBoundary().height);
 			}
 		}
 
 		// Handle debug data
 		if (doDebug) {
-			graphics.setColor(Color.black);
+			
 			int lineNumber = 0;
 			for (String line : debug) {
-				graphics.drawString(line, 10, 10 + 10 * lineNumber);
+				graphics.setColor(Color.black);
+				graphics.drawString(line, 6, 16 + 10 * lineNumber);
+				graphics.setColor(Color.white);
+				graphics.drawString(line, 5, 15 + 10 * lineNumber);
 				lineNumber++;
 			}
 		}
