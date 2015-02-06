@@ -9,6 +9,9 @@
 		},
 		{
 			"texturekey":"clouds"
+		},
+		{
+			"texturekey":"snow"
 		}
 	],
 	"tiles":

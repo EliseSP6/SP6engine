@@ -41,5 +41,9 @@
 	{
 		"key":"grassblock_right",
 		"filename":"grassblock_right.png"
+	},
+	{
+		"key":"snow",
+		"filename":"snow.png"
 	}
 ]

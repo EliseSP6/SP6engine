@@ -65,7 +65,7 @@ public class Picasso {
 		for (BufferedImage background : backgrounds) {
 			// Calculate the position of this background and tile it if needed.
 			int parallaxDistance = currentLevelSetting.getBackgroundParallaxDistance();
-			double parallaxModifier = (currentBackgroundNumber * currentBackgroundNumber) * (parallaxDistance / 80.0); // Do
+			double parallaxModifier =  currentBackgroundNumber / (parallaxDistance / 1.5); // Do
 																							// some
 																							// math
 																							// to
@@ -95,11 +95,11 @@ public class Picasso {
 																							// effect.
 			double scrollX = (currentLevelSetting.getViewport().getX() - width / 2.0) / width * -1;
 			double scrollY = (currentLevelSetting.getViewport().getY() - height / 2.0) / height * -1;
-			int tileCountX = (int) Math.ceil((double) width / background.getWidth());
-			int tileCountY = (int) Math.ceil((double) height / background.getHeight());
+			int tileCountX = (int) Math.ceil((double) width / background.getWidth() + 1);
+			int tileCountY = (int) Math.ceil((double) height / background.getHeight() + 1);
 
-			int startX = (int) ((background.getWidth() * scrollX * parallaxModifier) % background.getWidth());
-			int startY = (int) ((background.getHeight() * scrollY * parallaxModifier) % background.getHeight());
+			int startX = (int) ((width * scrollX * parallaxModifier) % background.getWidth());
+			int startY = (int) ((height * scrollY * parallaxModifier) % background.getHeight());
 
 			for (int i = 0; i < tileCountX; i++) {
 				for (int j = 0; j < tileCountY; j++) {
