@@ -248,6 +248,7 @@ public class Bleach extends JPanel {
 				/* Physics engine */
 				Physique.step(activeLevel);
 
+				
 				/* Mobiles heartbeat */
 				for (EntityTranslatable mob : activeLevel.getMobiles()) {
 					((Entity) mob).tick(activeLevel);
@@ -255,7 +256,9 @@ public class Bleach extends JPanel {
 
 				/* Player Heartbeat */
 				for (EntityTranslatable player : activeLevel.getPlayers()) {
-					((Entity) player).tick(activeLevel);
+					Entity p = ((Entity)player);
+					p.tick(activeLevel);
+					activeLevel.focusEntity(p, true);
 				}
 
 			}

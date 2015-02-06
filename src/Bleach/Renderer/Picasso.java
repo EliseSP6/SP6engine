@@ -58,10 +58,11 @@ public class Picasso {
 		// Render level backgrounds using the parallax effect.
 		int currentBackgroundNumber = 1;
 		List<BufferedImage> backgrounds = currentLevelSetting.getBackgrounds();
+		
 		for (BufferedImage background : backgrounds) {
 			// Calculate the position of this background and tile it if needed.
 			int parallaxDistance = currentLevelSetting.getBackgroundParallaxDistance();
-			double parallaxModifier = currentBackgroundNumber * (parallaxDistance / 10); // Do
+			double parallaxModifier = (currentBackgroundNumber * currentBackgroundNumber) * (parallaxDistance / 80.0); // Do
 																							// some
 																							// math
 																							// to
@@ -91,15 +92,11 @@ public class Picasso {
 																							// effect.
 			double scrollX = currentLevelSetting.getViewport().getX() / width;
 			double scrollY = currentLevelSetting.getViewport().getY() / height;
-			int tileCountX = (int) Math.ceil((double) width / background.getWidth());
-			int tileCountY = (int) Math.ceil((double) height / background.getHeight());
+			int tileCountX = (int) Math.ceil((double) width / background.getWidth()) + 1;
+			int tileCountY = (int) Math.ceil((double) height / background.getHeight()) + 1;
 
 			int startX = (int) ((background.getWidth() * scrollX * parallaxModifier) - background.getWidth());
 			int startY = (int) ((background.getHeight() * scrollY * parallaxModifier) - background.getHeight());
-			
-			// Temporary fix:
-			if(tileCountX == 1) startX = 0;
-			if(tileCountY == 1) startY = 0;
 
 			for (int i = 0; i < tileCountX; i++) {
 				for (int j = 0; j < tileCountY; j++) {

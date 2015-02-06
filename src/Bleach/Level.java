@@ -38,7 +38,7 @@ public class Level implements LevelInteractable {
 		isScrolling = false;
 		scrollVelocity = 0;
 		scrollAngle = 0;
-		timePreviousScroll = System.nanoTime();
+		timePreviousScroll = System.currentTimeMillis();
 
 		mobiles = new ArrayList<>();
 		loots = new ArrayList<>();
@@ -110,12 +110,27 @@ public class Level implements LevelInteractable {
 			 * Viewport is set to auto-scroll. Let's calculate the new position
 			 * based on the delta-time.
 			 */
-			viewport.x += Math.cos(scrollAngle) * (scrollVelocity * (System.nanoTime() - timePreviousScroll));
-			viewport.y += Math.sin(scrollAngle) * (scrollVelocity * (System.nanoTime() - timePreviousScroll));
-			timePreviousScroll = System.nanoTime();
+			viewport.x += Math.cos(scrollAngle) * (scrollVelocity * (System.currentTimeMillis() - timePreviousScroll));
+			viewport.y += Math.sin(scrollAngle) * (scrollVelocity * (System.currentTimeMillis() - timePreviousScroll));
+			timePreviousScroll = System.currentTimeMillis();
 		}
 
 		return viewport;
+	}
+	
+	public void focusEntity(Entity entity, boolean center){
+		if(center){
+			viewport.x = entity.x;
+			viewport.y = entity.y;
+
+			// Limit viewport to screen
+//			viewport.x = viewport.x < 0 ? 0 : viewport.x;
+//			viewport.y = viewport.y < 0 ? 0 : viewport.y;
+//			viewport.x = viewport.x > textureWidth - viewport.w ? textureWidth - viewport.w : viewport.x;
+//			viewport.y = viewport.y > textureHeight - viewport.h ? textureHeight - viewport.h : viewport.y;
+		}else{
+			
+		}
 	}
 
 	public void addBackground(BufferedImage img) {
