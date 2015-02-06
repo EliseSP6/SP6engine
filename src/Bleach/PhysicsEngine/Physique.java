@@ -158,22 +158,68 @@ public class Physique {
 							// Distance between the object's previous position
 							// and
 							// the position of the object it has collided with
-							double distanceBeforeCollision = distanceSquared(oldPosition.x, oldPosition.y, otherEntity.getPosition().x, otherEntity.getPosition().y);
-
-							// Repositions the object to the position just
-							// before it
-							// collides
-							// newPosition.x = Math.cos(entity.getVectorAngle())
-							// * distanceBeforeCollision;
-							// newPosition.y = Math.sin(entity.getVectorAngle())
-							// * distanceBeforeCollision;
-
-							double reverseAngle = Math.atan2(otherEntity.getPosition().y - oldPosition.y, otherEntity.getPosition().x - oldPosition.x) + Math.PI;
-							newPosition.x += Math.cos(reverseAngle) * distanceBeforeCollision;
-							newPosition.y += Math.sin(reverseAngle) * distanceBeforeCollision;
-
+							if(((Entity)otherEntity).hasRectangularCollisionModel()){
+								boolean collidedX, collidedY;
+								double deltaDistanceX = 0, deltaDistanceY = 0;
+								
+								// Handle Y first
+								if(entity.getBoundary().y + entity.getBoundary().getHeight() > otherEntity.getBoundary().y && entity.getBoundary().y < otherEntity.getBoundary().y + otherEntity.getBoundary().height){
+									// Collision from above
+									deltaDistanceY = entity.getBoundary().y + entity.getBoundary().getHeight() - otherEntity.getBoundary().y;
+									//newPosition.y -= deltaDistanceY;
+									deltaDistanceY *= -1;
+									collidedY = true;
+				System.out.println("cc " + otherEntity);
+								}else{
+									// Collision from below
+									deltaDistanceY = otherEntity.getBoundary().y + otherEntity.getBoundary().getHeight() - entity.getBoundary().y;
+									//newPosition.y += deltaDistanceY;
+									collidedY = true;
+			System.out.println("cc2 " + collidedY);
+								}
+								
+								// Handle X
+								//if(!collidedY){
+									if(entity.getBoundary().x + entity.getBoundary().width > otherEntity.getBoundary().x && entity.getBoundary().x < otherEntity.getBoundary().x + otherEntity.getBoundary().width){
+										deltaDistanceX = entity.getBoundary().x + entity.getBoundary().getWidth() - otherEntity.getBoundary().x;
+										//newPosition.x += deltaDistanceX;
+										deltaDistanceX *= -1;
+					System.out.println("c " + collidedY);
+									}else{
+										deltaDistanceX = otherEntity.getBoundary().x + otherEntity.getBoundary().getWidth() - entity.getBoundary().x;
+										//newPosition.x += deltaDistanceX;
+					System.out.println("c2 " + collidedY);
+									}
+								//}
+								
+								if(deltaDistanceX > deltaDistanceY){
+									newPosition.y += deltaDistanceY;
+								}else{
+									newPosition.x += deltaDistanceX;
+								}
+								
+								
+								
+								
+								
+							}else{
+								double distanceBeforeCollision = distanceSquared(oldPosition.x, oldPosition.y, otherEntity.getPosition().x, otherEntity.getPosition().y);
+								distanceBeforeCollision -= (entity.getRadius() + otherEntity.getRadius());
+								
+								// Repositions the object to the position just
+								// before it
+								// collides
+								// newPosition.x = Math.cos(entity.getVectorAngle())
+								// * distanceBeforeCollision;
+								// newPosition.y = Math.sin(entity.getVectorAngle())
+								// * distanceBeforeCollision;
+	
+								double reverseAngle = Math.atan2(otherEntity.getPosition().y - oldPosition.y, otherEntity.getPosition().x - oldPosition.x) + Math.PI;
+								newPosition.x += Math.cos(reverseAngle) * distanceBeforeCollision;
+								newPosition.y += Math.sin(reverseAngle) * distanceBeforeCollision;
+							}
 							// entity.setPosition(newPosition);
-							entity.setPosition(oldPosition);
+							entity.setPosition(newPosition);
 							// Breaks out of the loop that checks for collisions
 							break;
 						}

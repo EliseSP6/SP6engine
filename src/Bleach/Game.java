@@ -41,11 +41,11 @@ public class Game {
 		firstLevel.addMobile(blobby);
 		firstLevel.addPlayer(player);
 
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 1, 14));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 2, 14));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 3, 14));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 14));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 13));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 1, 5));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 2, 5));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 3, 5));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 5));
+		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 4));
 
 		// firstLevel.setMusicTrack("melody7");
 
@@ -130,7 +130,7 @@ public class Game {
 
 			@Override
 			public void onCollision(Entity collidedWith) {
-				System.out.println("Krockade med " + collidedWith.toString());
+				//System.out.println("Krockade med " + collidedWith.toString());
 			}
 		
 		});

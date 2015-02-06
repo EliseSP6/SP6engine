@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import sun.java2d.loops.DrawRect;
 import Bleach.Entity;
 import Bleach.EntityTranslatable;
 import Bleach.LevelInteractable;
