@@ -137,7 +137,7 @@ public class Level implements LevelInteractable {
 				viewport.y = (int)entity.y - screenHeight / 2.0 + padding;
 			}
 			if (entity.y < viewport.y - screenHeight / 2.0 + padding){
-				viewport.y = (int)entity.y + screenWidth / 2.0 - padding;
+				viewport.y = (int)entity.y + screenHeight / 2.0 - padding;
 			}
 		}
 		
