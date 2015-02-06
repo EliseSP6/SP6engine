@@ -118,6 +118,11 @@ public class Picasso {
 			double y = tb.getPosition().y;
 
 			graphics.drawImage(sprite.getFrame(), (int) x, (int) y, sprite.getWidth(), sprite.getHeight(), null);
+			if(doDebug){
+				graphics.setColor(Color.red);
+				graphics.drawRect((int) tb.getPosition().x, (int) tb.getPosition().y, 1, 1);
+				graphics.drawRect((int) tb.getBoundary().x, (int) tb.getBoundary().y, (int) tb.getBoundary().width, (int) tb.getBoundary().height);
+			}
 		}
 
 		// List that will contain all the entities present on the level
