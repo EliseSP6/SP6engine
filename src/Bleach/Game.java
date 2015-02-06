@@ -11,6 +11,7 @@ import Bleach.InputManager.Receptionist;
 import Bleach.InputManager.Receptionist.KeyBinding;
 import Bleach.PhysicsEngine.Physique;
 import Bleach.PhysicsEngine.Physique.CollisionListener;
+import Bleach.PhysicsEngine.Physique.ExternalForce;
 
 /*
  * This is for testing the game engine.
@@ -75,7 +76,7 @@ public class Game {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				blobby.setVectorAngle(Math.toRadians(180));
+				blobby.getForce().setVectorAngle(Math.toRadians(180));
 				System.out.println("CTRL + RIGHT = pushed");
 			}
 		}));
@@ -94,7 +95,7 @@ public class Game {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				player.setVectorAngle(Math.PI);
+				player.getForce().setVectorAngle(Math.PI);
 				player.isMoving(true);
 				System.out.println("Player moving to the left.");
 			}
@@ -112,7 +113,7 @@ public class Game {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				player.setVectorAngle(0);
+				player.getForce().setVectorAngle(0);
 				player.isMoving(true);
 				System.out.println("Player moving to the right.");
 			}
@@ -126,6 +127,16 @@ public class Game {
 			}
 		}));
 
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("released SPACE"), "released SPACE", new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (player.isLanded()) {
+					player.addExternalForce(new ExternalForce(Math.toRadians(90), 20));
+				}else
+				System.out.println("NO JUMP");
+			}
+		}));
 
 		((Entity) player).setOnCollision(new CollisionListener() {
 

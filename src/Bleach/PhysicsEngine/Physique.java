@@ -3,6 +3,7 @@ package Bleach.PhysicsEngine;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import Bleach.Entity;
@@ -31,73 +32,73 @@ public class Physique {
 		else
 			return circularCollisionDetection(first, second);
 	}
-	
+
 	private static boolean circularCollisionDetection(EntityTranslatable first, EntityTranslatable second) {
 		// Closest point on collision box
-				Point2D.Double closestPoint = new Point2D.Double(0, 0);
+		Point2D.Double closestPoint = new Point2D.Double(0, 0);
 
-				// Find closest x offset
-				if (first.getPosition().x < second.getPosition().x) {
-					closestPoint.x = second.getPosition().x;
-				} else if (first.getPosition().x > second.getPosition().x + second.getRadius()) {
-					closestPoint.x = second.getPosition().x + second.getRadius();
-				} else {
-					closestPoint.x = first.getPosition().x;
-				}
+		// Find closest x offset
+		if (first.getPosition().x < second.getPosition().x) {
+			closestPoint.x = second.getPosition().x;
+		} else if (first.getPosition().x > second.getPosition().x + second.getRadius()) {
+			closestPoint.x = second.getPosition().x + second.getRadius();
+		} else {
+			closestPoint.x = first.getPosition().x;
+		}
 
-				// Find closest y offset
-				if (first.getPosition().y < second.getPosition().y) {
-					closestPoint.y = second.getPosition().y;
-				} else if (first.getPosition().y > second.getPosition().y + second.getRadius()) {
-					closestPoint.y = second.getPosition().y + second.getRadius();
-				} else {
-					closestPoint.y = first.getPosition().y;
-				}
+		// Find closest y offset
+		if (first.getPosition().y < second.getPosition().y) {
+			closestPoint.y = second.getPosition().y;
+		} else if (first.getPosition().y > second.getPosition().y + second.getRadius()) {
+			closestPoint.y = second.getPosition().y + second.getRadius();
+		} else {
+			closestPoint.y = first.getPosition().y;
+		}
 
-				// If the closest point is inside the circle, the circles have collided
-				if (distanceSquared(first.getPosition().x, first.getPosition().y, closestPoint.x, closestPoint.y) < first.getRadius() * 2) {
-					return true;
-				}
-				return false;
+		// If the closest point is inside the circle, the circles have collided
+		if (distanceSquared(first.getPosition().x, first.getPosition().y, closestPoint.x, closestPoint.y) < first.getRadius() * 2) {
+			return true;
+		}
+		return false;
 	}
-	
+
 	private static boolean rectangularCollisionDetection(EntityTranslatable first, EntityTranslatable second) {
-		//The sides of the rectangles
+		// The sides of the rectangles
 		double leftA, leftB;
 		double rightA, rightB;
 		double topA, topB;
 		double bottomA, bottomB;
 
-		//Calculate the sides of rect A
+		// Calculate the sides of rect A
 		leftA = first.getBoundary().x;
 		rightA = first.getBoundary().x + first.getBoundary().width;
 		topA = first.getBoundary().y;
 		bottomA = first.getBoundary().y + first.getBoundary().height;
 
-		//Calculate the sides of rect B
+		// Calculate the sides of rect B
 		leftB = second.getBoundary().x;
 		rightB = second.getBoundary().x + second.getBoundary().width;
 		topB = second.getBoundary().y;
 		bottomB = second.getBoundary().y + second.getBoundary().height;
 
-		//If any of the sides from A are outside of B
-		if ( bottomA <= topB ) {
+		// If any of the sides from A are outside of B
+		if (bottomA <= topB) {
 			return false;
 		}
 
-		if ( topA >= bottomB ) {
+		if (topA >= bottomB) {
 			return false;
 		}
 
-		if ( rightA <= leftB ) {
+		if (rightA <= leftB) {
 			return false;
 		}
 
-		if ( leftA >= rightB ) {
+		if (leftA >= rightB) {
 			return false;
 		}
 
-		//If none of the sides from A are outside B
+		// If none of the sides from A are outside B
 		return true;
 	}
 
@@ -112,8 +113,8 @@ public class Physique {
 
 		// Current time in nanoseconds
 		long currentTime = System.currentTimeMillis();
-		double deltaTimeMilli = currentTime - timestamp;
-		double deltaTimeSec = deltaTimeMilli / 1000.0;
+		long deltaTimeMilli = currentTime - timestamp;
+		long deltaTimeSec = deltaTimeMilli / 1000L;
 
 		// TODO FPS-bottleneck starts here!
 		// Print delta time using System.nanoTime()
@@ -131,7 +132,7 @@ public class Physique {
 
 			Point2D.Double oldPosition = entity.getPosition();
 			// Translate entity
-			Point2D.Double newPosition = translate(entity, deltaTimeSec);
+			Point2D.Double newPosition = translate((Entity) entity, deltaTimeSec);
 
 			// Checks whether if the new position collides with any object in
 			// its way
@@ -148,58 +149,60 @@ public class Physique {
 								((Entity) entity).getCollisionListener().onCollision((Entity) otherEntity);
 							if (((Entity) otherEntity).getCollisionListener() != null)
 								((Entity) otherEntity).getCollisionListener().onCollision((Entity) entity);
-							
-							
-							
-							
+
 							// Flag sets true
 							collisionPresent = true;
 
 							// Distance between the object's previous position
 							// and
 							// the position of the object it has collided with
-							if(((Entity)otherEntity).hasRectangularCollisionModel()){
+							if (((Entity) otherEntity).hasRectangularCollisionModel()) {
 								/*
-								 * Handle collision with rectangles.
-								 * !!This is buggy!!
-								 * 
-								 * */
+								 * Handle collision with rectangles. !!This is
+								 * buggy!!
+								 */
 								double deltaDistanceX = 0, deltaDistanceY = 0;
-								
+
 								// Handle Y first
-								if(entity.getBoundary().y + entity.getBoundary().getHeight() >= otherEntity.getBoundary().y && entity.getBoundary().y <= otherEntity.getBoundary().y + otherEntity.getBoundary().height){
+								if (entity.getBoundary().y + entity.getBoundary().getHeight() >= otherEntity.getBoundary().y && entity.getBoundary().y <= otherEntity.getBoundary().y + otherEntity.getBoundary().height) {
 									// Collision from above
 									deltaDistanceY = entity.getBoundary().y + entity.getBoundary().getHeight() - otherEntity.getBoundary().y;
+
+									// Houston has landed
+									((Entity) entity).setLanded(true);
 								}
-								
+
 								// Handle X
-								if(entity.getBoundary().x + entity.getBoundary().width >= otherEntity.getBoundary().x && entity.getBoundary().x <= otherEntity.getBoundary().x + otherEntity.getBoundary().width){
+								if (entity.getBoundary().x + entity.getBoundary().width >= otherEntity.getBoundary().x && entity.getBoundary().x <= otherEntity.getBoundary().x + otherEntity.getBoundary().width) {
 									deltaDistanceX = entity.getBoundary().x + entity.getBoundary().getWidth() - otherEntity.getBoundary().x;
 								}
-								
-								if(deltaDistanceX > deltaDistanceY){
+
+								if (deltaDistanceX > deltaDistanceY) {
 									newPosition.y -= deltaDistanceY;
-								}else{
+								} else {
 									newPosition.x -= deltaDistanceX;
 								}
-							}else{
+							} else {
 								double distanceBeforeCollision = distanceSquared(oldPosition.x, oldPosition.y, otherEntity.getPosition().x, otherEntity.getPosition().y);
 								distanceBeforeCollision -= (entity.getRadius() + otherEntity.getRadius());
-								
+
 								// Repositions the object to the position just
 								// before it
 								// collides
-								// newPosition.x = Math.cos(entity.getVectorAngle())
+								// newPosition.x =
+								// Math.cos(entity.getVectorAngle())
 								// * distanceBeforeCollision;
-								// newPosition.y = Math.sin(entity.getVectorAngle())
+								// newPosition.y =
+								// Math.sin(entity.getVectorAngle())
 								// * distanceBeforeCollision;
-	
+
 								double reverseAngle = Math.atan2(otherEntity.getPosition().y - oldPosition.y, otherEntity.getPosition().x - oldPosition.x) + Math.PI;
 								newPosition.x += Math.cos(reverseAngle) * distanceBeforeCollision;
 								newPosition.y += Math.sin(reverseAngle) * distanceBeforeCollision;
 							}
 							// entity.setPosition(newPosition);
 							entity.setPosition(newPosition);
+
 							// Breaks out of the loop that checks for collisions
 							break;
 						}
@@ -214,26 +217,39 @@ public class Physique {
 		return collisionPresent;
 	}
 
-	private static Point2D.Double translate(EntityTranslatable entity, double deltaTime) {
+	private static Point2D.Double translate(Entity entity, long deltaTime) {
 		// Gets current values
-		double vectorAngle = entity.getVectorAngle();
-		double velocity = entity.getVelocity();
-		double magnitude = deltaTime * velocity;
+		double vectorAngle = entity.getForce().getVectorAngle();
+		double deltaVelocity = entity.getForce().getMagnitude(deltaTime);
 
 		// Calculates the next position based on velocity
 		Point2D.Double nextPosition = entity.getPosition();
-		if (((Entity) entity).isMoving()) {
-			nextPosition.x += Math.cos(vectorAngle) * magnitude;
-			nextPosition.y += Math.sin(vectorAngle) * magnitude;
+		if (entity.isMoving()) {
+			nextPosition.x += Math.cos(vectorAngle) * deltaVelocity;
+			nextPosition.y += Math.sin(vectorAngle) * deltaVelocity;
 		}
 
 		// Re-calculates the next Y-position based on velocity + gravity
-		if (entity.getMass() > 0)
+		if (entity.isLanded() == false && entity.getMass() > 0)
 			nextPosition.y += gravity * Math.pow(deltaTime, 2);
+		
+		Iterator<ExternalForce> externalForceIt = entity.getExternalForces().iterator();
+		ExternalForce externalForce;
+		while(externalForceIt.hasNext()) {
+			externalForce = externalForceIt.next();
+			
+			nextPosition.x += Math.cos(externalForce.getVectorAngle()) * externalForce.getMagnitude(deltaTime);
+			nextPosition.y += Math.sin(externalForce.getVectorAngle()) * externalForce.getMagnitude(deltaTime);
+			
+			if (externalForce.isExhaused())
+				externalForceIt.remove();
+		}
 
 		// Sets the position to the newly calculated one
 		entity.setPosition(nextPosition);
 
+		System.out.println(nextPosition.x);
+		
 		return nextPosition;
 	}
 
@@ -257,8 +273,68 @@ public class Physique {
 	public static void setGravity(double gravity) {
 		Physique.gravity = gravity;
 	}
-	
-	public static interface CollisionListener{
+
+	public static interface CollisionListener {
 		public void onCollision(Entity collidedWith);
+	}
+
+	public static class Force {
+		private double vectorAngle;
+		private double velocity;
+
+		public Force(double vectorAngle, double velocity) {
+			this.vectorAngle = vectorAngle;
+			this.velocity = velocity;
+		}
+
+		public double getVectorAngle() {
+			return vectorAngle;
+		}
+
+		public void setVectorAngle(double vectorAngle) {
+			this.vectorAngle = vectorAngle;
+		}
+
+		public double getVelocity() {
+			return velocity;
+		}
+
+		public void setVelocity(double velocity) {
+			this.velocity = velocity;
+		}
+
+		public double getMagnitude(long deltaTime) {
+			return velocity * deltaTime;
+		}
+	}
+
+	public static class ExternalForce {
+		private Force force;
+		private boolean isExhausted = false;
+
+		public ExternalForce(double vectorAngle, double deltaVelocity) {
+			this.force = new Force(vectorAngle, deltaVelocity);
+		}
+
+		public double getVectorAngle() {
+			return force.getVectorAngle();
+		}
+
+		public double getMagnitude(long deltaTime) {
+			double magnitude = force.getMagnitude(deltaTime);
+
+			double newVelocity = force.getVelocity() - magnitude;
+			if (newVelocity < 0.0) {
+				magnitude = magnitude + newVelocity;
+				newVelocity = 0.0;
+				isExhausted = true;
+			}
+
+			return magnitude;
+		}
+		 
+		public boolean isExhaused() {
+			return isExhausted;
+		}
 	}
 }

@@ -8,11 +8,11 @@ public abstract class EntityLiving extends Entity {
 									// attacks.
 	protected Inventory inventory;
 
-	protected EntityLiving(Sprite sprite, double x, double y, double r, double health, double attackPower, double speed) {
+	protected EntityLiving(Sprite sprite, double x, double y, double r, double health, double attackPower, double velocity) {
 		super(sprite, x, y, r);
 		this.health = this.healthMax = health;
 		this.attackPower = attackPower;
-		this.velocity = speed;
+		this.getForce().setVelocity(velocity);
 		inventory = new Inventory();
 		mass = 1;
 	}

@@ -4,17 +4,23 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Bleach.PhysicsEngine.Physique.CollisionListener;
+import Bleach.PhysicsEngine.Physique.ExternalForce;
+import Bleach.PhysicsEngine.Physique.Force;
 
 public class Entity implements EntityTranslatable {
 	protected Sprite sprite;
 	protected double x, y;
 	protected final double r;
 	protected boolean hasRectangularCollisionModel = false;
+	protected boolean isLanded = false;
+	protected Force internalForce = new Force(90, 0);
+	protected List<ExternalForce> externalForces = new ArrayList<>();
 	protected CollisionListener onCollision = null;
 
-	protected double vectorAngle = 0;
-	protected double velocity = 0;
 	protected double mass = 0;
 
 	protected long timePreviousTick;
@@ -51,26 +57,6 @@ public class Entity implements EntityTranslatable {
 	}
 	
 	@Override
-	public void setVectorAngle(double vectorAngle) {
-		this.vectorAngle = vectorAngle;
-	}
-
-	@Override
-	public double getVectorAngle() {
-		return vectorAngle;
-	}
-
-	@Override
-	public void setVelocity(double velocity) {
-		this.velocity = velocity;
-	}
-
-	@Override
-	public double getVelocity() {
-		return velocity;
-	}
-
-	@Override
 	public void setMass(double mass) {
 		this.mass = mass;
 	}
@@ -84,10 +70,12 @@ public class Entity implements EntityTranslatable {
 		return sprite;
 	}
 
+	@Override
 	public boolean isMoving() {
 		return bMoving;
 	}
 	
+	@Override
 	public void isMoving(boolean setMoving){
 		bMoving = setMoving;
 	}
@@ -113,11 +101,38 @@ public class Entity implements EntityTranslatable {
 		this.hasRectangularCollisionModel = hasRectangularCollisionModel;
 	}
 
+	@Override
 	public CollisionListener getCollisionListener() {
 		return onCollision;
 	}
 
+	@Override
 	public void setOnCollision(CollisionListener onCollision) {
 		this.onCollision = onCollision;
+	}
+
+	@Override
+	public boolean isLanded() {
+		return isLanded;
+	}
+
+	@Override
+	public void setLanded(boolean isLanded) {
+		this.isLanded = isLanded;
+	}
+
+	@Override
+	public void addExternalForce(ExternalForce externalForce) {
+		this.externalForces.add(externalForce);
+	}
+	
+	@Override
+	public List<ExternalForce> getExternalForces(){
+		return this.externalForces; 
+	}
+
+	@Override
+	public Force getForce() {
+		return internalForce;
 	}
 }

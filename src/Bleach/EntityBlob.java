@@ -28,7 +28,7 @@ public class EntityBlob extends EntityLiving {
 			System.out.println("Blob AI!");
 			bMoving = !bMoving;
 			if (bMoving)
-				setVectorAngle((Math.random()) * (2 * Math.PI));
+				getForce().setVectorAngle((Math.random()) * (2 * Math.PI));
 		}
 		// end BS AI
 	}

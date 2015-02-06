@@ -1,28 +1,43 @@
 package Bleach;
 
-import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
+
+import Bleach.PhysicsEngine.Physique.CollisionListener;
+import Bleach.PhysicsEngine.Physique.ExternalForce;
+import Bleach.PhysicsEngine.Physique.Force;
 
 public interface EntityTranslatable {
 
-	public Point2D.Double getPosition();
+	public void addExternalForce(ExternalForce externalForce);
 
-	public void setPosition(Point2D.Double position);
-
-	public double getRadius();
-	
 	public Rectangle2D.Double getBoundary();
 
-	public void setVectorAngle(double vectorAngle);
+	public CollisionListener getCollisionListener();
 
-	public double getVectorAngle();
+	public List<ExternalForce> getExternalForces();
 
-	public void setVelocity(double velocity);
+	public Force getForce();
 
-	public double getVelocity();
+	public double getMass();
+
+	public Point2D.Double getPosition();
+
+	public double getRadius();
+
+	public boolean isLanded();
+
+	public boolean isMoving();
+
+	public void isMoving(boolean setMoving);
+
+	public void setLanded(boolean isLanded);
 
 	public void setMass(double mass);
 
-	public double getMass();
+	public void setOnCollision(CollisionListener onCollision);
+
+	public void setPosition(Point2D.Double position);
+
 }
