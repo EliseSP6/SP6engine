@@ -165,6 +165,7 @@ public class Bleach extends JPanel {
 
 	public void addLevel(Level level) {
 		if (level != null) {
+			level.setScreenSize(winWidth, winHeight);
 			levels.put(level.getKey(), level);
 
 			// No active level has been set, let's set it to this one.
@@ -258,7 +259,7 @@ public class Bleach extends JPanel {
 				for (EntityTranslatable player : activeLevel.getPlayers()) {
 					Entity p = ((Entity)player);
 					p.tick(activeLevel);
-					activeLevel.focusEntity(p, true);
+					activeLevel.focusEntity(p, false);
 				}
 
 			}

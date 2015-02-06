@@ -20,6 +20,7 @@ public class Level implements LevelInteractable {
 	private Point2D.Double viewport; // Offset for scrolling. This points at the
 										// middle of the viewport.
 	private int width, height;
+	private int screenWidth, screenHeight;
 	private int parallaxDistance; // How far away the background layers are.
 									// Used for the parallaxing of backgrounds.
 	private String key; // Identifier for this level.
@@ -48,6 +49,7 @@ public class Level implements LevelInteractable {
 		terrains = new ArrayList<TerrainBlock>();
 
 		viewport = new Point2D.Double(0, 0);
+		screenWidth = screenHeight = 1000;
 	}
 
 	@Override
@@ -119,18 +121,39 @@ public class Level implements LevelInteractable {
 	}
 	
 	public void focusEntity(Entity entity, boolean center){
+		int padding = 150;
+		
 		if(center){
 			viewport.x = entity.x;
 			viewport.y = entity.y;
-
-			// Limit viewport to screen
-//			viewport.x = viewport.x < 0 ? 0 : viewport.x;
-//			viewport.y = viewport.y < 0 ? 0 : viewport.y;
-//			viewport.x = viewport.x > textureWidth - viewport.w ? textureWidth - viewport.w : viewport.x;
-//			viewport.y = viewport.y > textureHeight - viewport.h ? textureHeight - viewport.h : viewport.y;
 		}else{
-			
+			if (entity.x > viewport.x - screenWidth / 2.0 + screenWidth - padding){
+				viewport.x = (int)entity.x - screenWidth / 2.0 + padding;
+			}
+			if (entity.x < viewport.x - screenWidth / 2.0 + padding){
+				viewport.x = (int)entity.x + screenWidth / 2.0 - padding;
+			}
+			if (entity.y > viewport.y - screenHeight / 2.0 + screenHeight - padding){
+				viewport.y = (int)entity.y - screenHeight / 2.0 + padding;
+			}
+			if (entity.y < viewport.y - screenHeight / 2.0 + padding){
+				viewport.y = (int)entity.y + screenWidth / 2.0 - padding;
+			}
 		}
+		
+		// Limit viewport to screen
+		viewport.x = viewport.x - screenWidth / 2.0 < 0 ? 0 + screenWidth / 2.0 : viewport.x;
+		viewport.y = viewport.y - screenHeight / 2.0 < 0 ? 0 + screenHeight / 2.0 : viewport.y;
+		viewport.x = viewport.x + screenWidth / 2.0 > width ? width - screenWidth / 2.0 : viewport.x;
+		viewport.y = viewport.y + screenHeight / 2.0 > height ? height - screenHeight / 2.0 : viewport.y;
+	}
+	
+	public void setScreenSize(int width, int height){
+		/*
+		 * Tells the level the dimensions of the screen.
+		 * */
+		screenWidth = width;
+		screenHeight = height;
 	}
 
 	public void addBackground(BufferedImage img) {
