@@ -21,6 +21,9 @@ public interface EntityTranslatable {
 	public Force getForce();
 
 	public double getMass();
+	
+	public double getWeight();
+	public void setWeight(double weight);
 
 	public Point2D.Double getPosition();
 

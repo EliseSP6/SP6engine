@@ -1,6 +1,5 @@
 package Bleach.PhysicsEngine;
 
-import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,7 +16,7 @@ public class Physique {
 	private static long timestamp_OLD = System.nanoTime();
 
 	private static long timestamp = System.currentTimeMillis();
-	private static double gravity = 1000;
+	private static double gravity = 1.0;
 
 	public static double distanceSquared(double x1, double y1, double x2, double y2) {
 		double dX = x2 - x1;
@@ -114,8 +113,8 @@ public class Physique {
 		// Current time in nanoseconds
 		long currentTime = System.currentTimeMillis();
 		long deltaTimeMilli = currentTime - timestamp;
-		long deltaTimeSec = deltaTimeMilli / 1000L;
-
+		double deltaTimeSec = deltaTimeMilli / 1000.0;
+		
 		// TODO FPS-bottleneck starts here!
 		// Print delta time using System.nanoTime()
 		// System.out.print("Tick time(render): " + ((System.nanoTime() -
@@ -202,7 +201,7 @@ public class Physique {
 							}
 							// entity.setPosition(newPosition);
 							entity.setPosition(newPosition);
-
+							
 							// Breaks out of the loop that checks for collisions
 							break;
 						}
@@ -217,7 +216,7 @@ public class Physique {
 		return collisionPresent;
 	}
 
-	private static Point2D.Double translate(Entity entity, long deltaTime) {
+	private static Point2D.Double translate(Entity entity, double deltaTime) {
 		// Gets current values
 		double vectorAngle = entity.getForce().getVectorAngle();
 		double deltaVelocity = entity.getForce().getMagnitude(deltaTime);
@@ -230,26 +229,28 @@ public class Physique {
 		}
 
 		// Re-calculates the next Y-position based on velocity + gravity
-		if (entity.isLanded() == false && entity.getMass() > 0)
-			nextPosition.y += gravity * Math.pow(deltaTime, 2);
+		if (entity.isLanded() == false && entity.getMass() > 0.0) {
+			double gravitionalAcceleration = gravity * entity.getMass();
+			entity.setWeight(entity.getWeight() + gravitionalAcceleration);
+			nextPosition.y +=  gravitionalAcceleration * entity.getWeight() * Math.pow(deltaTime, 2);
+		}
 		
 		Iterator<ExternalForce> externalForceIt = entity.getExternalForces().iterator();
 		ExternalForce externalForce;
 		while(externalForceIt.hasNext()) {
 			externalForce = externalForceIt.next();
-			
-			nextPosition.x += Math.cos(externalForce.getVectorAngle()) * externalForce.getMagnitude(deltaTime);
-			nextPosition.y += Math.sin(externalForce.getVectorAngle()) * externalForce.getMagnitude(deltaTime);
+			double magnitude = externalForce.getMagnitude(deltaTime);
+			nextPosition.x += Math.cos(externalForce.getVectorAngle()) * magnitude;
+			nextPosition.y += Math.sin(externalForce.getVectorAngle()) * magnitude;
 			
 			if (externalForce.isExhaused())
 				externalForceIt.remove();
 		}
+		
 
 		// Sets the position to the newly calculated one
 		entity.setPosition(nextPosition);
 
-		System.out.println(nextPosition.x);
-		
 		return nextPosition;
 	}
 
@@ -264,14 +265,6 @@ public class Physique {
 		entities.addAll(level.getTerrains());
 
 		return entities;
-	}
-
-	public static double getGravity() {
-		return gravity;
-	}
-
-	public static void setGravity(double gravity) {
-		Physique.gravity = gravity;
 	}
 
 	public static interface CollisionListener {
@@ -303,7 +296,7 @@ public class Physique {
 			this.velocity = velocity;
 		}
 
-		public double getMagnitude(long deltaTime) {
+		public double getMagnitude(double deltaTime) {
 			return velocity * deltaTime;
 		}
 	}
@@ -320,16 +313,17 @@ public class Physique {
 			return force.getVectorAngle();
 		}
 
-		public double getMagnitude(long deltaTime) {
+		public double getMagnitude(double deltaTime) {
 			double magnitude = force.getMagnitude(deltaTime);
 
-			double newVelocity = force.getVelocity() - magnitude;
-			if (newVelocity < 0.0) {
-				magnitude = magnitude + newVelocity;
-				newVelocity = 0.0;
+			double newVelocity = force.getVelocity() - magnitude*deltaTime;
+			if (newVelocity <= Double.MIN_NORMAL) {
+				magnitude = magnitude - newVelocity;
 				isExhausted = true;
+				force.setVelocity(Double.MIN_NORMAL);
 			}
 
+			force.setVelocity(newVelocity);
 			return magnitude;
 		}
 		 

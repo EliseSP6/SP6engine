@@ -17,11 +17,12 @@ public class Entity implements EntityTranslatable {
 	protected final double r;
 	protected boolean hasRectangularCollisionModel = false;
 	protected boolean isLanded = false;
-	protected Force internalForce = new Force(90, 0);
+	protected Force internalForce = new Force(Math.toRadians(90), 0);
 	protected List<ExternalForce> externalForces = new ArrayList<>();
 	protected CollisionListener onCollision = null;
 
-	protected double mass = 0;
+	protected double mass = 0.0;
+	protected double weight = 0;
 
 	protected long timePreviousTick;
 	protected boolean bMoving; // Is the entity currently moving?
@@ -134,5 +135,16 @@ public class Entity implements EntityTranslatable {
 	@Override
 	public Force getForce() {
 		return internalForce;
+	}
+
+	@Override
+	public double getWeight() {
+		return weight;
+	}
+
+	@Override
+	public void setWeight(double weight) {
+		this.weight = weight;
+		
 	}
 }

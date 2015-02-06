@@ -69,27 +69,6 @@ public class Game {
 				// event.getY());
 			}
 		};
-
-		// Telling to receptionist to listen for whenever the LEFT-arrow button
-		// is pushed. When it is, blobby's vector-angle is set to 180 degrees.
-		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("control RIGHT"), "RIGHT", new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				blobby.getForce().setVectorAngle(Math.toRadians(180));
-				System.out.println("CTRL + RIGHT = pushed");
-			}
-		}));
-
-		// Telling to receptionist to listen for whenever the LEFT-arrow button
-		// is pushed. When it is, blobby's vector-angle is set to 180 degrees.
-		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("released RIGHT"), "released", new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("RIGHT = released");
-			}
-		}));
 		
 		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("pressed A"), "pressed A", new AbstractAction() {
 
@@ -132,7 +111,9 @@ public class Game {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (player.isLanded()) {
-					player.addExternalForce(new ExternalForce(Math.toRadians(90), 20));
+					player.addExternalForce(new ExternalForce(Math.toRadians(270), 10));
+					player.setLanded(false);
+					System.out.println("JUMP");
 				}else
 				System.out.println("NO JUMP");
 			}
