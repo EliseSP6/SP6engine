@@ -93,13 +93,13 @@ public class Picasso {
 																							// the
 																							// parallax
 																							// effect.
-			double scrollX = currentLevelSetting.getViewport().getX() / width * -1;
-			double scrollY = currentLevelSetting.getViewport().getY() / height * -1;
-			int tileCountX = (int) Math.ceil((double) width / background.getWidth()) + 1;
-			int tileCountY = (int) Math.ceil((double) height / background.getHeight()) + 1;
+			double scrollX = (currentLevelSetting.getViewport().getX() - width / 2.0) / width * -1;
+			double scrollY = (currentLevelSetting.getViewport().getY() - height / 2.0) / height * -1;
+			int tileCountX = (int) Math.ceil((double) width / background.getWidth());
+			int tileCountY = (int) Math.ceil((double) height / background.getHeight());
 
-			int startX = (int) ((background.getWidth() * scrollX * parallaxModifier) - background.getWidth());
-			int startY = (int) ((background.getHeight() * scrollY * parallaxModifier) - background.getHeight());
+			int startX = (int) ((background.getWidth() * scrollX * parallaxModifier) % background.getWidth());
+			int startY = (int) ((background.getHeight() * scrollY * parallaxModifier) % background.getHeight());
 
 			for (int i = 0; i < tileCountX; i++) {
 				for (int j = 0; j < tileCountY; j++) {
