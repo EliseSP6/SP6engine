@@ -34,8 +34,8 @@ public class Game {
 
 		Level firstLevel = new Level(2800, 1200, "Town");
 
-		firstLevel.addBackground(myGame.getTexture("clouds"));
-		firstLevel.addBackground(myGame.getTexture("sky"));
+		//firstLevel.addBackground(myGame.getTexture("clouds"));
+		//firstLevel.addBackground(myGame.getTexture("sky"));
 		EntityBlob blobby = new EntityBlob(myGame.getSprite("blob"), 200, 264);
 		Player player = new Player(myGame.getSprite("mushi"), 100, 100);
 		firstLevel.addMobile(blobby);

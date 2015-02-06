@@ -4,6 +4,9 @@
 	"backgrounds":
 	[
 		{
+			"texturekey":"starrynight"
+		},
+		{
 			"texturekey":"clouds"
 		}
 	],

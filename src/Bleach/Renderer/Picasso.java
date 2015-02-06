@@ -96,6 +96,10 @@ public class Picasso {
 
 			int startX = (int) ((background.getWidth() * scrollX * parallaxModifier) - background.getWidth());
 			int startY = (int) ((background.getHeight() * scrollY * parallaxModifier) - background.getHeight());
+			
+			// Temporary fix:
+			if(tileCountX == 1) startX = 0;
+			if(tileCountY == 1) startY = 0;
 
 			for (int i = 0; i < tileCountX; i++) {
 				for (int j = 0; j < tileCountY; j++) {
