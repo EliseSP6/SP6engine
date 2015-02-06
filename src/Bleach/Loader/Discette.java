@@ -35,6 +35,27 @@ public class Discette {
 		private Integer originx;
 		private Integer originy;
 	}
+	
+	public static class JsonObjectLevel{
+		public Integer width;
+		public Integer height;
+		public JsonObjectBacks[] backgrounds;
+		public JsonObjectTiles[] tiles;
+		
+		public class JsonObjectBacks{
+			public String texturekey;
+		}
+		
+		public class JsonObjectTiles{
+			public String texturekey;
+			public Integer absolutex;
+			public Integer absolutey;
+			public Integer gridx;
+			public Integer gridy;
+			public Integer gridwidth;
+			public Integer gridheight;
+		}
+	}
 
 	private static JsonObject[] parseJsonFile(String pathToJSON) {
 		/* Parses a JSON file and returns a list of entries */
@@ -52,6 +73,28 @@ public class Discette {
 		}
 
 		return entries;
+	}
+	
+	public static JsonObjectLevel parseJsonFileLevel(String pathToJSON){
+		/**/
+		Gson json = new Gson();
+		JsonObjectLevel level = null;
+		
+		try {
+			level = json.fromJson(readFile(pathToJSON), JsonObjectLevel.class);
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return level;
+	}
+	
+	public static JsonObjectLevel loadLevel(String assetJsonPath){
+		return parseJsonFileLevel(assetJsonPath);
 	}
 
 	public static void loadImages(String assetJsonpath) {

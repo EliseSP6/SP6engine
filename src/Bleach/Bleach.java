@@ -147,6 +147,10 @@ public class Bleach extends JPanel {
 	public void loadSounds(String assetJsonPath) {
 		Discette.loadSound(assetJsonPath);
 	}
+	
+	public Discette.JsonObjectLevel loadLevel(String assetJsonPath){
+		return Discette.loadLevel(assetJsonPath);
+	}
 
 	public double setFPS(double newFPS) {
 		/* Sets the FPS, returns the old FPS. */

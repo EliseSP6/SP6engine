@@ -41,11 +41,12 @@ public class Game {
 		firstLevel.addMobile(blobby);
 		firstLevel.addPlayer(player);
 
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 1, 5));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 2, 5));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 3, 5));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 5));
-		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 4));
+//		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 1, 5));
+//		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 2, 5));
+//		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 3, 5));
+//		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 5));
+//		firstLevel.addTerrainBlock(new TerrainBlock(myGame.getSprite("block"), 4, 4));
+		firstLevel.levelBuilder(myGame.loadLevel("assets/levels/level1.json"));
 
 		// firstLevel.setMusicTrack("melody7");
 

@@ -159,49 +159,29 @@ public class Physique {
 							// and
 							// the position of the object it has collided with
 							if(((Entity)otherEntity).hasRectangularCollisionModel()){
-								boolean collidedX, collidedY;
+								/*
+								 * Handle collision with rectangles.
+								 * !!This is buggy!!
+								 * 
+								 * */
 								double deltaDistanceX = 0, deltaDistanceY = 0;
 								
 								// Handle Y first
-								if(entity.getBoundary().y + entity.getBoundary().getHeight() > otherEntity.getBoundary().y && entity.getBoundary().y < otherEntity.getBoundary().y + otherEntity.getBoundary().height){
+								if(entity.getBoundary().y + entity.getBoundary().getHeight() >= otherEntity.getBoundary().y && entity.getBoundary().y <= otherEntity.getBoundary().y + otherEntity.getBoundary().height){
 									// Collision from above
 									deltaDistanceY = entity.getBoundary().y + entity.getBoundary().getHeight() - otherEntity.getBoundary().y;
-									//newPosition.y -= deltaDistanceY;
-									deltaDistanceY *= -1;
-									collidedY = true;
-				System.out.println("cc " + otherEntity);
-								}else{
-									// Collision from below
-									deltaDistanceY = otherEntity.getBoundary().y + otherEntity.getBoundary().getHeight() - entity.getBoundary().y;
-									//newPosition.y += deltaDistanceY;
-									collidedY = true;
-			System.out.println("cc2 " + collidedY);
 								}
 								
 								// Handle X
-								//if(!collidedY){
-									if(entity.getBoundary().x + entity.getBoundary().width > otherEntity.getBoundary().x && entity.getBoundary().x < otherEntity.getBoundary().x + otherEntity.getBoundary().width){
-										deltaDistanceX = entity.getBoundary().x + entity.getBoundary().getWidth() - otherEntity.getBoundary().x;
-										//newPosition.x += deltaDistanceX;
-										deltaDistanceX *= -1;
-					System.out.println("c " + collidedY);
-									}else{
-										deltaDistanceX = otherEntity.getBoundary().x + otherEntity.getBoundary().getWidth() - entity.getBoundary().x;
-										//newPosition.x += deltaDistanceX;
-					System.out.println("c2 " + collidedY);
-									}
-								//}
-								
-								if(deltaDistanceX > deltaDistanceY){
-									newPosition.y += deltaDistanceY;
-								}else{
-									newPosition.x += deltaDistanceX;
+								if(entity.getBoundary().x + entity.getBoundary().width >= otherEntity.getBoundary().x && entity.getBoundary().x <= otherEntity.getBoundary().x + otherEntity.getBoundary().width){
+									deltaDistanceX = entity.getBoundary().x + entity.getBoundary().getWidth() - otherEntity.getBoundary().x;
 								}
 								
-								
-								
-								
-								
+								if(deltaDistanceX > deltaDistanceY){
+									newPosition.y -= deltaDistanceY;
+								}else{
+									newPosition.x -= deltaDistanceX;
+								}
 							}else{
 								double distanceBeforeCollision = distanceSquared(oldPosition.x, oldPosition.y, otherEntity.getPosition().x, otherEntity.getPosition().y);
 								distanceBeforeCollision -= (entity.getRadius() + otherEntity.getRadius());

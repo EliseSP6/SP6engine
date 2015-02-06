@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import Bleach.Loader.Discette;
+
 public class Level implements LevelInteractable {
 
 	private List<EntityTranslatable> mobiles;
@@ -198,5 +200,28 @@ public class Level implements LevelInteractable {
 	public void setScrollAngle(double angleRad) {
 		scrollAngle = angleRad;
 	}
-
+	
+	public void levelBuilder(Discette.JsonObjectLevel levelObject){
+		width = levelObject.width == null ? 800 : levelObject.width;
+		height  = levelObject.height == null ? 600 : levelObject.height;
+		
+		for (Discette.JsonObjectLevel.JsonObjectBacks background : levelObject.backgrounds) {
+			Sprite sprite = null;
+			sprite = Discette.getImage(background.texturekey);
+			if(sprite != null)
+				addBackground(sprite.getFrame());
+		}
+		
+		for (Discette.JsonObjectLevel.JsonObjectTiles tile : levelObject.tiles) {
+			if(tile == null)
+				break;
+			
+			Sprite sprite = null;
+			sprite = Discette.getImage(tile.texturekey);
+			
+			if(sprite != null){
+				addTerrainBlock(new TerrainBlock(sprite, (int)tile.gridx, (int)tile.gridy, (int)tile.gridwidth, (int)tile.gridheight, (int)tile.absolutex, (int)tile.absolutey));
+			}
+		}
+	}
 }
