@@ -6,10 +6,12 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -19,6 +21,7 @@ import Bleach.InputManager.Receptionist.KeyBinding;
 import Bleach.Loader.Discette;
 import Bleach.PhysicsEngine.Physique;
 import Bleach.Renderer.Picasso;
+import Bleach.SoundEngine.Boom;
 
 public class Bleach extends JPanel {
 	/**
@@ -182,6 +185,21 @@ public class Bleach extends JPanel {
 
 	public Sprite getSprite(String key) {
 		return Discette.getImage(key);
+	}
+	
+	public void playSound(String soundKey){
+		try {
+			Boom.playSound(soundKey);
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private boolean setActiveLevel(String key) {
