@@ -240,8 +240,8 @@ public class Level implements LevelInteractable {
 	}
 	
 	public void levelBuilder(Discette.JsonObjectLevel levelObject){
-		width = levelObject.width == null ? 800 : levelObject.width;
-		height  = levelObject.height == null ? 600 : levelObject.height;
+		width = levelObject.width == null ? width : levelObject.width;
+		height  = levelObject.height == null ? height : levelObject.height;
 		
 		for (Discette.JsonObjectLevel.JsonObjectBacks background : levelObject.backgrounds) {
 			Sprite sprite = null;
