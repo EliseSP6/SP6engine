@@ -29,5 +29,17 @@
 	{
 		"key":"starrynight",
 		"filename":"uchoos_bg_768px_062611.jpg"
+	},
+	{
+		"key":"grassblock",
+		"filename":"grassblock.png"
+	},
+	{
+		"key":"grassblock_left",
+		"filename":"grassblock_left.png"
+	},
+	{
+		"key":"grassblock_right",
+		"filename":"grassblock_right.png"
 	}
 ]

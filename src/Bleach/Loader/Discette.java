@@ -37,6 +37,7 @@ public class Discette {
 	}
 	
 	public static class JsonObjectLevel{
+		public String key;
 		public Integer width;
 		public Integer height;
 		public JsonObjectBacks[] backgrounds;

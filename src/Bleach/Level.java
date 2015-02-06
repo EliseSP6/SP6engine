@@ -31,9 +31,19 @@ public class Level implements LevelInteractable {
 	private long timePreviousScroll; // Time since last scroll happened. Used to
 										// calculate delta-time.
 
+	public Level(Discette.JsonObjectLevel levelData){
+		this();
+		levelBuilder(levelData);
+	}
+	public Level(){
+		this(800, 600, "Level"+System.currentTimeMillis());
+	}
+	public Level(String key){
+		this(800, 600, key);
+	}
 	public Level(int width, int height, String key) {
-		this.width = width;
-		this.height = height;
+		this.width = screenWidth = width;
+		this.height = screenHeight = height;
 		this.key = key;
 		parallaxDistance = 10;
 		isScrolling = false;
@@ -242,6 +252,7 @@ public class Level implements LevelInteractable {
 	public void levelBuilder(Discette.JsonObjectLevel levelObject){
 		width = levelObject.width == null ? width : levelObject.width;
 		height  = levelObject.height == null ? height : levelObject.height;
+		key = levelObject.key == null ? key : levelObject.key;
 		
 		for (Discette.JsonObjectLevel.JsonObjectBacks background : levelObject.backgrounds) {
 			Sprite sprite = null;

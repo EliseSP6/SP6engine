@@ -1,4 +1,5 @@
 {
+	"key":"level1",
 	"width":2200,
 	"height":1000,
 	"backgrounds":
@@ -281,6 +282,69 @@
 			"gridy":7,
 			"gridwidth":32,
 			"gridheight":32
+		},
+		{
+			"texturekey":"grassblock_left",
+			"absolutex":0,
+			"absolutey":0,
+			"gridx":3,
+			"gridy":5,
+			"gridwidth":63,
+			"gridheight":63
+		},
+		{
+			"texturekey":"grassblock",
+			"absolutex":0,
+			"absolutey":0,
+			"gridx":4,
+			"gridy":5,
+			"gridwidth":63,
+			"gridheight":63
+		},
+		{
+			"texturekey":"grassblock_right",
+			"absolutex":0,
+			"absolutey":0,
+			"gridx":5,
+			"gridy":5,
+			"gridwidth":63,
+			"gridheight":63
+		},
+		{
+			"texturekey":"grassblock_left",
+			"absolutex":0,
+			"absolutey":0,
+			"gridx":1,
+			"gridy":9,
+			"gridwidth":63,
+			"gridheight":63
+		},
+		{
+			"texturekey":"grassblock",
+			"absolutex":0,
+			"absolutey":0,
+			"gridx":2,
+			"gridy":9,
+			"gridwidth":63,
+			"gridheight":63
+		},
+		{
+			"texturekey":"grassblock",
+			"absolutex":0,
+			"absolutey":0,
+			"gridx":3,
+			"gridy":9,
+			"gridwidth":63,
+			"gridheight":63
+		},
+		{
+			"texturekey":"grassblock_right",
+			"absolutex":0,
+			"absolutey":0,
+			"gridx":4,
+			"gridy":9,
+			"gridwidth":63,
+			"gridheight":63
 		}
 	]
 }
