@@ -3,13 +3,13 @@ package Bleach;
 import java.util.List;
 import java.util.ArrayList;
 
+import Bleach.Loader.Discette;
 import Bleach.PhysicsEngine.Physique;
 
 public class ProjectileBullet extends Projectile {
 
-	public ProjectileBullet(Sprite sprite, double x, double y, double r, EntityLiving owner) {
-		super(sprite, x, y, r, owner);
-
+	public ProjectileBullet(double x, double y, EntityLiving owner) {
+		super(Discette.getImage("heart"), x, y, 4, owner);
 	}
 
 	@Override
@@ -63,16 +63,5 @@ public class ProjectileBullet extends Projectile {
 		if(isOutsideoflevel(activeLevel)){
 			activeLevel.removeTerrain(this);
 		}
-	}
-	
-	private boolean isOutsideoflevel(LevelInteractable activeLevel){
-		if(	getBoundary().x >= ((Level)activeLevel).getWidth() || 
-			getBoundary().x + getBoundary().width <= 0 ||
-			getBoundary().y >= ((Level)activeLevel).getHeight() ||
-			getBoundary().y + getBoundary().height <= 0){
-			
-			return true;
-		}
-		return false;
 	}
 }

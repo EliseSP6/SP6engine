@@ -13,6 +13,10 @@ public abstract class Projectile extends Entity {
 		super(sprite, x, y, r);
 		this.owner = owner;
 	}
+	
+	protected EntityLiving getOwner(){
+		return owner;
+	}
 
 	abstract double dealDamage();
 }

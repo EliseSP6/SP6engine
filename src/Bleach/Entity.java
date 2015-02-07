@@ -2,7 +2,6 @@ package Bleach;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -168,5 +167,16 @@ public class Entity implements EntityTranslatable {
 		//
 		// setPosition(position);
 		// }
+	}
+	
+	public boolean isOutsideoflevel(LevelInteractable activeLevel){
+		if(	getBoundary().x >= ((Level)activeLevel).getWidth() || 
+			getBoundary().x + getBoundary().width <= 0 ||
+			getBoundary().y >= ((Level)activeLevel).getHeight() ||
+			getBoundary().y + getBoundary().height <= 0){
+			
+			return true;
+		}
+		return false;
 	}
 }
