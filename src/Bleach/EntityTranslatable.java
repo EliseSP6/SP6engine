@@ -2,7 +2,7 @@ package Bleach;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.List;
+import java.util.Map;
 
 import Bleach.PhysicsEngine.Physique.CollisionListener;
 import Bleach.PhysicsEngine.Physique.ExternalForce;
@@ -10,26 +10,25 @@ import Bleach.PhysicsEngine.Physique.Force;
 
 public interface EntityTranslatable {
 
-	public void addExternalForce(ExternalForce externalForce);
+	public void addExternalForce(Object identifier, ExternalForce externalForce);
 
 	public Rectangle2D.Double getBoundary();
 
 	public CollisionListener getCollisionListener();
 
-	public List<ExternalForce> getExternalForces();
-	
+	public Map<Object, ExternalForce> getExternalForces();
+
 	public double getFallingTime();
 
 	public Force getForce();
 
 	public double getMass();
-	
-	public double getWeight();
-	public void setWeight(double weight);
 
 	public Point2D.Double getPosition();
 
 	public double getRadius();
+
+	public double getWeight();
 
 	public boolean isLanded();
 
@@ -44,5 +43,7 @@ public interface EntityTranslatable {
 	public void setOnCollision(CollisionListener onCollision);
 
 	public void setPosition(Point2D.Double position);
+
+	public void setWeight(double weight);
 
 }

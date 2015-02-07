@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -79,11 +80,48 @@ public class Bleach extends JPanel {
 		winTitle = "Game window"; // Default title;
 	}
 
-	public void init(int windowWidth, int windowHeight, String windowTitle) {
-		winWidth = windowWidth;
-		winHeight = windowHeight;
-		winTitle = windowTitle;
-		init();
+	public void addLevel(Level level) {
+		if (level != null) {
+			level.setScreenSize(winWidth, winHeight);
+			levels.put(level.getKey(), level);
+
+			// No active level has been set, let's set it to this one.
+			if (activeLevel == null)
+				activeLevel = level;
+		}
+	}
+
+	public void addReceptionist(Receptionist receptionist) {
+		this.receptionist = receptionist;
+
+		for (KeyBinding keyBinding : receptionist.getKeyBindings()) {
+			this.getInputMap().put(keyBinding.getKey(), keyBinding.getActionMapKey());
+			this.getActionMap().put(keyBinding.getActionMapKey(), keyBinding.getAction());
+		}
+
+		this.addMouseMotionListener(new MouseMotionListener() {
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// Ignore
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent event) {
+				Bleach.this.receptionist.handleEvent(event);
+			}
+		});
+
+	}
+
+	public Sprite getSprite(String key) {
+		return Discette.getImage(key);
+	}
+
+	public BufferedImage getTexture(String key) {
+		Sprite sprite = Discette.getImage(key);
+
+		return sprite == null ? null : sprite.getFrame();
 	}
 
 	/**
@@ -105,35 +143,33 @@ public class Bleach extends JPanel {
 		// (EDT).
 		final String EDTwindowTitle = winTitle;
 
-		SwingUtilities.invokeLater(new Runnable() {
-			/*
-			 * Event Dispatch Thread - prevents potential race conditions that
-			 * could lead to deadlock.
-			 */
-			@Override
-			public void run() {
-				jWindow = new JFrame(EDTwindowTitle);
-				jWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				jWindow.setResizable(false);
-				jWindow.add(EDTpointerToPanel);
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				/*
+				 * Event Dispatch Thread - prevents potential race conditions
+				 * that could lead to deadlock.
+				 */
+				@Override
+				public void run() {
+					jWindow = new JFrame(EDTwindowTitle);
+					jWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					jWindow.setResizable(false);
+					jWindow.add(EDTpointerToPanel);
 
-				// Fixes a bug that sometimes adds 10 pixels to width and
-				// height. Weird stuff.
-				jWindow.pack();
-				jWindow.pack();
+					// Fixes a bug that sometimes adds 10 pixels to width and
+					// height. Weird stuff.
+					jWindow.pack();
+					jWindow.pack();
 
-				// Center the window on the primary monitor.
-				jWindow.setLocationRelativeTo(null);
+					// Center the window on the primary monitor.
+					jWindow.setLocationRelativeTo(null);
 
-				jWindow.setVisible(true);
-			}
-		});
-
-		while (!isDisplayable()) {
-			/*
-			 * Wait for EDT to complete.
-			 */
-			Thread.yield();
+					jWindow.setVisible(true);
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		setDoubleBuffered(true);
@@ -143,72 +179,23 @@ public class Bleach extends JPanel {
 		renderer = new Picasso(winWidth, winHeight);
 	}
 
+	public void init(int windowWidth, int windowHeight, String windowTitle) {
+		winWidth = windowWidth;
+		winHeight = windowHeight;
+		winTitle = windowTitle;
+		init();
+	}
+
 	public void loadImages(String assetJsonPath) {
 		Discette.loadImages(assetJsonPath);
 	}
 
-	public void loadSounds(String assetJsonPath) {
-		Discette.loadSound(assetJsonPath);
-	}
-	
-	public Discette.JsonObjectLevel loadLevel(String assetJsonPath){
+	public Discette.JsonObjectLevel loadLevel(String assetJsonPath) {
 		return Discette.loadLevel(assetJsonPath);
 	}
 
-	public double setFPS(double newFPS) {
-		/* Sets the FPS, returns the old FPS. */
-		double retval = FPS;
-		FPS = newFPS;
-		return retval;
-	}
-
-	public void setTitle(String title) {
-		winTitle = title;
-	}
-
-	public void addLevel(Level level) {
-		if (level != null) {
-			level.setScreenSize(winWidth, winHeight);
-			levels.put(level.getKey(), level);
-
-			// No active level has been set, let's set it to this one.
-			if (activeLevel == null)
-				activeLevel = level;
-		}
-	}
-
-	public BufferedImage getTexture(String key) {
-		Sprite sprite = Discette.getImage(key);
-
-		return sprite == null ? null : sprite.getFrame();
-	}
-
-	public Sprite getSprite(String key) {
-		return Discette.getImage(key);
-	}
-	
-	public void playSound(String soundKey){
-		try {
-			Boom.playSound(soundKey);
-		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private boolean setActiveLevel(String key) {
-		Level newLevel = null;
-		newLevel = levels.get(key);
-		if (newLevel != null)
-			activeLevel = newLevel;
-
-		return newLevel != null;
+	public void loadSounds(String assetJsonPath) {
+		Discette.loadSound(assetJsonPath);
 	}
 
 	@Override
@@ -234,19 +221,34 @@ public class Bleach extends JPanel {
 		timePreviousRender = System.currentTimeMillis();
 	}
 
-	private boolean isPaused() {
-		/* Check if any subsystem is pausing the game */
-		for (Entry<PauseType, Boolean> entry : pause.entrySet()) {
-			if (entry.getValue()) {
-				return true;
-			}
+	public void playSound(String soundKey) {
+		try {
+			Boom.playSound(soundKey);
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
-		return false;
 	}
 
 	public void run() {
 		gameLoop();
+	}
+
+	public double setFPS(double newFPS) {
+		/* Sets the FPS, returns the old FPS. */
+		double retval = FPS;
+		FPS = newFPS;
+		return retval;
+	}
+
+	public void setTitle(String title) {
+		winTitle = title;
 	}
 
 	private void gameLoop() {
@@ -267,7 +269,6 @@ public class Bleach extends JPanel {
 				/* Physics engine */
 				Physique.step(activeLevel);
 
-				
 				/* Mobiles heartbeat */
 				for (EntityTranslatable mob : activeLevel.getMobiles()) {
 					((Entity) mob).tick(activeLevel);
@@ -275,7 +276,7 @@ public class Bleach extends JPanel {
 
 				/* Player Heartbeat */
 				for (EntityTranslatable player : activeLevel.getPlayers()) {
-					Entity p = ((Entity)player);
+					Entity p = ((Entity) player);
 					p.tick(activeLevel);
 					activeLevel.focusEntity(p, false);
 				}
@@ -298,26 +299,23 @@ public class Bleach extends JPanel {
 		}
 	}
 
-	public void addReceptionist(Receptionist receptionist) {
-		this.receptionist = receptionist;
-
-		for (KeyBinding keyBinding : receptionist.getKeyBindings()) {
-			this.getInputMap().put(keyBinding.getKey(), keyBinding.getActionMapKey());
-			this.getActionMap().put(keyBinding.getActionMapKey(), keyBinding.getAction());
+	private boolean isPaused() {
+		/* Check if any subsystem is pausing the game */
+		for (Entry<PauseType, Boolean> entry : pause.entrySet()) {
+			if (entry.getValue()) {
+				return true;
+			}
 		}
 
-		this.addMouseMotionListener(new MouseMotionListener() {
+		return false;
+	}
 
-			@Override
-			public void mouseMoved(MouseEvent event) {
-				Bleach.this.receptionist.handleEvent(event);
-			}
+	private boolean setActiveLevel(String key) {
+		Level newLevel = null;
+		newLevel = levels.get(key);
+		if (newLevel != null)
+			activeLevel = newLevel;
 
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				// Ignore
-			}
-		});
-
+		return newLevel != null;
 	}
 }
