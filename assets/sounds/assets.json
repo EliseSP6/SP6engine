@@ -1,5 +1,9 @@
 [
 	{
+		"key":"demo",
+		"filename":"Windows_Shutdown.wav"
+	},
+	{
 		"key":"drop",
 		"filename":"drop.wav"
 	},

@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -194,7 +195,7 @@ public class Bleach extends JPanel {
 		return Discette.loadLevel(assetJsonPath);
 	}
 
-	public void loadSounds(String assetJsonPath) {
+	public void loadSounds(String assetJsonPath) throws IOException, UnsupportedAudioFileException {
 		Discette.loadSound(assetJsonPath);
 	}
 
@@ -221,19 +222,8 @@ public class Bleach extends JPanel {
 		timePreviousRender = System.currentTimeMillis();
 	}
 
-	public void playSound(String soundKey) {
-		try {
-			Boom.playSound(soundKey);
-		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void playSound(String soundID) throws LineUnavailableException {
+		Boom.playSound(Discette.getSound(soundID));
 	}
 
 	public void run() {

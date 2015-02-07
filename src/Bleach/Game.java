@@ -2,14 +2,19 @@ package Bleach;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import Bleach.InputManager.Receptionist;
 import Bleach.InputManager.Receptionist.KeyBinding;
+import Bleach.Loader.Discette;
 import Bleach.PhysicsEngine.CollisionEngine.CollisionListener;
 import Bleach.PhysicsEngine.Force.ExternalForce;
+import Bleach.SoundEngine.Boom;
 
 /*
  * This is for testing the game engine.
@@ -24,7 +29,14 @@ public class Game {
 		Bleach myGame = new Bleach();
 
 		myGame.loadImages("assets/images/assets.json");
-		myGame.loadSounds("assets/sounds/assets.json");
+		
+		try {
+			myGame.loadSounds("assets/sounds/assets.json");
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		} catch (UnsupportedAudioFileException e2) {
+			e2.printStackTrace();
+		}
 
 		myGame.setFPS(60);
 
@@ -53,6 +65,7 @@ public class Game {
 		firstLevel.levelBuilder(myGame.loadLevel("assets/levels/level1.json"));
 
 		// firstLevel.setMusicTrack("melody7");
+		
 
 		myGame.addLevel(firstLevel);
 
@@ -117,6 +130,13 @@ public class Game {
 					player.addExternalForce(ExternalForce.ForceIdentifier.JUMP, new ExternalForce(Math.toRadians(270), 200));
 					player.setLanded(false);
 					System.out.println("JUMP");
+					
+					try {
+						Boom.playSound(Discette.getSound("drop"));
+					} catch (LineUnavailableException e1) {
+						e1.printStackTrace();
+					}
+					
 				} else
 					System.out.println("NO JUMP");
 			}

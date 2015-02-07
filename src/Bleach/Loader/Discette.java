@@ -4,16 +4,27 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLStreamHandler;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.google.gson.Gson;
@@ -21,6 +32,7 @@ import com.google.gson.JsonSyntaxException;
 
 import Bleach.Sprite;
 import Bleach.SpriteAnimated;
+import Bleach.SoundEngine.Sound;
 
 public class Discette {
 	public static class JsonObjectLevel {
@@ -59,13 +71,13 @@ public class Discette {
 
 	private static Map<String, Sprite> images = new HashMap<String, Sprite>();
 
-	private static Map<String, AudioInputStream> sounds = new HashMap<String, AudioInputStream>();
+	private static Map<String, Sound> sounds = new HashMap<>();
 
 	public static Sprite getImage(String imageID) {
 		return images.get(imageID);
 	}
 
-	public static AudioInputStream getSound(String soundID) {
+	public static Sound getSound(String soundID) {
 		return sounds.get(soundID);
 	}
 
@@ -92,13 +104,13 @@ public class Discette {
 		return parseJsonFileLevel(assetJsonPath);
 	}
 
-	public static void loadSound(String assetJsonpath) {
+	public static void loadSound(String assetJsonpath) throws IOException, UnsupportedAudioFileException {
 		JsonObject[] audios = parseJsonFile(assetJsonpath);
 		String path = new File(assetJsonpath).getParent() + File.separator;
 
 		for (JsonObject audio : audios) {
 			if (audio.key != null && audio.filename != null) {
-				sounds.put(audio.key, sndLoader(path + audio.filename));
+				sounds.put(audio.key, soundLoader(path + audio.filename));
 			}
 		}
 	}
@@ -192,17 +204,26 @@ public class Discette {
 		return new String(encoded, "UTF-8");
 	}
 
-	private static AudioInputStream sndLoader(String filename) {
-		try {
-			return AudioSystem.getAudioInputStream(new File(filename));
-		} catch (UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private static Sound soundLoader(String filename) throws IOException, UnsupportedAudioFileException {
 
-		return null;
+		InputStream soundDataStream = new FileInputStream(new File(filename));
+
+		ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
+		byte data[] = new byte[1024];
+		for (int i = soundDataStream.read(data); i != -1; i = soundDataStream.read(data))
+			bytearrayoutputstream.write(data, 0, i);
+
+		soundDataStream.close();
+		bytearrayoutputstream.close();
+		data = bytearrayoutputstream.toByteArray();
+
+		AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new ByteArrayInputStream(data));
+		AudioFormat af = audioInputStream.getFormat();
+		int size = (int) (af.getFrameSize() * audioInputStream.getFrameLength());
+		byte[] audioData = new byte[size];
+		DataLine.Info info = new DataLine.Info(Clip.class, af, size);
+		audioInputStream.read(audioData, 0, size);
+
+		return new Sound(audioInputStream, size, info, audioData);
 	}
 }

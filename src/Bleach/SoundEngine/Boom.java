@@ -1,48 +1,34 @@
 package Bleach.SoundEngine;
 
-import java.io.IOException;
-
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineEvent.Type;
-import javax.sound.sampled.LineListener;
+import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
-
-import Bleach.Loader.Discette;
 
 public class Boom {
 
-	static class AudioListener implements LineListener {
-		private boolean done = false;
+	private static Sound ambientSoundtrack = null;
 
-		@Override
-		public synchronized void update(LineEvent event) {
-			Type eventType = event.getType();
-			if (eventType == Type.STOP || eventType == Type.CLOSE) {
-				done = true;
-				notifyAll();
-			}
-		}
-
-		public synchronized void waitUntilDone() throws InterruptedException {
-			while (!done) {
-				wait();
-			}
-		}
+	public static Sound getAmbientSoundtrack() {
+		return ambientSoundtrack;
 	}
 
-	public static void playSound(String soundID) throws LineUnavailableException, IOException, InterruptedException {
+	public static void setAmbientSoundtrack(Sound ambientSoundtrack) throws LineUnavailableException {
+		Boom.ambientSoundtrack = ambientSoundtrack;
+		Clip ambientSoundtrackClip = createClip(ambientSoundtrack);
+		ambientSoundtrackClip.loop(Clip.LOOP_CONTINUOUSLY);
+	}
 
-		AudioListener listener = new AudioListener();
-		Clip clip = AudioSystem.getClip();
-		clip.open(Discette.getSound(soundID));
-		clip.addLineListener(listener);
-		try {
-			clip.start();
-			listener.waitUntilDone();
-		} finally {
-			clip.close();
-		}
+	public static void playSound(Sound sound) throws LineUnavailableException {
+
+		Clip clip = createClip(sound);
+		clip.start();
+	}
+	
+	private static Clip createClip(Sound sound) throws LineUnavailableException {
+		Clip clip = (Clip) AudioSystem.getLine((DataLine.Info) sound.getInfo());
+		clip.open((AudioFormat) sound.getAudioInputStream().getFormat(), (byte[])sound.getAudioData(), 0, sound.getSize());
+		return clip;
 	}
 }
