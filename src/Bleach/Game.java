@@ -2,13 +2,14 @@ package Bleach;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import Bleach.InputManager.Receptionist;
 import Bleach.InputManager.Receptionist.KeyBinding;
-import Bleach.PhysicsEngine.Physique.CollisionListener;
-import Bleach.PhysicsEngine.Physique.ExternalForce;
+import Bleach.PhysicsEngine.CollisionEngine.CollisionListener;
+import Bleach.PhysicsEngine.Force.ExternalForce;
 
 /*
  * This is for testing the game engine.

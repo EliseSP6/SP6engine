@@ -4,9 +4,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
 
-import Bleach.PhysicsEngine.Physique.CollisionListener;
-import Bleach.PhysicsEngine.Physique.ExternalForce;
-import Bleach.PhysicsEngine.Physique.Force;
+import Bleach.PhysicsEngine.CollisionEngine.CollisionListener;
+import Bleach.PhysicsEngine.Force.ExternalForce;
+import Bleach.PhysicsEngine.Force.Force;
 
 public interface EntityTranslatable {
 
