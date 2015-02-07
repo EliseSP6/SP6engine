@@ -20,8 +20,6 @@ public interface LevelInteractable {
 	public int getBackgroundParallaxDistance();
 
 	public Point2D.Double getViewport();
-	
-	public Point2D.Double getDimensions();
 
 	public void removeMobile(EntityTranslatable mobile);
 

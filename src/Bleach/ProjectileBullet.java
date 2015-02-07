@@ -66,9 +66,9 @@ public class ProjectileBullet extends Projectile {
 	}
 	
 	private boolean isOutsideoflevel(LevelInteractable activeLevel){
-		if(	getBoundary().x >= activeLevel.getDimensions().x || 
+		if(	getBoundary().x >= ((Level)activeLevel).getWidth() || 
 			getBoundary().x + getBoundary().width <= 0 ||
-			getBoundary().y >= activeLevel.getDimensions().y ||
+			getBoundary().y >= ((Level)activeLevel).getHeight() ||
 			getBoundary().y + getBoundary().height <= 0){
 			
 			return true;

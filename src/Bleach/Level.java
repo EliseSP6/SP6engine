@@ -1,6 +1,7 @@
 package Bleach;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -232,7 +233,7 @@ public class Level implements LevelInteractable {
 	}
 
 	@Override
-	public void removeTerrain(TerrainBlock terrain) {
+	public void removeTerrain(EntityTranslatable terrain) {
 		terrains.remove(terrain);
 	}
 
