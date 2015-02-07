@@ -29,6 +29,32 @@ public class TerrainBlock extends Entity implements EntityTranslatable {
 		hasRectangularCollisionModel = true;
 	}
 
+	public Point2D.Double getAbsolutePosition() {
+		return new Point2D.Double(absPosX, absPosY);
+	}
+
+	@Override
+	public Rectangle2D.Double getBoundary() {
+		return new Rectangle2D.Double(absPosX + gridX * gridWidth, absPosY + gridY * gridHeight, gridWidth, gridHeight);
+	}
+
+	public double getGridHeight() {
+		return gridHeight;
+	}
+
+	public Point2D.Double getGridPosition() {
+		return new Point2D.Double(gridX, gridY);
+	}
+
+	public double getGridWidth() {
+		return gridWidth;
+	}
+
+	@Override
+	public Point2D.Double getPosition() {
+		return new Point2D.Double(absPosX + gridX * gridWidth, absPosY + gridY * gridHeight);
+	}
+
 	public void setAbsolutePosition(Point2D.Double position) {
 		/**
 		 * Sets the absolute position in pixel where the grid starts on the
@@ -37,23 +63,6 @@ public class TerrainBlock extends Entity implements EntityTranslatable {
 
 		absPosX = position.x;
 		absPosY = position.y;
-	}
-
-	public Point2D.Double getAbsolutePosition() {
-		return new Point2D.Double(absPosX, absPosY);
-	}
-
-	public void setGridPosition(int x, int y) {
-		/**
-		 * Set the position of this TerrainBlock in the grid.
-		 * */
-
-		gridX = x;
-		gridY = y;
-	}
-
-	public Point2D.Double getGridPosition() {
-		return new Point2D.Double(gridX, gridY);
 	}
 
 	public void setGridDimension(double width, double height) {
@@ -65,17 +74,13 @@ public class TerrainBlock extends Entity implements EntityTranslatable {
 		gridHeight = height;
 	}
 
-	public double getGridWidth() {
-		return gridWidth;
-	}
+	public void setGridPosition(int x, int y) {
+		/**
+		 * Set the position of this TerrainBlock in the grid.
+		 * */
 
-	public double getGridHeight() {
-		return gridHeight;
-	}
-
-	@Override
-	public Point2D.Double getPosition() {
-		return new Point2D.Double(absPosX + gridX * gridWidth, absPosY + gridY * gridHeight);
+		gridX = x;
+		gridY = y;
 	}
 
 	@Override
@@ -84,10 +89,5 @@ public class TerrainBlock extends Entity implements EntityTranslatable {
 		y = position.y - gridY * gridHeight;
 		absPosX = x;
 		absPosY = y;
-	}
-	
-	@Override
-	public Rectangle2D.Double getBoundary(){
-		return new Rectangle2D.Double(absPosX + gridX * gridWidth, absPosY + gridY * gridHeight, gridWidth, gridHeight);
 	}
 }

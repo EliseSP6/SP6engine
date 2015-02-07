@@ -1,6 +1,6 @@
 package Bleach;
 
-import Bleach.PhysicsEngine.Physique;
+import Bleach.PhysicsEngine.CollisionEngine.Impact;
 
 public class InventoryItem extends Entity {
 
@@ -11,7 +11,7 @@ public class InventoryItem extends Entity {
 	@Override
 	public void tick(LevelInteractable activeLevel) {
 		for (EntityTranslatable player : activeLevel.getPlayers()) {
-			if (Physique.collides(this, player)) {
+			if (Impact.collides(this, player)) {
 				((EntityLiving) player).getInventory().addItem(this);
 				// TODO delete this from the world.
 				break;

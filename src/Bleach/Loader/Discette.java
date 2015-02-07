@@ -23,8 +23,29 @@ import Bleach.Sprite;
 import Bleach.SpriteAnimated;
 
 public class Discette {
-	private static Map<String, Sprite> images = new HashMap<String, Sprite>();
-	private static Map<String, AudioInputStream> sounds = new HashMap<String, AudioInputStream>();
+	public static class JsonObjectLevel {
+		public class JsonObjectBacks {
+			public String texturekey;
+		}
+
+		public class JsonObjectTiles {
+			public String texturekey;
+			public Integer absolutex;
+			public Integer absolutey;
+			public Integer gridx;
+			public Integer gridy;
+			public Integer gridwidth;
+			public Integer gridheight;
+		}
+
+		public String key;
+		public Integer width;
+		public Integer height;
+
+		public JsonObjectBacks[] backgrounds;
+
+		public JsonObjectTiles[] tiles;
+	}
 
 	private static class JsonObject {
 		private String key;
@@ -35,67 +56,17 @@ public class Discette {
 		private Integer originx;
 		private Integer originy;
 	}
-	
-	public static class JsonObjectLevel{
-		public String key;
-		public Integer width;
-		public Integer height;
-		public JsonObjectBacks[] backgrounds;
-		public JsonObjectTiles[] tiles;
-		
-		public class JsonObjectBacks{
-			public String texturekey;
-		}
-		
-		public class JsonObjectTiles{
-			public String texturekey;
-			public Integer absolutex;
-			public Integer absolutey;
-			public Integer gridx;
-			public Integer gridy;
-			public Integer gridwidth;
-			public Integer gridheight;
-		}
+
+	private static Map<String, Sprite> images = new HashMap<String, Sprite>();
+
+	private static Map<String, AudioInputStream> sounds = new HashMap<String, AudioInputStream>();
+
+	public static Sprite getImage(String imageID) {
+		return images.get(imageID);
 	}
 
-	private static JsonObject[] parseJsonFile(String pathToJSON) {
-		/* Parses a JSON file and returns a list of entries */
-		Gson json = new Gson();
-		JsonObject[] entries = null;
-
-		try {
-			entries = json.fromJson(readFile(pathToJSON), JsonObject[].class);
-		} catch (JsonSyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return entries;
-	}
-	
-	public static JsonObjectLevel parseJsonFileLevel(String pathToJSON){
-		/**/
-		Gson json = new Gson();
-		JsonObjectLevel level = null;
-		
-		try {
-			level = json.fromJson(readFile(pathToJSON), JsonObjectLevel.class);
-		} catch (JsonSyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return level;
-	}
-	
-	public static JsonObjectLevel loadLevel(String assetJsonPath){
-		return parseJsonFileLevel(assetJsonPath);
+	public static AudioInputStream getSound(String soundID) {
+		return sounds.get(soundID);
 	}
 
 	public static void loadImages(String assetJsonpath) {
@@ -117,8 +88,8 @@ public class Discette {
 		}
 	}
 
-	public static Sprite getImage(String imageID) {
-		return images.get(imageID);
+	public static JsonObjectLevel loadLevel(String assetJsonPath) {
+		return parseJsonFileLevel(assetJsonPath);
 	}
 
 	public static void loadSound(String assetJsonpath) {
@@ -132,14 +103,14 @@ public class Discette {
 		}
 	}
 
-	public static AudioInputStream getSound(String soundID) {
-		return sounds.get(soundID);
-	}
+	public static JsonObjectLevel parseJsonFileLevel(String pathToJSON) {
+		/**/
+		Gson json = new Gson();
+		JsonObjectLevel level = null;
 
-	private static AudioInputStream sndLoader(String filename) {
 		try {
-			return AudioSystem.getAudioInputStream(new File(filename));
-		} catch (UnsupportedAudioFileException e) {
+			level = json.fromJson(readFile(pathToJSON), JsonObjectLevel.class);
+		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -147,24 +118,7 @@ public class Discette {
 			e.printStackTrace();
 		}
 
-		return null;
-	}
-
-	private static BufferedImage imgLoader(String filename) {
-		/*
-		 * Loads an image file and return it as a "BufferedImage". Optionally
-		 * optimize it (which might mess up alpha channel on some systems).
-		 */
-
-		BufferedImage compatImg = null;
-
-		try {
-			return toCompatibleImage(ImageIO.read(new File(filename)));
-		} catch (IOException e) {
-			System.err.println("[IMAGE] Error loading file: \"" + filename + "\" " + e);
-		}
-
-		return compatImg;
+		return level;
 	}
 
 	public static BufferedImage toCompatibleImage(BufferedImage image) {
@@ -198,8 +152,57 @@ public class Discette {
 		return new_image;
 	}
 
+	private static BufferedImage imgLoader(String filename) {
+		/*
+		 * Loads an image file and return it as a "BufferedImage". Optionally
+		 * optimize it (which might mess up alpha channel on some systems).
+		 */
+
+		BufferedImage compatImg = null;
+
+		try {
+			return toCompatibleImage(ImageIO.read(new File(filename)));
+		} catch (IOException e) {
+			System.err.println("[IMAGE] Error loading file: \"" + filename + "\" " + e);
+		}
+
+		return compatImg;
+	}
+
+	private static JsonObject[] parseJsonFile(String pathToJSON) {
+		/* Parses a JSON file and returns a list of entries */
+		Gson json = new Gson();
+		JsonObject[] entries = null;
+
+		try {
+			entries = json.fromJson(readFile(pathToJSON), JsonObject[].class);
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return entries;
+	}
+
 	private static String readFile(String path) throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, "UTF-8");
+	}
+
+	private static AudioInputStream sndLoader(String filename) {
+		try {
+			return AudioSystem.getAudioInputStream(new File(filename));
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

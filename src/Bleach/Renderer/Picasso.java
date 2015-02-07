@@ -28,15 +28,6 @@ public class Picasso {
 		canvas = Discette.toCompatibleImage(new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB));
 	}
 
-	public void setSize(int width, int height) {
-		this.width = width;
-		this.height = height;
-	}
-
-	public void setDebug(boolean doDebug) {
-		this.doDebug = doDebug;
-	}
-
 	public void addDebugLine(String line) {
 		debug.add(line);
 	}
@@ -50,9 +41,9 @@ public class Picasso {
 		if (currentLevelSetting == null)
 			return;
 
-		double offsetX = currentLevelSetting.getViewport().x - width / 2.0; 
+		double offsetX = currentLevelSetting.getViewport().x - width / 2.0;
 		double offsetY = currentLevelSetting.getViewport().y - height / 2.0;
-		
+
 		Graphics graphics = canvas.getGraphics();
 
 		graphics.setColor(Color.white);
@@ -61,11 +52,11 @@ public class Picasso {
 		// Render level backgrounds using the parallax effect.
 		int currentBackgroundNumber = 1;
 		List<BufferedImage> backgrounds = currentLevelSetting.getBackgrounds();
-		
+
 		for (BufferedImage background : backgrounds) {
 			// Calculate the position of this background and tile it if needed.
 			int parallaxDistance = currentLevelSetting.getBackgroundParallaxDistance();
-			double parallaxModifier =  currentBackgroundNumber / (parallaxDistance / 1.5); // Do
+			double parallaxModifier = currentBackgroundNumber / (parallaxDistance / 1.5); // Do
 																							// some
 																							// math
 																							// to
@@ -121,7 +112,7 @@ public class Picasso {
 			double y = tb.getPosition().y - offsetY;
 
 			graphics.drawImage(sprite.getFrame(), (int) x, (int) y, sprite.getWidth(), sprite.getHeight(), null);
-			if(doDebug){
+			if (doDebug) {
 				graphics.setColor(Color.red);
 				graphics.drawRect((int) (tb.getPosition().x - offsetX), (int) (tb.getPosition().y - offsetY), 1, 1);
 				graphics.drawRect((int) (tb.getBoundary().x - offsetX), (int) (tb.getBoundary().y - offsetY), (int) tb.getBoundary().width, (int) tb.getBoundary().height);
@@ -146,7 +137,7 @@ public class Picasso {
 			Point spriteOrigin = entity.getSprite().getOrigin();
 
 			graphics.drawImage(entity.getSprite().getFrame(), (int) (entity.getPosition().x - spriteOrigin.x - offsetX), (int) (entity.getPosition().y - spriteOrigin.y - offsetY), entity.getSprite().getWidth(), entity.getSprite().getHeight(), null);
-			if(doDebug){
+			if (doDebug) {
 				graphics.setColor(Color.red);
 				graphics.drawRect((int) (entity.getPosition().x - offsetX), (int) (entity.getPosition().y - offsetY), 1, 1);
 				graphics.drawRect((int) (entity.getBoundary().x - offsetX), (int) (entity.getBoundary().y - offsetY), (int) entity.getBoundary().width, (int) entity.getBoundary().height);
@@ -155,7 +146,7 @@ public class Picasso {
 
 		// Handle debug data
 		if (doDebug) {
-			
+
 			int lineNumber = 0;
 			for (String line : debug) {
 				graphics.setColor(Color.black);
@@ -168,5 +159,14 @@ public class Picasso {
 
 		graphics.dispose();
 		panelGraphics.drawImage(canvas, 0, 0, null);
+	}
+
+	public void setDebug(boolean doDebug) {
+		this.doDebug = doDebug;
+	}
+
+	public void setSize(int width, int height) {
+		this.width = width;
+		this.height = height;
 	}
 }

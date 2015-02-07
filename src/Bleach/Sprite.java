@@ -10,6 +10,14 @@ public class Sprite {
 	protected int width, height;
 	protected int originx, originy;
 
+	public Sprite(BufferedImage image) {
+		width = image.getWidth();
+		height = image.getHeight();
+		originx = width / 2;
+		originy = height / 2;
+		this.image = image;
+	}
+
 	public Sprite(BufferedImage image, Integer width, Integer height, Integer originx, Integer originy) {
 		/*
 		 * Make a new image with the specified width and height. width and
@@ -26,20 +34,8 @@ public class Sprite {
 		g.dispose();
 	}
 
-	public Sprite(BufferedImage image) {
-		width = image.getWidth();
-		height = image.getHeight();
-		originx = width / 2;
-		originy = height / 2;
-		this.image = image;
-	}
-
 	public BufferedImage getFrame() {
 		return image;
-	}
-
-	public int getWidth() {
-		return width;
 	}
 
 	public int getHeight() {
@@ -48,5 +44,9 @@ public class Sprite {
 
 	public Point getOrigin() {
 		return new Point(originx, originy);
+	}
+
+	public int getWidth() {
+		return width;
 	}
 }

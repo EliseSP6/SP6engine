@@ -13,20 +13,6 @@ import Bleach.Loader.Discette;
 
 public class Boom {
 
-	public static void playSound(String soundID) throws LineUnavailableException, IOException, InterruptedException {
-
-		AudioListener listener = new AudioListener();
-		Clip clip = AudioSystem.getClip();
-		clip.open(Discette.getSound(soundID));
-		clip.addLineListener(listener);
-		try {
-			clip.start();
-			listener.waitUntilDone();
-		} finally {
-			clip.close();
-		}
-	}
-
 	static class AudioListener implements LineListener {
 		private boolean done = false;
 
@@ -43,6 +29,20 @@ public class Boom {
 			while (!done) {
 				wait();
 			}
+		}
+	}
+
+	public static void playSound(String soundID) throws LineUnavailableException, IOException, InterruptedException {
+
+		AudioListener listener = new AudioListener();
+		Clip clip = AudioSystem.getClip();
+		clip.open(Discette.getSound(soundID));
+		clip.addLineListener(listener);
+		try {
+			clip.start();
+			listener.waitUntilDone();
+		} finally {
+			clip.close();
 		}
 	}
 }

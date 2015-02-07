@@ -17,11 +17,9 @@ public abstract class EntityLiving extends Entity {
 		mass = 5;
 	}
 
-	abstract double takeDamage(double amount); // Returns health after damage.
-
-	abstract double dealDamage();
-
-	abstract void AI(LevelInteractable activeLevel);
+	public double getDamage() {
+		return attackPower;
+	}
 
 	public double getHealth() {
 		return health;
@@ -31,13 +29,9 @@ public abstract class EntityLiving extends Entity {
 		return healthMax;
 	}
 
-	public double getDamage() {
-		return attackPower;
-	}
-
 	public Inventory getInventory() {
 		return inventory;
-	};
+	}
 
 	@Override
 	public void tick(LevelInteractable activeLevel) {
@@ -46,4 +40,10 @@ public abstract class EntityLiving extends Entity {
 		AI(activeLevel);
 		timePreviousTick = System.currentTimeMillis();
 	}
+
+	abstract void AI(LevelInteractable activeLevel);
+
+	abstract double dealDamage();;
+
+	abstract double takeDamage(double amount); // Returns health after damage.
 }

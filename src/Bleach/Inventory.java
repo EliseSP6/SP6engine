@@ -15,20 +15,20 @@ public class Inventory {
 		items = new ArrayList<InventoryItem>();
 	}
 
-	public InventoryItem getItem(int index) {
-		if (index < 0 || index >= items.size()) {
-			return null;
-		} else {
-			return items.get(index);
-		}
-	}
-
 	public boolean addItem(InventoryItem item) {
 		if (items.size() < size) {
 			items.add(item);
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public InventoryItem getItem(int index) {
+		if (index < 0 || index >= items.size()) {
+			return null;
+		} else {
+			return items.get(index);
 		}
 	}
 }

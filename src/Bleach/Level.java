@@ -1,7 +1,6 @@
 package Bleach;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,16 +31,15 @@ public class Level implements LevelInteractable {
 	private long timePreviousScroll; // Time since last scroll happened. Used to
 										// calculate delta-time.
 
-	public Level(Discette.JsonObjectLevel levelData){
+	public Level() {
+		this(800, 600, "Level" + System.currentTimeMillis());
+	}
+
+	public Level(Discette.JsonObjectLevel levelData) {
 		this();
 		levelBuilder(levelData);
 	}
-	public Level(){
-		this(800, 600, "Level"+System.currentTimeMillis());
-	}
-	public Level(String key){
-		this(800, 600, key);
-	}
+
 	public Level(int width, int height, String key) {
 		this.width = screenWidth = width;
 		this.height = screenHeight = height;
@@ -63,14 +61,108 @@ public class Level implements LevelInteractable {
 		screenWidth = screenHeight = 1000;
 	}
 
+	public Level(String key) {
+		this(800, 600, key);
+	}
+
+	public void addBackground(BufferedImage img) {
+		/*
+		 * Add a background image to scroll (parallax), add it behind others if
+		 * some exists already.
+		 */
+		if (img != null)
+			backgrounds.add(img);
+	}
+
+	public void addLoot(EntityTranslatable loot) {
+		if (loot != null)
+			loots.add(loot);
+	}
+
+	public void addMobile(EntityTranslatable mob) {
+		if (mob != null)
+			mobiles.add(mob);
+	}
+
+	public void addPlayer(EntityTranslatable player) {
+		if (player != null)
+			players.add(player);
+	}
+
+	public void addProjectile(EntityTranslatable proj) {
+		if (proj != null)
+			projectiles.add(proj);
+	}
+
+	public void addTerrainBlock(TerrainBlock terrain) {
+		terrains.add(terrain);
+	}
+
+	public void clearBackgrounds() {
+		/* Removes all backgrounds */
+		backgrounds.clear();
+	}
+
+	public void doAutoScroll(boolean doScroll) {
+		isScrolling = doScroll;
+		timePreviousScroll = System.nanoTime();
+	}
+
+	public void focusEntity(Entity entity, boolean center) {
+		int padding = 150;
+
+		if (center) {
+			viewport.x = entity.x;
+			viewport.y = entity.y;
+		} else {
+			if (entity.x > viewport.x - screenWidth / 2.0 + screenWidth - padding) {
+				viewport.x = (int) entity.x - screenWidth / 2.0 + padding;
+			}
+			if (entity.x < viewport.x - screenWidth / 2.0 + padding) {
+				viewport.x = (int) entity.x + screenWidth / 2.0 - padding;
+			}
+			if (entity.y > viewport.y - screenHeight / 2.0 + screenHeight - padding) {
+				viewport.y = (int) entity.y - screenHeight / 2.0 + padding;
+			}
+			if (entity.y < viewport.y - screenHeight / 2.0 + padding) {
+				viewport.y = (int) entity.y + screenHeight / 2.0 - padding;
+			}
+		}
+
+		// Limit viewport to screen
+		viewport.x = viewport.x - screenWidth / 2.0 < 0 ? 0 + screenWidth / 2.0 : viewport.x;
+		viewport.y = viewport.y - screenHeight / 2.0 < 0 ? 0 + screenHeight / 2.0 : viewport.y;
+		viewport.x = viewport.x + screenWidth / 2.0 > width ? width - screenWidth / 2.0 : viewport.x;
+		viewport.y = viewport.y + screenHeight / 2.0 > height ? height - screenHeight / 2.0 : viewport.y;
+	}
+
 	@Override
-	public List<EntityTranslatable> getMobiles() {
-		return mobiles;
+	public int getBackgroundParallaxDistance() {
+		return parallaxDistance;
+	}
+
+	@Override
+	public List<BufferedImage> getBackgrounds() {
+		return backgrounds;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public String getKey() {
+		/* Returns the identifier of this level. */
+		return key;
 	}
 
 	@Override
 	public List<EntityTranslatable> getLoots() {
 		return loots;
+	}
+
+	@Override
+	public List<EntityTranslatable> getMobiles() {
+		return mobiles;
 	}
 
 	@Override
@@ -88,34 +180,6 @@ public class Level implements LevelInteractable {
 		return terrains;
 	}
 
-	public void addMobile(EntityTranslatable mob) {
-		if (mob != null)
-			mobiles.add(mob);
-	}
-
-	public void addLoot(EntityTranslatable loot) {
-		if (loot != null)
-			loots.add(loot);
-	}
-
-	public void addPlayer(EntityTranslatable player) {
-		if (player != null)
-			players.add(player);
-	}
-
-	public void addProjectile(EntityTranslatable proj) {
-		if (proj != null)
-			projectiles.add(proj);
-	}
-
-	public void addTerrainBlock(TerrainBlock terrain) {
-		terrains.add(terrain);
-	}
-
-	public void setViewport(Point2D.Double offset) {
-		viewport = offset;
-	}
-
 	@Override
 	public Point2D.Double getViewport() {
 		if (isScrolling) {
@@ -130,60 +194,59 @@ public class Level implements LevelInteractable {
 
 		return viewport;
 	}
-	
-	public void focusEntity(Entity entity, boolean center){
-		int padding = 150;
-		
-		if(center){
-			viewport.x = entity.x;
-			viewport.y = entity.y;
-		}else{
-			if (entity.x > viewport.x - screenWidth / 2.0 + screenWidth - padding){
-				viewport.x = (int)entity.x - screenWidth / 2.0 + padding;
-			}
-			if (entity.x < viewport.x - screenWidth / 2.0 + padding){
-				viewport.x = (int)entity.x + screenWidth / 2.0 - padding;
-			}
-			if (entity.y > viewport.y - screenHeight / 2.0 + screenHeight - padding){
-				viewport.y = (int)entity.y - screenHeight / 2.0 + padding;
-			}
-			if (entity.y < viewport.y - screenHeight / 2.0 + padding){
-				viewport.y = (int)entity.y + screenHeight / 2.0 - padding;
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void levelBuilder(Discette.JsonObjectLevel levelObject) {
+		width = levelObject.width == null ? width : levelObject.width;
+		height = levelObject.height == null ? height : levelObject.height;
+		key = levelObject.key == null ? key : levelObject.key;
+
+		for (Discette.JsonObjectLevel.JsonObjectBacks background : levelObject.backgrounds) {
+			Sprite sprite = null;
+			sprite = Discette.getImage(background.texturekey);
+			if (sprite != null)
+				addBackground(sprite.getFrame());
+		}
+
+		for (Discette.JsonObjectLevel.JsonObjectTiles tile : levelObject.tiles) {
+			if (tile == null)
+				break;
+
+			Sprite sprite = null;
+			sprite = Discette.getImage(tile.texturekey);
+
+			if (sprite != null) {
+				addTerrainBlock(new TerrainBlock(sprite, tile.gridx, tile.gridy, tile.gridwidth, tile.gridheight, tile.absolutex, tile.absolutey));
 			}
 		}
-		
-		// Limit viewport to screen
-		viewport.x = viewport.x - screenWidth / 2.0 < 0 ? 0 + screenWidth / 2.0 : viewport.x;
-		viewport.y = viewport.y - screenHeight / 2.0 < 0 ? 0 + screenHeight / 2.0 : viewport.y;
-		viewport.x = viewport.x + screenWidth / 2.0 > width ? width - screenWidth / 2.0 : viewport.x;
-		viewport.y = viewport.y + screenHeight / 2.0 > height ? height - screenHeight / 2.0 : viewport.y;
-	}
-	
-	public void setScreenSize(int width, int height){
-		/*
-		 * Tells the level the dimensions of the screen.
-		 * */
-		screenWidth = width;
-		screenHeight = height;
-	}
-
-	public void addBackground(BufferedImage img) {
-		/*
-		 * Add a background image to scroll (parallax), add it behind others if
-		 * some exists already.
-		 */
-		if (img != null)
-			backgrounds.add(img);
-	}
-
-	public void clearBackgrounds() {
-		/* Removes all backgrounds */
-		backgrounds.clear();
 	}
 
 	@Override
-	public List<BufferedImage> getBackgrounds() {
-		return backgrounds;
+	public void removeLoot(EntityTranslatable loot) {
+		loots.remove(loot);
+	}
+
+	@Override
+	public void removeMobile(EntityTranslatable mobile) {
+		mobiles.remove(mobile);
+	}
+
+	@Override
+	public void removePlayer(EntityTranslatable player) {
+		players.remove(player);
+	}
+
+	@Override
+	public void removeProjectile(EntityTranslatable projectile) {
+		projectiles.remove(projectile);
+	}
+
+	@Override
+	public void removeTerrain(EntityTranslatable terrain) {
+		terrains.remove(terrain);
 	}
 
 	public int setBackgroundParallaxDistance(int dist) {
@@ -194,84 +257,23 @@ public class Level implements LevelInteractable {
 		return retval;
 	}
 
-	@Override
-	public int getBackgroundParallaxDistance() {
-		return parallaxDistance;
+	public void setScreenSize(int width, int height) {
+		/*
+		 * Tells the level the dimensions of the screen.
+		 */
+		screenWidth = width;
+		screenHeight = height;
 	}
 
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public String getKey() {
-		/* Returns the identifier of this level. */
-		return key;
-	}
-
-	@Override
-	public void removeMobile(EntityTranslatable mobile) {
-		mobiles.remove(mobile);
-	}
-
-	@Override
-	public void removeLoot(EntityTranslatable loot) {
-		loots.remove(loot);
-	}
-
-	@Override
-	public void removeProjectile(EntityTranslatable projectile) {
-		projectiles.remove(projectile);
-	}
-
-	@Override
-	public void removePlayer(EntityTranslatable player) {
-		players.remove(player);
-	}
-
-	@Override
-	public void removeTerrain(EntityTranslatable terrain) {
-		terrains.remove(terrain);
-	}
-
-	public void doAutoScroll(boolean doScroll) {
-		isScrolling = doScroll;
-		timePreviousScroll = System.nanoTime();
+	public void setScrollAngle(double angleRad) {
+		scrollAngle = angleRad;
 	}
 
 	public void setScrollSpeed(double speedPPS) {
 		scrollVelocity = speedPPS;
 	}
 
-	public void setScrollAngle(double angleRad) {
-		scrollAngle = angleRad;
-	}
-	
-	public void levelBuilder(Discette.JsonObjectLevel levelObject){
-		width = levelObject.width == null ? width : levelObject.width;
-		height  = levelObject.height == null ? height : levelObject.height;
-		key = levelObject.key == null ? key : levelObject.key;
-		
-		for (Discette.JsonObjectLevel.JsonObjectBacks background : levelObject.backgrounds) {
-			Sprite sprite = null;
-			sprite = Discette.getImage(background.texturekey);
-			if(sprite != null)
-				addBackground(sprite.getFrame());
-		}
-		
-		for (Discette.JsonObjectLevel.JsonObjectTiles tile : levelObject.tiles) {
-			if(tile == null)
-				break;
-			
-			Sprite sprite = null;
-			sprite = Discette.getImage(tile.texturekey);
-			
-			if(sprite != null){
-				addTerrainBlock(new TerrainBlock(sprite, (int)tile.gridx, (int)tile.gridy, (int)tile.gridwidth, (int)tile.gridheight, (int)tile.absolutex, (int)tile.absolutey));
-			}
-		}
+	public void setViewport(Point2D.Double offset) {
+		viewport = offset;
 	}
 }

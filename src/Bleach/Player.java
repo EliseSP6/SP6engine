@@ -11,9 +11,8 @@ public class Player extends EntityLiving {
 	}
 
 	@Override
-	double takeDamage(double amount) {
-		health = Math.max(0, health - amount);
-		return health;
+	void AI(LevelInteractable activeLevel) {
+		// this could be used for some debuffs like 'confusion', 'fear' etc.
 	}
 
 	@Override
@@ -22,7 +21,8 @@ public class Player extends EntityLiving {
 	}
 
 	@Override
-	void AI(LevelInteractable activeLevel) {
-		// this could be used for some debuffs like 'confusion', 'fear' etc.
+	double takeDamage(double amount) {
+		health = Math.max(0, health - amount);
+		return health;
 	}
 }

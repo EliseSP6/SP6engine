@@ -2,7 +2,6 @@ package Bleach.PhysicsEngine;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import Bleach.Entity;
@@ -10,7 +9,6 @@ import Bleach.EntityTranslatable;
 import Bleach.LevelInteractable;
 import Bleach.TerrainBlock;
 import Bleach.PhysicsEngine.CollisionEngine.Impact;
-import Bleach.PhysicsEngine.Force.ExternalForce;
 import Bleach.PhysicsEngine.TranslationEngine.Translatraton;
 
 public class Physique {

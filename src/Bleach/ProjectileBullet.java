@@ -4,22 +4,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 import Bleach.Loader.Discette;
-import Bleach.PhysicsEngine.Physique;
+import Bleach.PhysicsEngine.CollisionEngine.Impact;
 
 public class ProjectileBullet extends Projectile {
 
 	public ProjectileBullet(double x, double y, EntityLiving owner) {
 		super(Discette.getImage("heart"), x, y, 4, owner);
-	}
-
-	@Override
-	double dealDamage() {
-		/*
-		 * Calculate the amount of damage this projectile does. owner could be
-		 * used to modify the damage (buffs etc)
-		 */
-
-		return 5;
 	}
 
 	@Override
@@ -38,7 +28,7 @@ public class ProjectileBullet extends Projectile {
 		 */
 
 		for (EntityLiving entity : interactors) {
-			if (Physique.collides(this, entity)) {
+			if (Impact.collides(this, entity)) {
 				entity.takeDamage(dealDamage());
 				// sound engine play sound!
 				activeLevel.removeProjectile(this); // This projectile should
@@ -46,22 +36,32 @@ public class ProjectileBullet extends Projectile {
 				break;
 			}
 		}
-		
+
 		// Check if hits the terrain
 		List<TerrainBlock> terrains = new ArrayList<TerrainBlock>();
 		for (EntityTranslatable terrain : activeLevel.getTerrains()) {
 			terrains.add((TerrainBlock) terrain);
 		}
 		for (TerrainBlock terrain : terrains) {
-			if(Physique.collides(this, terrain)){
+			if (Impact.collides(this, terrain)) {
 				activeLevel.removeTerrain(this);
 				break;
 			}
 		}
-		
+
 		// Check if outside of map
-		if(isOutsideoflevel(activeLevel)){
+		if (isOutsideoflevel(activeLevel)) {
 			activeLevel.removeTerrain(this);
 		}
+	}
+
+	@Override
+	double dealDamage() {
+		/*
+		 * Calculate the amount of damage this projectile does. owner could be
+		 * used to modify the damage (buffs etc)
+		 */
+
+		return 5;
 	}
 }

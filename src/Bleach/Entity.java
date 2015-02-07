@@ -116,6 +116,14 @@ public class Entity implements EntityTranslatable {
 		bMoving = setMoving;
 	}
 
+	public boolean isOutsideoflevel(LevelInteractable activeLevel) {
+		if (getBoundary().x >= ((Level) activeLevel).getWidth() || getBoundary().x + getBoundary().width <= 0 || getBoundary().y >= ((Level) activeLevel).getHeight() || getBoundary().y + getBoundary().height <= 0) {
+
+			return true;
+		}
+		return false;
+	}
+
 	public void setHasRectangularCollisionModel(boolean hasRectangularCollisionModel) {
 		this.hasRectangularCollisionModel = hasRectangularCollisionModel;
 	}
@@ -167,16 +175,5 @@ public class Entity implements EntityTranslatable {
 		//
 		// setPosition(position);
 		// }
-	}
-	
-	public boolean isOutsideoflevel(LevelInteractable activeLevel){
-		if(	getBoundary().x >= ((Level)activeLevel).getWidth() || 
-			getBoundary().x + getBoundary().width <= 0 ||
-			getBoundary().y >= ((Level)activeLevel).getHeight() ||
-			getBoundary().y + getBoundary().height <= 0){
-			
-			return true;
-		}
-		return false;
 	}
 }
