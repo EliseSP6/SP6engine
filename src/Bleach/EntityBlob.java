@@ -30,6 +30,10 @@ public class EntityBlob extends EntityLiving {
 			if (bMoving)
 				getForce().setVectorAngle((Math.random()) * (2 * Math.PI));
 		}
+		if(System.currentTimeMillis() % 100 == 0){
+			System.out.println("Blob AI fire!");
+			((Level)activeLevel).addProjectile(new ProjectileBullet(x, y, getForce().getVectorAngle(), this));
+		}
 		// end BS AI
 	}
 }

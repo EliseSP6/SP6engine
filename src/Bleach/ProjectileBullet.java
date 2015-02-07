@@ -8,8 +8,8 @@ import Bleach.PhysicsEngine.CollisionEngine.Impact;
 
 public class ProjectileBullet extends Projectile {
 
-	public ProjectileBullet(double x, double y, EntityLiving owner) {
-		super(Discette.getImage("heart"), x, y, 4, owner);
+	public ProjectileBullet(double x, double y, double angle, EntityLiving owner) {
+		super(Discette.getImage("heart"), x, y, 4, angle, owner);
 	}
 
 	@Override
@@ -33,6 +33,7 @@ public class ProjectileBullet extends Projectile {
 				// sound engine play sound!
 				activeLevel.removeProjectile(this); // This projectile should
 													// die now.
+				System.out.println("proj death entity");
 				break;
 			}
 		}
@@ -45,6 +46,7 @@ public class ProjectileBullet extends Projectile {
 		for (TerrainBlock terrain : terrains) {
 			if (Impact.collides(this, terrain)) {
 				activeLevel.removeTerrain(this);
+				System.out.println("proj death terrain");
 				break;
 			}
 		}

@@ -9,9 +9,11 @@ public abstract class Projectile extends Entity {
 											// "friendly fire" options for
 											// players.
 
-	protected Projectile(Sprite sprite, double x, double y, double r, EntityLiving owner) {
+	protected Projectile(Sprite sprite, double x, double y, double r, double angle, EntityLiving owner) {
 		super(sprite, x, y, r);
 		this.owner = owner;
+		this.getForce().setVectorAngle(angle);
+		bMoving = true;
 	}
 
 	abstract double dealDamage();
