@@ -178,7 +178,7 @@ public class Physique {
 										newPosition.x = otherEntity.getBoundary().x - entity.getBoundary().width / 2.0;
 									}
 									else{
-										newPosition.x = otherEntity.getBoundary().x + otherEntity.getBoundary().width + entity.getBoundary().width / 2;
+										newPosition.x = otherEntity.getBoundary().x + otherEntity.getBoundary().width + entity.getBoundary().width / 2.0;
 									}
 								}
 								
@@ -254,7 +254,7 @@ public class Physique {
 		if (entity.isLanded() == false && entity.getMass() > 0.0) {
 			double gravitionalAcceleration = gravity * entity.getMass();
 			entity.setWeight(entity.getWeight() + gravitionalAcceleration);
-			nextPosition.y +=  gravitionalAcceleration * entity.getWeight() * Math.pow(deltaTime, 2);
+			nextPosition.y += gravitionalAcceleration * Math.pow(entity.getFallingTime(), 2);
 		}
 		
 		Iterator<ExternalForce> externalForceIt = entity.getExternalForces().iterator();
