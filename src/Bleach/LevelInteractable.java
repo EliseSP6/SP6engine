@@ -20,6 +20,8 @@ public interface LevelInteractable {
 	public int getBackgroundParallaxDistance();
 
 	public Point2D.Double getViewport();
+	
+	public Point2D.Double getDimensions();
 
 	public void removeMobile(EntityTranslatable mobile);
 
@@ -29,5 +31,5 @@ public interface LevelInteractable {
 
 	public void removePlayer(EntityTranslatable player);
 
-	public void removeTerrain(TerrainBlock terrain);
+	public void removeTerrain(EntityTranslatable terrain);
 }

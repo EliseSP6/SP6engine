@@ -46,5 +46,33 @@ public class ProjectileBullet extends Projectile {
 				break;
 			}
 		}
+		
+		// Check if hits the terrain
+		List<TerrainBlock> terrains = new ArrayList<TerrainBlock>();
+		for (EntityTranslatable terrain : activeLevel.getTerrains()) {
+			terrains.add((TerrainBlock) terrain);
+		}
+		for (TerrainBlock terrain : terrains) {
+			if(Physique.collides(this, terrain)){
+				activeLevel.removeTerrain(this);
+				break;
+			}
+		}
+		
+		// Check if outside of map
+		if(isOutsideoflevel(activeLevel)){
+			activeLevel.removeTerrain(this);
+		}
+	}
+	
+	private boolean isOutsideoflevel(LevelInteractable activeLevel){
+		if(	getBoundary().x >= activeLevel.getDimensions().x || 
+			getBoundary().x + getBoundary().width <= 0 ||
+			getBoundary().y >= activeLevel.getDimensions().y ||
+			getBoundary().y + getBoundary().height <= 0){
+			
+			return true;
+		}
+		return false;
 	}
 }
