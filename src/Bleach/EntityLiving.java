@@ -44,6 +44,6 @@ public abstract class EntityLiving extends Entity {
 		super.tick(activeLevel);
 
 		AI(activeLevel);
-		timePreviousTick = System.nanoTime();
+		timePreviousTick = System.currentTimeMillis();
 	}
 }

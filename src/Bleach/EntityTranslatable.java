@@ -17,6 +17,8 @@ public interface EntityTranslatable {
 	public CollisionListener getCollisionListener();
 
 	public List<ExternalForce> getExternalForces();
+	
+	public double getFallingTime();
 
 	public Force getForce();
 

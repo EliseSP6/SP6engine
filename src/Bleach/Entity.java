@@ -25,6 +25,7 @@ public class Entity implements EntityTranslatable {
 	protected double weight = 0;
 
 	protected long timePreviousTick;
+	protected long timeStartFalling;
 	protected boolean bMoving; // Is the entity currently moving?
 
 	protected Entity(Sprite sprite, double x, double y, double r) {
@@ -32,7 +33,8 @@ public class Entity implements EntityTranslatable {
 		this.x = x;
 		this.y = y;
 		this.r = r;
-		timePreviousTick = System.nanoTime();
+		timePreviousTick = System.currentTimeMillis();
+		timeStartFalling = System.currentTimeMillis();
 		bMoving = false;
 	}
 
@@ -119,6 +121,9 @@ public class Entity implements EntityTranslatable {
 
 	@Override
 	public void setLanded(boolean isLanded) {
+		if(this.isLanded && !isLanded){
+			timeStartFalling = System.currentTimeMillis();
+		}
 		this.isLanded = isLanded;
 	}
 
@@ -146,5 +151,17 @@ public class Entity implements EntityTranslatable {
 	public void setWeight(double weight) {
 		this.weight = weight;
 		
+	}
+
+	@Override
+	public double getFallingTime() {
+		/*
+		 * Returns the delta time in seconds since this started falling.
+		 * */
+		
+		if(isLanded)
+			return 0;
+		else
+			return  (System.currentTimeMillis() - timeStartFalling) / 1000.0;
 	}
 }
