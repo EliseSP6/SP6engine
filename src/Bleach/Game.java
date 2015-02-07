@@ -111,7 +111,7 @@ public class Game {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (player.isLanded()) {
-					player.addExternalForce(new ExternalForce(Math.toRadians(270), 10));
+					player.addExternalForce(new ExternalForce(Math.toRadians(270), 200));
 					player.setLanded(false);
 					System.out.println("JUMP");
 				}else

@@ -164,8 +164,10 @@ public class Physique {
 								
 								double deltaDistanceX = (entity.getBoundary().x + entity.getBoundary().width / 2.0) - (otherEntity.getBoundary().x + otherEntity.getBoundary().width / 2.0);
 								double deltaDistanceY = (entity.getBoundary().y + entity.getBoundary().height / 2.0) - (otherEntity.getBoundary().y + otherEntity.getBoundary().height / 2.0);
+								double stepDeltaDistanceX = oldPosition.x - newPosition.x;
+								double stepDeltaDistanceY = oldPosition.y - newPosition.y;
 								
-								if(Math.abs(deltaDistanceY) >= Math.abs(deltaDistanceX)){
+								if(Math.abs(stepDeltaDistanceY) >= Math.abs(stepDeltaDistanceX)){
 									if(deltaDistanceY < 0){
 										newPosition.y = otherEntity.getBoundary().y - entity.getBoundary().height / 2.0;
 										((Entity) entity).setLanded(true);
@@ -252,9 +254,10 @@ public class Physique {
 
 		// Re-calculates the next Y-position based on velocity + gravity
 		if (entity.isLanded() == false && entity.getMass() > 0.0) {
+			double magicGravityModifier = 12.3;
 			double gravitionalAcceleration = gravity * entity.getMass();
 			entity.setWeight(entity.getWeight() + gravitionalAcceleration);
-			nextPosition.y += gravitionalAcceleration * Math.pow(entity.getFallingTime(), 2);
+			nextPosition.y += (gravity * magicGravityModifier) * Math.pow(entity.getFallingTime(), 2);
 		}
 		
 		Iterator<ExternalForce> externalForceIt = entity.getExternalForces().iterator();
@@ -338,7 +341,7 @@ public class Physique {
 		public double getMagnitude(double deltaTime) {
 			double magnitude = force.getMagnitude(deltaTime);
 
-			double newVelocity = force.getVelocity() - magnitude*deltaTime;
+			double newVelocity = force.getVelocity() - magnitude;
 			if (newVelocity <= Double.MIN_NORMAL) {
 				magnitude = magnitude - newVelocity;
 				isExhausted = true;
