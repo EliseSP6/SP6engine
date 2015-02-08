@@ -259,6 +259,11 @@ public class Bleach extends JPanel {
 				/* Physics engine */
 				Physique.step(activeLevel);
 
+				/* Projectiles heartbeat */
+				for (EntityTranslatable projectile : activeLevel.getProjectiles()) {
+					((Entity) projectile).tick(activeLevel);
+				}
+				
 				/* Mobiles heartbeat */
 				for (EntityTranslatable mob : activeLevel.getMobiles()) {
 					((Entity) mob).tick(activeLevel);
