@@ -8,19 +8,6 @@ public class EntityBlob extends EntityLiving {
 	}
 
 	@Override
-	double takeDamage(double amount) {
-		health = Math.max(0, health - amount);
-		// animation? sound?
-		return health;
-	}
-
-	@Override
-	double dealDamage() {
-		// modifiers?
-		return attackPower;
-	}
-
-	@Override
 	void AI(LevelInteractable activeLevel) {
 
 		// BS AI
@@ -30,10 +17,23 @@ public class EntityBlob extends EntityLiving {
 			if (bMoving)
 				getForce().setVectorAngle((Math.random()) * (2 * Math.PI));
 		}
-		if(System.currentTimeMillis() % 100 == 0){
+		if (System.currentTimeMillis() % 100 == 0) {
 			System.out.println("Blob AI fire!");
-			((Level)activeLevel).addProjectile(new ProjectileBullet(x, y, getForce().getVectorAngle(), this));
+			((Level) activeLevel).addProjectile(new ProjectileBullet(x, y, getForce().getVectorAngle(), this));
 		}
 		// end BS AI
+	}
+
+	@Override
+	double dealDamage() {
+		// modifiers?
+		return attackPower;
+	}
+
+	@Override
+	double takeDamage(double amount) {
+		health = Math.max(0, health - amount);
+		// animation? sound?
+		return health;
 	}
 }

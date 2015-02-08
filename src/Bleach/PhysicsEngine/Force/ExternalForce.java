@@ -11,18 +11,14 @@ public class ExternalForce {
 	private Force force;
 	private CollisionListener collisionListener = null;
 
-	public boolean isActive() {
-		return force.isActive();
-	}
-
-	public void setActive(boolean isActive) {
-		force.setActive(isActive);
-	}
-
 	private boolean isExhausted = false;
 
 	public ExternalForce(double vectorAngle, double deltaVelocity) {
 		this.force = new Force(vectorAngle, deltaVelocity);
+	}
+
+	public CollisionListener getCollisionListener() {
+		return collisionListener;
 	}
 
 	public double getMagnitude(double deltaTime) {
@@ -32,7 +28,7 @@ public class ExternalForce {
 		double magnitude = force.getMagnitude(deltaTime);
 
 		double newVelocity = force.getVelocity() - magnitude;
-		
+
 		if (newVelocity <= Double.MIN_NORMAL) {
 			magnitude = magnitude - newVelocity;
 			isExhausted = true;
@@ -48,6 +44,10 @@ public class ExternalForce {
 		return force.getVectorAngle();
 	}
 
+	public boolean hasCollisionListener() {
+		return this.collisionListener != null ? true : false;
+	}
+
 	public boolean isExhaused() {
 		return isExhausted;
 	}
@@ -56,15 +56,7 @@ public class ExternalForce {
 		this.isExhausted = true;
 	}
 
-	public CollisionListener getCollisionListener() {
-		return collisionListener;
-	}
-
 	public void setOnCollision(CollisionListener onCollision) {
 		this.collisionListener = onCollision;
-	}
-
-	public boolean hasCollisionListener() {
-		return this.collisionListener != null ? true : false;
 	}
 }

@@ -263,7 +263,7 @@ public class Bleach extends JPanel {
 				for (EntityTranslatable projectile : activeLevel.getProjectiles()) {
 					((Entity) projectile).tick(activeLevel);
 				}
-				
+
 				/* Mobiles heartbeat */
 				for (EntityTranslatable mob : activeLevel.getMobiles()) {
 					((Entity) mob).tick(activeLevel);

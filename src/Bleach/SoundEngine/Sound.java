@@ -16,20 +16,20 @@ public class Sound {
 		this.info = info;
 		this.audio = audioData;
 	}
-	
+
+	public byte[] getAudioData() {
+		return audio;
+	}
+
 	public AudioInputStream getAudioInputStream() {
 		return audioInputStream;
 	}
-	
-	public int getSize() {
-		return size;
-	}
-	
+
 	public DataLine.Info getInfo() {
 		return info;
 	}
-	
-	public byte[] getAudioData() {
-		return audio;
+
+	public int getSize() {
+		return size;
 	}
 }

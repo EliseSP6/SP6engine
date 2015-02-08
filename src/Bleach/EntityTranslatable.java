@@ -30,6 +30,8 @@ public interface EntityTranslatable {
 
 	public double getWeight();
 
+	public boolean hasCollisionListener();
+
 	public boolean isLanded();
 
 	public boolean isMoving();
@@ -46,6 +48,4 @@ public interface EntityTranslatable {
 
 	public void setWeight(double weight);
 
-	public boolean hasCollisionListener();
-	
 }

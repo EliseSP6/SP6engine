@@ -29,7 +29,7 @@ public class Game {
 		Bleach myGame = new Bleach();
 
 		myGame.loadImages("assets/images/assets.json");
-		
+
 		try {
 			myGame.loadSounds("assets/sounds/assets.json");
 		} catch (IOException e2) {
@@ -65,7 +65,6 @@ public class Game {
 		firstLevel.levelBuilder(myGame.loadLevel("assets/levels/level1.json"));
 
 		// firstLevel.setMusicTrack("melody7");
-		
 
 		myGame.addLevel(firstLevel);
 
@@ -130,24 +129,24 @@ public class Game {
 					player.addExternalForce(ExternalForce.ForceIdentifier.JUMP, new ExternalForce(Math.toRadians(270), 200));
 					player.setLanded(false);
 					System.out.println("JUMP");
-					
+
 					try {
 						Boom.playSound(Discette.getSound("drop"));
 					} catch (LineUnavailableException e1) {
 						e1.printStackTrace();
 					}
-					
+
 				} else
 					System.out.println("NO JUMP");
 			}
 		}));
-		
+
 		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("shift pressed SHIFT"), "shift pressed SHIFT", new AbstractAction() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				ExternalForce thrust =  new ExternalForce(Math.toRadians(270), 100);
+
+				ExternalForce thrust = new ExternalForce(Math.toRadians(270), 100);
 				thrust.setOnCollision(new CollisionListener() {
 
 					@Override
@@ -155,16 +154,16 @@ public class Game {
 						thrust.kill();
 					}
 				});
-				
-					player.addExternalForce("JETPACK", thrust);
-					player.setLanded(false);
-					System.out.println("JETPACK");
-					
-					try {
-						Boom.playSound(Discette.getSound("explosion"));
-					} catch (LineUnavailableException e1) {
-						e1.printStackTrace();
-					}
+
+				player.addExternalForce("JETPACK", thrust);
+				player.setLanded(false);
+				System.out.println("JETPACK");
+
+				try {
+					Boom.playSound(Discette.getSound("explosion"));
+				} catch (LineUnavailableException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}));
 

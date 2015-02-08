@@ -55,7 +55,7 @@ public class Entity implements EntityTranslatable {
 				collisionListener.onCollision(collidedWith);
 				for (ExternalForce externalForce : externalForces.values())
 					if (externalForce.getCollisionListener() != null)
-					externalForce.getCollisionListener().onCollision(collidedWith);
+						externalForce.getCollisionListener().onCollision(collidedWith);
 			}
 		};
 	}
@@ -104,6 +104,11 @@ public class Entity implements EntityTranslatable {
 	@Override
 	public double getWeight() {
 		return weight;
+	}
+
+	@Override
+	public boolean hasCollisionListener() {
+		return this.collisionListener != null ? true : false;
 	}
 
 	public boolean hasRectangularCollisionModel() {
@@ -184,10 +189,5 @@ public class Entity implements EntityTranslatable {
 		//
 		// setPosition(position);
 		// }
-	}
-
-	@Override
-	public boolean hasCollisionListener() {
-		return this.collisionListener != null ? true : false;
 	}
 }
