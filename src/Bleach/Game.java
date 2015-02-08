@@ -45,23 +45,11 @@ public class Game {
 
 		Level firstLevel = new Level(2800, 1200, "Town");
 
-		// firstLevel.addBackground(myGame.getTexture("clouds"));
-		// firstLevel.addBackground(myGame.getTexture("sky"));
 		EntityBlob blobby = new EntityBlob(myGame.getSprite("blob"), 200, 264);
 		Player player = new Player(myGame.getSprite("mushi"), 100, 100);
 		firstLevel.addMobile(blobby);
 		firstLevel.addPlayer(player);
 
-		// firstLevel.addTerrainBlock(new
-		// TerrainBlock(myGame.getSprite("block"), 1, 5));
-		// firstLevel.addTerrainBlock(new
-		// TerrainBlock(myGame.getSprite("block"), 2, 5));
-		// firstLevel.addTerrainBlock(new
-		// TerrainBlock(myGame.getSprite("block"), 3, 5));
-		// firstLevel.addTerrainBlock(new
-		// TerrainBlock(myGame.getSprite("block"), 4, 5));
-		// firstLevel.addTerrainBlock(new
-		// TerrainBlock(myGame.getSprite("block"), 4, 4));
 		firstLevel.levelBuilder(myGame.loadLevel("assets/levels/level1.json"));
 
 		// firstLevel.setMusicTrack("melody7");
@@ -75,13 +63,10 @@ public class Game {
 
 			@Override
 			public void handleEvent(ActionEvent event) {
-				// TODO Auto-generated method stub
 			}
 
 			@Override
 			public void handleEvent(MouseEvent event) {
-				// System.out.println("X: " + event.getX() + " Y: " +
-				// event.getY());
 			}
 		};
 
@@ -91,7 +76,6 @@ public class Game {
 			public void actionPerformed(ActionEvent e) {
 				player.getForce().setVectorAngle(Math.PI);
 				player.isMoving(true);
-				System.out.println("Player moving to the left.");
 			}
 		}));
 
@@ -109,7 +93,6 @@ public class Game {
 			public void actionPerformed(ActionEvent e) {
 				player.getForce().setVectorAngle(0);
 				player.isMoving(true);
-				System.out.println("Player moving to the right.");
 			}
 		}));
 
@@ -128,7 +111,6 @@ public class Game {
 				if (player.isLanded()) {
 					player.addExternalForce(ExternalForce.ForceIdentifier.JUMP, new ExternalForce(Math.toRadians(270), 200));
 					player.setLanded(false);
-					System.out.println("JUMP");
 
 					try {
 						Boom.playSound(Discette.getSound("drop"));
@@ -136,8 +118,7 @@ public class Game {
 						e1.printStackTrace();
 					}
 
-				} else
-					System.out.println("NO JUMP");
+				}
 			}
 		}));
 
@@ -157,7 +138,6 @@ public class Game {
 
 				player.addExternalForce("JETPACK", thrust);
 				player.setLanded(false);
-				System.out.println("JETPACK");
 
 				try {
 					Boom.playSound(Discette.getSound("explosion"));
@@ -171,8 +151,6 @@ public class Game {
 
 			@Override
 			public void onCollision(Entity collidedWith) {
-				// System.out.println("Krockade med " +
-				// collidedWith.toString());
 			}
 
 		});
