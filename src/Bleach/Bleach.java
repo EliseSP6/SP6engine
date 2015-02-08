@@ -212,8 +212,6 @@ public class Bleach extends JPanel {
 		if (timeDebug >= 1000) {
 			timeDebug = 0;
 			renderer.clearDebugLines();
-			// renderer.addDebugLine("FPS: " + new
-			// Double(actualFPS).toString().substring(0, 5));
 			renderer.addDebugLine("FPS: " + (int) actualFPS);
 		}
 
@@ -277,18 +275,6 @@ public class Bleach extends JPanel {
 				}
 
 			}
-
-			// if(FPS > 0){ // We're limiting the FPS. Check if it's time to
-			// render.
-			// if(System.nanoTime() - timePreviousRender > (1000000.0 / (FPS /
-			// 1000))){
-			// repaint();
-			// }
-			// }else{ // We're not limiting the FPS, render as often as
-			// possible.
-			// repaint();
-			// }
-			// repaint();
 			paintComponent(this.getGraphics());
 			timePreviousLoop = System.currentTimeMillis();
 		}
