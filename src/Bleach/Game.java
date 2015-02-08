@@ -141,6 +141,32 @@ public class Game {
 					System.out.println("NO JUMP");
 			}
 		}));
+		
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("shift pressed SHIFT"), "shift pressed SHIFT", new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				ExternalForce thrust =  new ExternalForce(Math.toRadians(270), 100);
+				thrust.setOnCollision(new CollisionListener() {
+
+					@Override
+					public void onCollision(Entity collidedWith) {
+						thrust.kill();
+					}
+				});
+				
+					player.addExternalForce("JETPACK", thrust);
+					player.setLanded(false);
+					System.out.println("JETPACK");
+					
+					try {
+						Boom.playSound(Discette.getSound("explosion"));
+					} catch (LineUnavailableException e1) {
+						e1.printStackTrace();
+					}
+			}
+		}));
 
 		((Entity) player).setOnCollision(new CollisionListener() {
 

@@ -46,4 +46,6 @@ public interface EntityTranslatable {
 
 	public void setWeight(double weight);
 
+	public boolean hasCollisionListener();
+	
 }

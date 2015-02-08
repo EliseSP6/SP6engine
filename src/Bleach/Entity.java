@@ -17,7 +17,7 @@ public class Entity implements EntityTranslatable {
 	protected boolean isLanded = false;
 	protected Force internalForce = new Force(Math.toRadians(90), 0);
 	protected Map<Object, ExternalForce> externalForces = new HashMap<>();
-	protected CollisionListener onCollision = null;
+	protected CollisionListener collisionListener = null;
 
 	protected double mass = 0.0;
 	protected double weight = 0;
@@ -48,7 +48,16 @@ public class Entity implements EntityTranslatable {
 
 	@Override
 	public CollisionListener getCollisionListener() {
-		return onCollision;
+		return new CollisionListener() {
+
+			@Override
+			public void onCollision(Entity collidedWith) {
+				collisionListener.onCollision(collidedWith);
+				for (ExternalForce externalForce : externalForces.values())
+					if (externalForce.getCollisionListener() != null)
+					externalForce.getCollisionListener().onCollision(collidedWith);
+			}
+		};
 	}
 
 	@Override
@@ -102,7 +111,7 @@ public class Entity implements EntityTranslatable {
 	}
 
 	@Override
-	public boolean isLanded() {
+	public final boolean isLanded() {
 		return isLanded;
 	}
 
@@ -129,7 +138,7 @@ public class Entity implements EntityTranslatable {
 	}
 
 	@Override
-	public void setLanded(boolean isLanded) {
+	public final void setLanded(boolean isLanded) {
 		if (this.isLanded && !isLanded) {
 			timeStartFalling = System.currentTimeMillis();
 		}
@@ -149,7 +158,7 @@ public class Entity implements EntityTranslatable {
 
 	@Override
 	public void setOnCollision(CollisionListener onCollision) {
-		this.onCollision = onCollision;
+		this.collisionListener = onCollision;
 	}
 
 	@Override
@@ -175,5 +184,10 @@ public class Entity implements EntityTranslatable {
 		//
 		// setPosition(position);
 		// }
+	}
+
+	@Override
+	public boolean hasCollisionListener() {
+		return this.collisionListener != null ? true : false;
 	}
 }

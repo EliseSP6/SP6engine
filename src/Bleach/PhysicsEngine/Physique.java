@@ -47,9 +47,9 @@ public class Physique {
 						if (Impact.collides(currentEntity, otherEntity)) {
 
 							// Trigger entities' onCollision-actions, if present
-							if (((Entity) currentEntity).getCollisionListener() != null)
+							if (((Entity) currentEntity).hasCollisionListener())
 								((Entity) currentEntity).getCollisionListener().onCollision((Entity) otherEntity);
-							if (((Entity) otherEntity).getCollisionListener() != null)
+							if (((Entity) otherEntity).hasCollisionListener())
 								((Entity) otherEntity).getCollisionListener().onCollision((Entity) currentEntity);
 
 							// Flag sets true
