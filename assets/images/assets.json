@@ -53,5 +53,12 @@
 	{
 		"key":"pattern",
 		"filename":"repeat.jpg"
+	},
+	{
+		"key":"pattern2",
+		"filename":"pattern_anim.png",
+		"frametime":200,
+		"width":400,
+		"height":400
 	}
 ]

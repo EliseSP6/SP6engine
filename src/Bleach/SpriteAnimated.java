@@ -10,13 +10,13 @@ public class SpriteAnimated extends Sprite {
 
 	public SpriteAnimated(BufferedImage image, Integer frameWidth, Integer frameHeight, Integer originx, Integer originy, long timeAnim) {
 		super(image);
-		this.width = frameWidth;
-		this.height = frameHeight;
-		this.originx = originx == null ? width / 2 : originx;
-		this.originy = originy == null ? height / 2 : originy;
-		this.timeAnim = timeAnim * 1000000; // millis to nanos
+		this.width = frameWidth == null ? 32 : frameWidth;				// Default width = 32
+		this.height = frameHeight == null ? 32 : frameHeight;			// Default height = 32
+		this.originx = originx == null ? width / 2 : originx;			// Default originx = center
+		this.originy = originy == null ? height / 2 : originy;			// Default originy = center
+		this.timeAnim = timeAnim * 1000000;								// millis to nanos
 		timeStart = System.nanoTime();
-		frameCount = Math.max(1, image.getWidth() / frameWidth);
+		frameCount = Math.max(1, image.getWidth() / this.width);
 	}
 
 	@Override

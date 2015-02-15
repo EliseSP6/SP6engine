@@ -52,12 +52,12 @@ public class Picasso {
 
 		Graphics graphics = canvas.getGraphics();
 		
+		/* Render the backdrop if any. The backdrop is visible of the screen size is bigger than the level size */
+		graphics.setColor(Color.black);
+		graphics.fillRect(0, 0, width, height);
 		
 		BufferedImage backdrop = Discette.getImage(currentLevelSetting.getBackdropKey()) == null ? null : Discette.getImage(currentLevelSetting.getBackdropKey()).getFrame();
-		if(backdrop == null){
-			graphics.setColor(Color.black);
-			graphics.fillRect(0, 0, width, height);
-		}else{
+		if(backdrop != null){
 			for(int i = 0; i < Math.ceil(width / backdrop.getWidth() + 1); i++){
 				for(int j = 0; j < Math.ceil(height / backdrop.getHeight() + 1); j++){
 					graphics.drawImage(backdrop, i * backdrop.getWidth(), j * backdrop.getHeight(), null);
@@ -65,7 +65,7 @@ public class Picasso {
 			}
 		}
 		
-		
+		/* If the level size is smaller than the screen size we have to clip it */
 		graphics.setClip((int)paddingX, (int)paddingY, (int)renderWidth, (int)renderHeight);
 
 		// Render level backgrounds using the parallax effect.
