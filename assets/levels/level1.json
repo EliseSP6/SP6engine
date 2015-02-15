@@ -1,7 +1,8 @@
 {
 	"key":"level1",
-	"width":2200,
-	"height":1000,
+	"width":1800,
+	"height":650,
+	"backdrop":"pattern",
 	"backgrounds":
 	[
 		{

@@ -4,14 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import Bleach.InputManager.Receptionist;
 import Bleach.InputManager.Receptionist.KeyBinding;
-import Bleach.Loader.Discette;
 import Bleach.PhysicsEngine.CollisionEngine.CollisionListener;
 import Bleach.PhysicsEngine.Force.ExternalForce;
 import Bleach.SoundEngine.Boom;
@@ -43,14 +41,13 @@ public class Game {
 		myGame.setSize(800, 600);
 		myGame.setTitle("My super game!");
 
-		Level firstLevel = new Level(2800, 1200, "Town");
-
+		//final Level firstLevel = new Level(2800, 1200, "Town");
+		final Level firstLevel = new Level(myGame.loadLevel("SP6engine/assets/levels/level1.json"));
+		
 		EntityBlob blobby = new EntityBlob(myGame.getSprite("blob"), 200, 264);
-		Player player = new Player(myGame.getSprite("mushi"), 100, 100);
+		final Player player = new Player(myGame.getSprite("mushi"), 100, 100);
 		firstLevel.addMobile(blobby);
 		firstLevel.addPlayer(player);
-
-		firstLevel.levelBuilder(myGame.loadLevel("SP6engine/assets/levels/level1.json"));
 
 		// firstLevel.setMusicTrack("melody7");
 
@@ -133,7 +130,7 @@ public class Game {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				ExternalForce thrust = new ExternalForce(Math.toRadians(270), 120);
+				final ExternalForce thrust = new ExternalForce(Math.toRadians(270), 120);
 				thrust.setOnCollision(new CollisionListener() {
 
 					@Override

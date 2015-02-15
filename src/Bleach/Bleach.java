@@ -3,6 +3,8 @@ package Bleach;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
@@ -13,7 +15,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,9 +24,7 @@ import Bleach.InputManager.Receptionist;
 import Bleach.InputManager.Receptionist.KeyBinding;
 import Bleach.Loader.Discette;
 import Bleach.PhysicsEngine.Physique;
-import Bleach.PhysicsEngine.Force.ExternalForce;
 import Bleach.Renderer.Picasso;
-import Bleach.SoundEngine.Boom;
 
 public class Bleach extends JPanel {
 	/**
@@ -78,9 +77,9 @@ public class Bleach extends JPanel {
 		System.setProperty("sun.java2d.opengl", "True");
 
 		timePreviousLoop = timePreviousRender = System.currentTimeMillis();
-		winWidth = 800; // Default width
-		winHeight = 600; // Default height
-		winTitle = "Game window"; // Default title;
+		renderer = new Picasso(800, 600);
+		setSize(800, 600);							// Default size
+		winTitle = "Game window";					// Default title;
 	}
 
 	public void addLevel(Level level) {
@@ -145,7 +144,7 @@ public class Bleach extends JPanel {
 		// This is the window title variable used in the Event Dispatch Thread
 		// (EDT).
 		final String EDTwindowTitle = winTitle;
-
+		
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				/*
@@ -156,7 +155,20 @@ public class Bleach extends JPanel {
 				public void run() {
 					jWindow = new JFrame(EDTwindowTitle);
 					jWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					jWindow.setResizable(false);
+					jWindow.setBackground(Color.black);
+					
+					jWindow.addComponentListener(new ComponentAdapter() {
+						public void componentResized(ComponentEvent e){
+							int width = EDTpointerToPanel.getWidth();
+							int height  = EDTpointerToPanel.getHeight();
+							
+							renderer.setSize(width, height);
+							if(activeLevel != null){
+								activeLevel.setScreenSize(width, height);
+							}
+						}
+					});
+					
 					jWindow.add(EDTpointerToPanel);
 
 					// Fixes a bug that sometimes adds 10 pixels to width and
@@ -177,16 +189,21 @@ public class Bleach extends JPanel {
 
 		setDoubleBuffered(true);
 		setFocusable(true);
-		setBackground(Color.cyan);
-
-		renderer = new Picasso(winWidth, winHeight);
+		setBackground(Color.black);
 	}
 
-	public void init(int windowWidth, int windowHeight, String windowTitle) {
-		winWidth = windowWidth;
-		winHeight = windowHeight;
+	public void init(int windowWidth, int windowHeight, String windowTitle, String renderingBackdrop) {
+		setSize(windowWidth, windowHeight);
 		winTitle = windowTitle;
 		init();
+	}
+	
+	@Override
+	public void setSize(int width, int height){
+		super.setSize(width, height);
+		winWidth = width;
+		winHeight = height;
+		renderer.setSize(width, height);
 	}
 
 	public void loadImages(String assetJsonPath) {

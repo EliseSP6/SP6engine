@@ -15,10 +15,10 @@ import Bleach.TerrainBlock;
 import Bleach.Loader.Discette;
 
 public class Picasso {
-	private int width, height; // Screen width and height.
-	private List<String> debug; // Debug data to be printed on the screen.
-	private boolean doDebug; // Whether to display the debug data or not.
-	BufferedImage canvas;
+	private int width, height;						// Width and height of rendering area.
+	private List<String> debug;						// Debug data to be printed on the screen.
+	private boolean doDebug;						// Whether to display the debug data or not.
+	BufferedImage canvas;							// Back-buffer, this is where we draw stuff.
 
 	public Picasso(int width, int height) {
 		this.width = width;
@@ -41,13 +41,32 @@ public class Picasso {
 		if (currentLevelSetting == null)
 			return;
 
-		double offsetX = currentLevelSetting.getViewport().x - width / 2.0;
-		double offsetY = currentLevelSetting.getViewport().y - height / 2.0;
+		double renderWidth = width < currentLevelSetting.getWidth() ? width : currentLevelSetting.getWidth();
+		double renderHeight  = height < currentLevelSetting.getHeight() ? height : currentLevelSetting.getHeight();
+		
+		double paddingX = (width > currentLevelSetting.getWidth() ? (width - currentLevelSetting.getWidth()) / 2.0 : 0);
+		double paddingY = (height > currentLevelSetting.getHeight() ? (height - currentLevelSetting.getHeight()) / 2.0 : 0);
+		
+		double offsetX = paddingX + currentLevelSetting.getViewport().x - width / 2.0;
+		double offsetY = paddingY + currentLevelSetting.getViewport().y - height / 2.0;
 
 		Graphics graphics = canvas.getGraphics();
-
-		graphics.setColor(Color.white);
-		graphics.fillRect(0, 0, width, height);
+		
+		
+		BufferedImage backdrop = Discette.getImage(currentLevelSetting.getBackdropKey()) == null ? null : Discette.getImage(currentLevelSetting.getBackdropKey()).getFrame();
+		if(backdrop == null){
+			graphics.setColor(Color.black);
+			graphics.fillRect(0, 0, width, height);
+		}else{
+			for(int i = 0; i < Math.ceil(width / backdrop.getWidth() + 1); i++){
+				for(int j = 0; j < Math.ceil(height / backdrop.getHeight() + 1); j++){
+					graphics.drawImage(backdrop, i * backdrop.getWidth(), j * backdrop.getHeight(), null);
+				}
+			}
+		}
+		
+		
+		graphics.setClip((int)paddingX, (int)paddingY, (int)renderWidth, (int)renderHeight);
 
 		// Render level backgrounds using the parallax effect.
 		int currentBackgroundNumber = 1;
@@ -56,46 +75,21 @@ public class Picasso {
 		for (BufferedImage background : backgrounds) {
 			// Calculate the position of this background and tile it if needed.
 			int parallaxDistance = currentLevelSetting.getBackgroundParallaxDistance();
-			double parallaxModifier = currentBackgroundNumber / (parallaxDistance / 1.5); // Do
-																							// some
-																							// math
-																							// to
-																							// get
-																							// a
-																							// modifier
-																							// that
-																							// seems
-																							// to
-																							// be
-																							// Ok.
-																							// This
-																							// modifier
-																							// alters
-																							// the
-																							// position
-																							// of
-																							// the
-																							// current
-																							// background
-																							// in
-																							// order
-																							// to
-																							// create
-																							// the
-																							// parallax
-																							// effect.
-			double scrollX = (currentLevelSetting.getViewport().getX() - width / 2.0) / width * -1;
-			double scrollY = (currentLevelSetting.getViewport().getY() - height / 2.0) / height * -1;
-			int tileCountX = (int) Math.ceil((double) width / background.getWidth() + 1);
-			int tileCountY = (int) Math.ceil((double) height / background.getHeight() + 1);
+			double parallaxModifier = currentBackgroundNumber / (parallaxDistance / 1.5); // Do some math to get a modifier that seems to be Ok. This modifier alters the position of the current background in order to create the parallax effect.
+			
+			double scrollX = (paddingX + currentLevelSetting.getViewport().x - renderWidth / 2.0) / renderWidth * -1;
+			double scrollY = (paddingY + currentLevelSetting.getViewport().y - renderHeight / 2.0) / renderHeight * -1;
+			
+			int tileCountX = (int) Math.ceil((double) renderWidth / background.getWidth() + 1);
+			int tileCountY = (int) Math.ceil((double) renderHeight / background.getHeight() + 1);
 
-			int startX = (int) ((width * scrollX * parallaxModifier) % background.getWidth());
-			int startY = (int) ((height * scrollY * parallaxModifier) % background.getHeight());
+			int startX = (int) ((renderWidth * scrollX * parallaxModifier) % background.getWidth());
+			int startY = (int) ((renderHeight * scrollY * parallaxModifier) % background.getHeight());
 
 			for (int i = 0; i < tileCountX; i++) {
 				for (int j = 0; j < tileCountY; j++) {
-					int x = startX + i * background.getWidth();
-					int y = startY + j * background.getHeight();
+					int x = (int)paddingX + startX + i * background.getWidth();
+					int y = (int)paddingY + startY + j * background.getHeight();
 
 					graphics.drawImage(background, x, y, background.getWidth(), background.getHeight(), null);
 				}
@@ -146,7 +140,8 @@ public class Picasso {
 
 		// Handle debug data
 		if (doDebug) {
-
+			graphics.setClip(null);
+			
 			int lineNumber = 0;
 			for (String line : debug) {
 				graphics.setColor(Color.black);
@@ -155,6 +150,11 @@ public class Picasso {
 				graphics.drawString(line, 5, 15 + 10 * lineNumber);
 				lineNumber++;
 			}
+			
+			graphics.setColor(Color.red);
+			graphics.drawRect((int)paddingX, (int)paddingY, (int)renderWidth, (int)renderHeight);		// Rendering rect
+			graphics.setColor(Color.orange);
+			graphics.drawRect((int)currentLevelSetting.getViewport().x - (currentLevelSetting.getWidth()/2), (int)currentLevelSetting.getViewport().y - (currentLevelSetting.getHeight()/2), currentLevelSetting.getWidth(), currentLevelSetting.getHeight());
 		}
 
 		graphics.dispose();
@@ -168,5 +168,6 @@ public class Picasso {
 	public void setSize(int width, int height) {
 		this.width = width;
 		this.height = height;
+		canvas = Discette.toCompatibleImage(new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB));
 	}
 }

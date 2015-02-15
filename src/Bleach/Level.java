@@ -14,22 +14,17 @@ public class Level implements LevelInteractable {
 	private List<EntityTranslatable> players;
 	private List<EntityTranslatable> projectiles;
 	private List<TerrainBlock> terrains;
-	private List<BufferedImage> backgrounds; // A list of textures that are to
-												// be parallaxed in the
-												// background.
-	private Point2D.Double viewport; // Offset for scrolling. This points at the
-										// middle of the viewport.
-	private int width, height;
-	private int screenWidth, screenHeight;
-	private int parallaxDistance; // How far away the background layers are.
-									// Used for the parallaxing of backgrounds.
-	private String key; // Identifier for this level.
-
-	private boolean isScrolling; // Does the level auto-scroll.
-	private double scrollVelocity; // Auto-scroll speed, pixels per second.
-	private double scrollAngle; // Auto-scroll: scroll towards this angle.
-	private long timePreviousScroll; // Time since last scroll happened. Used to
-										// calculate delta-time.
+	private List<BufferedImage> backgrounds;		// A list of textures that are to be parallaxed in the background.
+	private Point2D.Double viewport;				// Offset for scrolling. This points at the middle of the viewport.
+	private int width, height;						// Width/Height of the level
+	private int screenWidth, screenHeight;			// Width/Height of the rendering area.
+	private int parallaxDistance;					// How far away the background layers are. Used for the parallaxing of backgrounds.
+	private String key;								// Identifier for this level.
+	private String backdrop;						// Image key for the backdrop to be used on this level.
+	private boolean isScrolling;					// Does the level auto-scroll.
+	private double scrollVelocity;					// Auto-scroll speed, pixels per second.
+	private double scrollAngle;						// Auto-scroll: scroll towards this angle.
+	private long timePreviousScroll;				// Time since last scroll happened. Used to calculate delta-time.
 
 	public Level() {
 		this(800, 600, "Level" + System.currentTimeMillis());
@@ -135,6 +130,11 @@ public class Level implements LevelInteractable {
 		viewport.x = viewport.x + screenWidth / 2.0 > width ? width - screenWidth / 2.0 : viewport.x;
 		viewport.y = viewport.y + screenHeight / 2.0 > height ? height - screenHeight / 2.0 : viewport.y;
 	}
+	
+	@Override
+	public String getBackdropKey(){
+		return backdrop;
+	}
 
 	@Override
 	public int getBackgroundParallaxDistance() {
@@ -203,6 +203,7 @@ public class Level implements LevelInteractable {
 		width = levelObject.width == null ? width : levelObject.width;
 		height = levelObject.height == null ? height : levelObject.height;
 		key = levelObject.key == null ? key : levelObject.key;
+		backdrop = levelObject.backdrop == null ? backdrop : levelObject.backdrop;
 
 		for (Discette.JsonObjectLevel.JsonObjectBacks background : levelObject.backgrounds) {
 			Sprite sprite = null;

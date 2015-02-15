@@ -49,5 +49,9 @@
 	{
 		"key":"bullet",
 		"filename":"bullet.png"
+	},
+	{
+		"key":"pattern",
+		"filename":"repeat.jpg"
 	}
 ]

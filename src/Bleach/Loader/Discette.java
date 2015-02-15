@@ -47,6 +47,7 @@ public class Discette {
 		}
 
 		public String key;
+		public String backdrop;
 		public Integer width;
 		public Integer height;
 
@@ -111,7 +112,7 @@ public class Discette {
 		}
 	}
 
-	public static JsonObjectLevel parseJsonFileLevel(String pathToJSON) {
+	private static JsonObjectLevel parseJsonFileLevel(String pathToJSON) {
 		/**/
 		Gson json = new Gson();
 		JsonObjectLevel level = null;

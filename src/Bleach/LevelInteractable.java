@@ -20,6 +20,12 @@ public interface LevelInteractable {
 	public List<TerrainBlock> getTerrains();
 
 	public Point2D.Double getViewport();
+	
+	public int getHeight();
+	
+	public int getWidth();
+	
+	public String getBackdropKey();
 
 	public void removeLoot(EntityTranslatable loot);
 
