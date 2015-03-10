@@ -60,5 +60,13 @@
 		"frametime":200,
 		"width":400,
 		"height":400
+	},
+	{
+		"key":"starrysky",
+		"filename":"starry-night-sky.jpg"
+	},
+	{
+		"key":"cloud_t",
+		"filename":"cloud_t.png"
 	}
 ]

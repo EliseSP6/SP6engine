@@ -110,7 +110,7 @@ public class Game {
 				//((Level) activeLevel).addProjectile(new ProjectileBullet(x, y, getForce().getVectorAngle(), this));
 				
 				firstLevel.addProjectile(new ProjectileBullet(player.getPosition().x, player.getPosition().y, player.getForce().getVectorAngle(), player));
-				Boom.playSound("metalsound");
+				Boom.playSound("shoot1");
 			}
 		}));
 
@@ -120,7 +120,7 @@ public class Game {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(player.jump(200)){
-					Boom.playSound("drop");
+					Boom.playSound("jump1");
 				}
 			}
 		}));

@@ -18,5 +18,41 @@
 	{
 		"key":"pling",
 		"filename":"pi-ling.wav"
+	},
+	{
+		"key":"jump1",
+		"filename":"jump1.wav"
+	},
+	{
+		"key":"jump2",
+		"filename":"jump2.wav"
+	},
+	{
+		"key":"jump3",
+		"filename":"jump3.wav"
+	},
+	{
+		"key":"jump4",
+		"filename":"jump4.wav"
+	},
+	{
+		"key":"shoot1",
+		"filename":"shoot1.wav"
+	},
+	{
+		"key":"shoot2",
+		"filename":"shoot2.wav"
+	},
+	{
+		"key":"shoot3",
+		"filename":"shoot3.wav"
+	},
+	{
+		"key":"shoot4",
+		"filename":"shoot4.wav"
+	},
+	{
+		"key":"shoot5",
+		"filename":"shoot5.wav"
 	}
 ]

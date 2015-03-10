@@ -6,13 +6,10 @@
 	"backgrounds":
 	[
 		{
-			"texturekey":"starrynight"
+			"texturekey":"starrysky"
 		},
 		{
-			"texturekey":"clouds"
-		},
-		{
-			"texturekey":"snow"
+			"texturekey":"cloud_t"
 		}
 	],
 	"tiles":
