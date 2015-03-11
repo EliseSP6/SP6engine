@@ -24,7 +24,7 @@ public class Picasso {
 		this.width = width;
 		this.height = height;
 		debug = new ArrayList<String>();
-		doDebug = true;
+		doDebug = false;
 		canvas = Discette.toCompatibleImage(new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB));
 	}
 

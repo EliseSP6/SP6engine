@@ -1,23 +1,39 @@
 package Bleach;
 
+import Bleach.Loader.Discette;
+import Bleach.SoundEngine.Boom;
+
 public class EntityBlob extends EntityLiving {
 
-	public EntityBlob(Sprite sprite, double x, double y) {
-		super(sprite, x, y, 8, 5, 2, 50); // radius: 11, hp: 5, attackdamage:
-											// 2, speed: 50
+	public EntityBlob(double x, double y) {
+		super(Discette.getImage("greenblob"),
+				x,
+				y,
+				32,		// radius
+				11,		// health
+				2,		// attach power
+				50);	// speed 
 	}
 
 	@Override
 	void AI(LevelInteractable activeLevel) {
 
 		// BS AI
-		if (System.currentTimeMillis() % 1000 == 0) {
+		if (System.currentTimeMillis() % 100 == 0) {
 			bMoving = !bMoving;
 			if (bMoving)
-				getForce().setVectorAngle((Math.random()) * (2 * Math.PI));
+				getForce().setVectorAngle(((int)(Math.random()*2)==1?Math.PI:0));
+				//getForce().setVectorAngle((Math.random()) * (2 * Math.PI));
 		}
-		if (System.currentTimeMillis() % 100 == 0) {
-			((Level) activeLevel).addProjectile(new ProjectileBullet(x, y, getForce().getVectorAngle(), this));
+		if (System.currentTimeMillis() % 50 == 0) {
+			double px, py;
+			double magnitude = getRadius();
+			
+			px = x + (Math.cos(getForce().getVectorAngle()) * magnitude);
+			py = y + (Math.sin(getForce().getVectorAngle()) * magnitude);
+			
+			((Level) activeLevel).addProjectile(new ProjectileBullet(px, py, getForce().getVectorAngle(), this));
+			Boom.playSound("shoot5");
 		}
 		// end BS AI
 	}
@@ -32,6 +48,9 @@ public class EntityBlob extends EntityLiving {
 	double takeDamage(double amount) {
 		health = Math.max(0, health - amount);
 		// animation? sound?
+		if(health == 0){
+			die();
+		}
 		return health;
 	}
 }

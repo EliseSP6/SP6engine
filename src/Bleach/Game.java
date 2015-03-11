@@ -46,9 +46,14 @@ public class Game {
 		//final Level firstLevel = new Level(2800, 1200, "Town");
 		final Level firstLevel = new Level(myGame.loadLevel("SP6engine/assets/levels/level1.json"));
 		
-		EntityBlob blobby = new EntityBlob(myGame.getSprite("blob"), 200, 264);
-		final Player player = new Player(myGame.getSprite("mushi"), 100, 100);
-		firstLevel.addMobile(blobby);
+		final Player player = new Player(myGame.getSprite("player"), 200, 464);
+		
+		firstLevel.addMobile(new EntityBlob(900, 564));
+		firstLevel.addMobile(new EntityBlob(1500, 564));
+		firstLevel.addMobile(new EntityBlob(1900, 164));
+		firstLevel.addMobile(new EntityBlob(2500, 24));
+		firstLevel.addMobile(new EntityBlob(2500, 564));
+		
 		firstLevel.addPlayer(player);
 
 		// firstLevel.setMusicTrack("melody7");
@@ -75,6 +80,7 @@ public class Game {
 			public void actionPerformed(ActionEvent e) {
 				player.getForce().setVectorAngle(Math.PI);
 				player.isMoving(true);
+				player.sprite = myGame.getSprite("player_walk_left");
 			}
 		}));
 
@@ -83,6 +89,7 @@ public class Game {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				player.isMoving(false);
+				player.sprite = myGame.getSprite("player");
 			}
 		}));
 
@@ -92,6 +99,7 @@ public class Game {
 			public void actionPerformed(ActionEvent e) {
 				player.getForce().setVectorAngle(0);
 				player.isMoving(true);
+				player.sprite = myGame.getSprite("player_walk_right");
 			}
 		}));
 
@@ -100,6 +108,7 @@ public class Game {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				player.isMoving(false);
+				player.sprite = myGame.getSprite("player");
 			}
 		}));
 		
@@ -110,8 +119,13 @@ public class Game {
 				//player.getForce().setVectorAngle(0);
 				//player.isMoving(true);
 				//((Level) activeLevel).addProjectile(new ProjectileBullet(x, y, getForce().getVectorAngle(), this));
+				double px, py;
+				double magnitude = player.getRadius();
 				
-				firstLevel.addProjectile(new ProjectileBullet(player.getPosition().x, player.getPosition().y, player.getForce().getVectorAngle(), player));
+				px = player.x + (Math.cos(player.getForce().getVectorAngle()) * magnitude);
+				py = player.y + (Math.sin(player.getForce().getVectorAngle()) * magnitude);
+				
+				firstLevel.addProjectile(new ProjectileBullet(px, py, player.getForce().getVectorAngle(), player));
 				Boom.playSound("shoot1");
 			}
 		}));
@@ -121,7 +135,7 @@ public class Game {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				if(player.jump(200)){
+				if(player.jump(320)){
 					Boom.playSound("jump1");
 				}
 			}

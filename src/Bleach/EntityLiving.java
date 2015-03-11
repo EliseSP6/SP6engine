@@ -61,7 +61,7 @@ public abstract class EntityLiving extends Entity {
 
 	abstract void AI(LevelInteractable activeLevel);
 
-	abstract double dealDamage();;
+	abstract double dealDamage();
 
 	abstract double takeDamage(double amount); // Returns health after damage.
 }

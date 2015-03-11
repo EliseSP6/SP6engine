@@ -72,5 +72,37 @@
 	{
 		"key":"cloud_t",
 		"filename":"cloud_t.png"
+	},
+	{
+		"key":"darkblob",
+		"filename":"darkblob.png",
+		"frametime":180,
+		"width":64,
+		"height":64
+	},
+	{
+		"key":"greenblob",
+		"filename":"greenblob.png",
+		"frametime":180,
+		"width":64,
+		"height":64
+	},
+	{
+		"key":"player",
+		"filename":"player.png"
+	},
+	{
+		"key":"player_walk_right",
+		"filename":"player_walk_right.png",
+		"frametime":150,
+		"width":48,
+		"height":48
+	},
+	{
+		"key":"player_walk_left",
+		"filename":"player_walk_left.png",
+		"frametime":150,
+		"width":48,
+		"height":48
 	}
 ]

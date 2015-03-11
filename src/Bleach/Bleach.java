@@ -296,7 +296,7 @@ public class Bleach extends JPanel {
 			deltaTime = System.currentTimeMillis() - timePreviousLoop;
 
 			// Simulate work
-			while (System.currentTimeMillis() - timePreviousLoop < 34) {
+			while (System.currentTimeMillis() - timePreviousLoop < 17) {
 				Thread.yield();
 			}
 
