@@ -25,6 +25,8 @@ public class Game {
 	public static void main(String[] args) {
 
 		Bleach myGame = new Bleach();
+		
+		//myGame.showLoadingScreen("SP6engine/assets/images/StudioElise.png", 1000);
 
 		myGame.loadImages("SP6engine/assets/images/assets.json");
 

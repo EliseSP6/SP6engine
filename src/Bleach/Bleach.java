@@ -24,6 +24,7 @@ import Bleach.InputManager.Receptionist;
 import Bleach.InputManager.Receptionist.KeyBinding;
 import Bleach.Loader.Discette;
 import Bleach.PhysicsEngine.Physique;
+import Bleach.Renderer.Overlay;
 import Bleach.Renderer.Picasso;
 
 public class Bleach extends JPanel {
@@ -61,6 +62,8 @@ public class Bleach extends JPanel {
 
 	// A (set of) bool to see if the game is paused by any subsystem.
 	private Map<PauseType, Boolean> pause = new HashMap<>();
+	
+	private Map<String, Boolean> loading = new HashMap<>();
 
 	// All the levels.
 	private Map<String, Level> levels = new HashMap<>();
@@ -80,6 +83,19 @@ public class Bleach extends JPanel {
 		renderer = new Picasso(800, 600);
 		setSize(800, 600);							// Default size
 		winTitle = "Game window";					// Default title;
+	}
+	
+	private boolean isLoading(){
+		if(loading.isEmpty()) return true;
+		for (Entry<String, Boolean> entry : loading.entrySet()) {
+			if(entry.getValue() == true) return true;
+		}
+		
+		return false;
+	}
+	
+	private void setLoading(String id, boolean _isLoading){
+		loading.put(id, _isLoading);
 	}
 
 	public void addLevel(Level level) {
@@ -205,9 +221,23 @@ public class Bleach extends JPanel {
 		winHeight = height;
 		renderer.setSize(width, height);
 	}
+	
+	public void showLoadingScreen(String imgFile, int minDurationMs){
+		long timeStart = System.currentTimeMillis();
+		BufferedImage logo = Discette.imgLoader(imgFile);
+		Overlay overlay = new Overlay(logo, 200, 200, minDurationMs);
+		Graphics g = this.getGraphics();
+		
+		while(isPaused() || System.currentTimeMillis() < timeStart + minDurationMs){
+			//g.drawImage(overlay.getImage(), 0, 0, null);
+		}
+		//g.dispose();
+	}
 
 	public void loadImages(String assetJsonPath) {
+		setLoading("images", true);
 		Discette.loadImages(assetJsonPath);
+		setLoading("images", false);
 	}
 
 	public Discette.JsonObjectLevel loadLevel(String assetJsonPath) {
@@ -215,7 +245,9 @@ public class Bleach extends JPanel {
 	}
 
 	public void loadSounds(String assetJsonPath) throws IOException, UnsupportedAudioFileException {
+		setLoading("sounds", true);
 		Discette.loadSound(assetJsonPath);
+		setLoading("sounds", false);
 	}
 
 	@Override

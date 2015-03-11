@@ -161,7 +161,7 @@ public class Discette {
 		return new_image;
 	}
 
-	private static BufferedImage imgLoader(String filename) {
+	public static BufferedImage imgLoader(String filename) {
 		/*
 		 * Loads an image file and return it as a "BufferedImage". Optionally
 		 * optimize it (which might mess up alpha channel on some systems).
