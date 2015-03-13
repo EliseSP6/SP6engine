@@ -747,6 +747,15 @@
 			"texturekey":"block",
 			"absolutex":0,
 			"absolutey":23,
+			"gridx":37,
+			"gridy":15,
+			"gridwidth":32,
+			"gridheight":32
+		},
+		{
+			"texturekey":"block",
+			"absolutex":0,
+			"absolutey":23,
 			"gridx":38,
 			"gridy":14,
 			"gridwidth":32,

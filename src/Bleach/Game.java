@@ -11,7 +11,6 @@ import javax.swing.KeyStroke;
 import Bleach.InputManager.Receptionist;
 import Bleach.InputManager.Receptionist.KeyBinding;
 import Bleach.PhysicsEngine.CollisionEngine.CollisionListener;
-import Bleach.PhysicsEngine.Force.ExternalForce;
 import Bleach.SoundEngine.Boom;
 
 /*
@@ -24,9 +23,7 @@ public class Game {
 
 	public static void main(String[] args) {
 
-		Bleach myGame = new Bleach();
-		
-		//myGame.showLoadingScreen("SP6engine/assets/images/StudioElise.png", 1000);
+		final Bleach myGame = new Bleach();
 
 		myGame.loadImages("SP6engine/assets/images/assets.json");
 
@@ -43,7 +40,6 @@ public class Game {
 		myGame.setSize(800, 600);
 		myGame.setTitle("My super game!");
 
-		//final Level firstLevel = new Level(2800, 1200, "Town");
 		final Level firstLevel = new Level(myGame.loadLevel("SP6engine/assets/levels/level1.json"));
 		
 		final Player player = new Player(myGame.getSprite("player"), 200, 464);
@@ -112,13 +108,10 @@ public class Game {
 			}
 		}));
 		
-		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("pressed C"), "pressed C", new AbstractAction() {
+		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("shift pressed SHIFT"), "shift pressed SHIFT", new AbstractAction() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//player.getForce().setVectorAngle(0);
-				//player.isMoving(true);
-				//((Level) activeLevel).addProjectile(new ProjectileBullet(x, y, getForce().getVectorAngle(), this));
 				double px, py;
 				double magnitude = player.getRadius();
 				
@@ -135,30 +128,9 @@ public class Game {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				if(player.jump(320)){
+				if(player.jump(450)){
 					Boom.playSound("jump1");
 				}
-			}
-		}));
-
-		receptionist.addKeyBinding(new KeyBinding(KeyStroke.getKeyStroke("shift pressed SHIFT"), "shift pressed SHIFT", new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				final ExternalForce thrust = new ExternalForce(Math.toRadians(270), 120);
-				thrust.setOnCollision(new CollisionListener() {
-
-					@Override
-					public void onCollision(Entity collidedWith) {
-						thrust.kill();
-					}
-				});
-				
-				player.startFalling();
-				player.addExternalForce(ExternalForce.ForceIdentifier.JUMP , thrust);
-
-				Boom.playSound("explosion");
 			}
 		}));
 
