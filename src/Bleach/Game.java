@@ -38,7 +38,7 @@ public class Game {
 		myGame.setFPS(60);
 
 		myGame.setSize(800, 600);
-		myGame.setTitle("My super game!");
+		myGame.setTitle("Kill the aliens, save the world");
 
 		final Level firstLevel = new Level(myGame.loadLevel("SP6engine/assets/levels/level1.json"));
 		
